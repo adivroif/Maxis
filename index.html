@@ -30,8 +30,16 @@
       color: var(--text);
       line-height: 1.7;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
+    html { scroll-behavior: smooth; }
     a { color: inherit; text-decoration: none; }
+    .scroll-progress { position: fixed; inset: 0 0 auto 0; height: 4px; width: 0; z-index: 999; background: linear-gradient(90deg, var(--brand), var(--brand2), var(--accent)); box-shadow: 0 0 18px rgba(0,229,255,.45); transition: width .08s linear; }
+    .animated-bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+    .blob { position: absolute; width: 380px; height: 380px; border-radius: 999px; filter: blur(40px); opacity: .16; animation: drift 18s ease-in-out infinite alternate; }
+    .blob.one { right: 6%; top: 16%; background: var(--brand); }
+    .blob.two { left: 3%; top: 48%; background: var(--brand2); animation-delay: -5s; }
+    .blob.three { right: 36%; bottom: 4%; background: var(--accent); animation-delay: -9s; }
     .container { width: min(1120px, 92%); margin: 0 auto; }
     header {
       position: sticky; top: 0; z-index: 50;
@@ -119,6 +127,31 @@
     input::placeholder, textarea::placeholder { color: #8792aa; }
     footer { padding: 36px 0; border-top: 1px solid var(--border); color: var(--muted); }
     .footer-row { display:flex; justify-content:space-between; gap: 20px; flex-wrap:wrap; }
+
+    .reveal { opacity: 0; transform: translateY(42px); transition: opacity .8s ease, transform .8s ease; transition-delay: var(--delay, 0ms); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(48px); transition: opacity .85s ease, transform .85s ease; transition-delay: var(--delay, 0ms); }
+    .reveal-left.in-view { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(-48px); transition: opacity .85s ease, transform .85s ease; transition-delay: var(--delay, 0ms); }
+    .reveal-right.in-view { opacity: 1; transform: translateX(0); }
+    .scale-in { opacity: 0; transform: scale(.94) translateY(24px); transition: opacity .8s ease, transform .8s ease; transition-delay: var(--delay, 0ms); }
+    .scale-in.in-view { opacity: 1; transform: scale(1) translateY(0); }
+    .parallax-soft { will-change: transform; }
+    .card, .project, .step { will-change: transform; }
+    .card:hover, .project:hover, .step:hover { box-shadow: 0 26px 80px rgba(0,229,255,.10); }
+    .project:before { content:""; position:absolute; inset: -1px; background: linear-gradient(120deg, transparent, rgba(255,255,255,.12), transparent); transform: translateX(120%); transition: transform .75s ease; }
+    .project:hover:before { transform: translateX(-120%); }
+    .floating-chip { position: absolute; padding: 10px 14px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,.09); backdrop-filter: blur(12px); color: var(--text); font-weight: 700; box-shadow: var(--shadow); animation: chipFloat 4.8s ease-in-out infinite; }
+    .chip-1 { top: 42px; right: 6px; }
+    .chip-2 { bottom: 58px; left: 10px; animation-delay: -1.8s; }
+    .chip-3 { top: 180px; left: 26px; animation-delay: -3s; }
+    @keyframes drift { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(60px,-70px,0) scale(1.14); } }
+    @keyframes chipFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .reveal, .reveal-left, .reveal-right, .scale-in { opacity: 1; transform: none; }
+    }
+
     @keyframes float { 0%,100%{ transform: translateY(0) scale(1); } 50%{ transform: translateY(-24px) scale(1.04); } }
     @keyframes cardFloat { 0%,100%{ transform: rotateY(-12deg) rotateX(6deg) translateY(0); } 50%{ transform: rotateY(-8deg) rotateX(4deg) translateY(-18px); } }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -132,6 +165,8 @@
   </style>
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="animated-bg" aria-hidden="true"><span class="blob one"></span><span class="blob two"></span><span class="blob three"></span></div>
   <header>
     <div class="container nav">
       <a class="logo" href="#top" aria-label="Maxis">
@@ -151,7 +186,7 @@
   <main id="top">
     <section class="hero">
       <div class="container hero-grid">
-        <div>
+        <div class="reveal-left">
           <div class="badge">🚀 אתרי תלת־ממד ומערכות דיגיטל לעסקים בישראל</div>
           <h1>בונים אתרים שמייצרים <span class="gradient-text">חוויה, בידול ומכירות</span></h1>
           <p>Maxis מפתחת אתרי תדמית, אתרי תלת־ממד אינטראקטיביים ומערכות Back Office לעסקים שרוצים להיראות מקצועיים, חדשניים וזכירים יותר.</p>
@@ -165,9 +200,12 @@
             <div class="stat"><strong>CRM</strong><span>ניהול פשוט לעסק</span></div>
           </div>
         </div>
-        <div class="showcase" aria-hidden="true">
+        <div class="showcase reveal-right parallax-soft" data-speed="0.16" aria-hidden="true">
           <div class="orb"></div>
           <div class="browser">
+            <span class="floating-chip chip-1">WebGL</span>
+            <span class="floating-chip chip-2">3D UX</span>
+            <span class="floating-chip chip-3">Fast</span>
             <div class="browser-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
             <div class="mock-content">
               <div class="mock-hero"><div class="cube"></div></div>
@@ -181,53 +219,53 @@
 
     <section id="services">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div class="eyebrow">השירותים שלנו</div>
           <h2>כל מה שעסק צריך כדי להיראות טוב יותר בדיגיטל</h2>
           <p>אנחנו משלבים עיצוב, פיתוח וטכנולוגיות תלת־ממד כדי להפוך אתר רגיל לכלי שיווקי שמושך לקוחות.</p>
         </div>
         <div class="grid-3">
-          <article class="card"><div class="icon">🌐</div><h3>אתרי תדמית</h3><p>אתרים מעוצבים, מהירים ורספונסיביים שמציגים את העסק בצורה מקצועית וברורה.</p></article>
-          <article class="card"><div class="icon">🧊</div><h3>אתרי תלת־ממד</h3><p>חוויות WebGL/Three.js אינטראקטיביות: מוצרים מסתובבים, סביבות וירטואליות ואלמנטים שמושכים תשומת לב.</p></article>
-          <article class="card"><div class="icon">⚙️</div><h3>מערכות ניהול</h3><p>Back Office מותאם אישית לניהול תוכן, לידים, הזמנות, לקוחות ותהליכים עסקיים.</p></article>
+          <article class="card scale-in" style="--delay: 0ms"><div class="icon">🌐</div><h3>אתרי תדמית</h3><p>אתרים מעוצבים, מהירים ורספונסיביים שמציגים את העסק בצורה מקצועית וברורה.</p></article>
+          <article class="card scale-in" style="--delay: 120ms"><div class="icon">🧊</div><h3>אתרי תלת־ממד</h3><p>חוויות WebGL/Three.js אינטראקטיביות: מוצרים מסתובבים, סביבות וירטואליות ואלמנטים שמושכים תשומת לב.</p></article>
+          <article class="card scale-in" style="--delay: 240ms"><div class="icon">⚙️</div><h3>מערכות ניהול</h3><p>Back Office מותאם אישית לניהול תוכן, לידים, הזמנות, לקוחות ותהליכים עסקיים.</p></article>
         </div>
       </div>
     </section>
 
     <section id="portfolio">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div class="eyebrow">דוגמאות לפרויקטים</div>
           <h2>פרויקטי דמו שמציגים את היכולות</h2>
           <p>עד שיהיו לקוחות ראשונים, אפשר להציג דוגמאות קונספט שמראות ללקוח בדיוק מה הוא יכול לקבל.</p>
         </div>
         <div class="portfolio">
-          <article class="project"><h3>אתר נדל״ן תלת־ממדי</h3><p>הצגת בניין, דירות וחללים בצורה אינטראקטיבית שמאפשרת ללקוח לחוות את הפרויקט עוד לפני ביקור פיזי.</p><div class="tag-list"><span class="tag">Real Estate</span><span class="tag">3D Tour</span><span class="tag">Lead Form</span></div></article>
-          <article class="project"><h3>אתר מוצר אינטראקטיבי</h3><p>עמוד מוצר עם מודל תלת־ממדי מסתובב, הדגשת יתרונות, קריאה לפעולה וחיבור לטופס רכישה.</p><div class="tag-list"><span class="tag">E-commerce</span><span class="tag">3D Product</span><span class="tag">UX</span></div></article>
-          <article class="project"><h3>אתר מסעדה מודרני</h3><p>אתר חווייתי עם תפריט, הזמנת מקום, גלריה ותחושת מותג חזקה שמגדילה הזמנות.</p><div class="tag-list"><span class="tag">Restaurant</span><span class="tag">Bookings</span><span class="tag">Branding</span></div></article>
-          <article class="project"><h3>מערכת ניהול לעסק</h3><p>ממשק פנימי לניהול תוכן האתר, לקוחות, פניות, שירותים ודוחות — מותאם בדיוק לצורת העבודה של העסק.</p><div class="tag-list"><span class="tag">Back Office</span><span class="tag">Dashboard</span><span class="tag">Automation</span></div></article>
+          <article class="project reveal" style="--delay: 0ms"><h3>אתר נדל״ן תלת־ממדי</h3><p>הצגת בניין, דירות וחללים בצורה אינטראקטיבית שמאפשרת ללקוח לחוות את הפרויקט עוד לפני ביקור פיזי.</p><div class="tag-list"><span class="tag">Real Estate</span><span class="tag">3D Tour</span><span class="tag">Lead Form</span></div></article>
+          <article class="project reveal" style="--delay: 120ms"><h3>אתר מוצר אינטראקטיבי</h3><p>עמוד מוצר עם מודל תלת־ממדי מסתובב, הדגשת יתרונות, קריאה לפעולה וחיבור לטופס רכישה.</p><div class="tag-list"><span class="tag">E-commerce</span><span class="tag">3D Product</span><span class="tag">UX</span></div></article>
+          <article class="project reveal" style="--delay: 0ms"><h3>אתר מסעדה מודרני</h3><p>אתר חווייתי עם תפריט, הזמנת מקום, גלריה ותחושת מותג חזקה שמגדילה הזמנות.</p><div class="tag-list"><span class="tag">Restaurant</span><span class="tag">Bookings</span><span class="tag">Branding</span></div></article>
+          <article class="project reveal" style="--delay: 120ms"><h3>מערכת ניהול לעסק</h3><p>ממשק פנימי לניהול תוכן האתר, לקוחות, פניות, שירותים ודוחות — מותאם בדיוק לצורת העבודה של העסק.</p><div class="tag-list"><span class="tag">Back Office</span><span class="tag">Dashboard</span><span class="tag">Automation</span></div></article>
         </div>
       </div>
     </section>
 
     <section id="process">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div class="eyebrow">איך זה עובד</div>
           <h2>תהליך עבודה ברור מהרעיון ועד העלייה לאוויר</h2>
         </div>
         <div class="process">
-          <div class="step"><div class="num">01</div><div><h3>אפיון</h3><p>מבינים את העסק, קהל היעד, המטרות והפיצ׳רים שצריך לפתח.</p></div></div>
-          <div class="step"><div class="num">02</div><div><h3>עיצוב</h3><p>יוצרים שפה ויזואלית, מבנה עמודים וחוויית משתמש שמתאימה למותג.</p></div></div>
-          <div class="step"><div class="num">03</div><div><h3>פיתוח</h3><p>בונים את האתר, משלבים אנימציות, תלת־ממד, טפסים ומערכת ניהול לפי הצורך.</p></div></div>
-          <div class="step"><div class="num">04</div><div><h3>השקה ותחזוקה</h3><p>בודקים, מעלים לאוויר, מחברים אנליטיקות ומספקים תמיכה ושיפורים.</p></div></div>
+          <div class="step reveal-left" style="--delay: 0ms"><div class="num">01</div><div><h3>אפיון</h3><p>מבינים את העסק, קהל היעד, המטרות והפיצ׳רים שצריך לפתח.</p></div></div>
+          <div class="step reveal-left" style="--delay: 90ms"><div class="num">02</div><div><h3>עיצוב</h3><p>יוצרים שפה ויזואלית, מבנה עמודים וחוויית משתמש שמתאימה למותג.</p></div></div>
+          <div class="step reveal-left" style="--delay: 180ms"><div class="num">03</div><div><h3>פיתוח</h3><p>בונים את האתר, משלבים אנימציות, תלת־ממד, טפסים ומערכת ניהול לפי הצורך.</p></div></div>
+          <div class="step reveal-left" style="--delay: 270ms"><div class="num">04</div><div><h3>השקה ותחזוקה</h3><p>בודקים, מעלים לאוויר, מחברים אנליטיקות ומספקים תמיכה ושיפורים.</p></div></div>
         </div>
       </div>
     </section>
 
     <section id="contact">
       <div class="container">
-        <div class="cta">
+        <div class="cta reveal">
           <div class="eyebrow">בואו נתחיל</div>
           <h2>רוצים אתר שאנשים יזכרו?</h2>
           <p>השאירו פרטים ונחזור אליכם לשיחת ייעוץ קצרה על האתר או המערכת שהעסק שלכם צריך.</p>
@@ -262,6 +300,34 @@
       const whatsappNumber = '972500000000';
       window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
     }
+
+    const progress = document.getElementById('scrollProgress');
+    const parallaxItems = document.querySelectorAll('.parallax-soft');
+
+    function updateScrollEffects() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progressWidth = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progress.style.width = `${progressWidth}%`;
+
+      parallaxItems.forEach((item) => {
+        const speed = Number(item.dataset.speed || 0.12);
+        item.style.transform = `translateY(${scrollTop * speed}px)`;
+      });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -70px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in').forEach((el) => observer.observe(el));
+    window.addEventListener('scroll', updateScrollEffects, { passive: true });
+    updateScrollEffects();
   </script>
 </body>
 </html>
