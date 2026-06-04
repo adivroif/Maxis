@@ -142,6 +142,31 @@
       justify-content:space-between;
       box-shadow: 0 24px 70px rgba(0,0,0,.22);
     }
+
+    @media (min-width: 1200px) {
+  #portfolio .container {
+    width: min(1500px, 94%);
+  }
+
+  .portfolio {
+    grid-template-columns: repeat(2, minmax(520px, 1fr));
+    gap: 36px;
+  }
+
+  .project {
+    min-height: 390px;
+    padding: 42px;
+  }
+
+  .project h3 {
+    font-size: 42px;
+  }
+
+  .project p {
+    font-size: 22px;
+    max-width: 620px;
+  }
+}
     .project:hover{
       transform:translateY(-10px) scale(1.015);
       background:linear-gradient(135deg, rgba(124,92,255,.32), rgba(0,229,255,.17));
