@@ -96,6 +96,25 @@
     h2 { font-size: clamp(32px, 4vw, 50px); line-height: 1.15; margin-bottom: 14px; }
     .section-head p { color: var(--muted); font-size: 18px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .logo{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-weight:900;
+}
+
+.logo-image{
+    height:48px;
+    width:auto;
+    object-fit:contain;
+}
+
+.logo-text{
+    font-size:28px;
+    font-weight:900;
+    color:white;
+    letter-spacing:1px;
+}
     .card { padding: 28px; border-radius: 26px; background: var(--panel); border: 1px solid var(--border); box-shadow: 0 16px 50px rgba(0,0,0,.18); transition: .25s; }
     .card:hover { transform: translateY(-6px); background: var(--panel-strong); }
     .icon { width: 54px; height: 54px; border-radius: 18px; background: linear-gradient(135deg, var(--brand), var(--brand2)); display: grid; place-items: center; font-size: 26px; margin-bottom: 18px; }
@@ -338,16 +357,14 @@
 <body>
   <header>
     <div class="container nav">
-      <a class="logo" href="#top" aria-label="Maxiss">
-        <div class="logo">
+<a class="logo" href="#top" aria-label="Maxiss">
     <img
         src="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
         alt="Maxiss Logo"
-        class="logo-mark"
+        class="logo-image"
     />
-</div>
-      <span>Maxiss</span>
-      </a>
+    <span class="logo-text">MAXISS</span>
+</a>
       <nav>
         <a href="#services">שירותים</a>
         <a href="#portfolio">דוגמאות</a>
