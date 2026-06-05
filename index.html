@@ -1415,45 +1415,27 @@
         });
       }
 
-function centerAndScale(model)
-{
-    const box = new THREE.Box3().setFromObject(model);
+function centerAndScale(model) {
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
 
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
+  model.position.sub(center);
 
-    model.position.sub(center);
+  const maxSize = Math.max(size.x, size.y, size.z);
 
-    const maxSize = Math.max(
-        size.x,
-        size.y,
-        size.z
-    );
+  // זום חזק אבל לא מוגזם
+  const scale = 5 / maxSize;
+  model.scale.setScalar(scale);
 
-    // הגדלה משמעותית
-    const scale = 8 / maxSize;
+  model.rotation.y = Math.PI / 6;
 
-    model.scale.setScalar(scale);
+  // מצלמה קרובה, אבל לא בתוך המודל
+  camera.position.set(0, 0.6, 5);
+  camera.lookAt(0, 0, 0);
 
-    // סיבוב ראשוני יפה
-    model.rotation.y = Math.PI / 4;
-
-    // מצלמה קרובה יותר
-    camera.position.set(
-        0,
-        0.8,
-        3
-    );
-
-    camera.lookAt(0, 0, 0);
-
-    controls.target.set(
-        0,
-        0,
-        0
-    );
-
-    controls.update();
+  controls.target.set(0, 0, 0);
+  controls.update();
 }
 
       async function loadModel() {
