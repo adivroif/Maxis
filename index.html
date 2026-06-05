@@ -1313,8 +1313,7 @@
       controls.enableDamping = true;
       controls.enableZoom = false;
       controls.enablePan = false;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 1.25;
+      controls.autoRotate = false;
 
       scene.add(new THREE.AmbientLight(0xffffff, 1.35));
 
@@ -1423,29 +1422,37 @@ function centerAndScale(model)
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
 
-    model.position.x -= center.x;
-    model.position.y -= center.y;
-    model.position.z -= center.z;
+    model.position.sub(center);
 
-    const maxSize = Math.max(size.x, size.y, size.z);
+    const maxSize = Math.max(
+        size.x,
+        size.y,
+        size.z
+    );
 
-    const targetSize = 2.5;
+    // הגדלה משמעותית
+    const scale = 8 / maxSize;
 
-    const scale = targetSize / maxSize;
+    model.scale.setScalar(scale);
 
-    model.scale.set(scale, scale, scale);
+    // סיבוב ראשוני יפה
+    model.rotation.y = Math.PI / 4;
 
-    const distance = maxSize * 2;
-
+    // מצלמה קרובה יותר
     camera.position.set(
         0,
-        maxSize * 0.6,
-        distance
+        0.8,
+        3
     );
 
     camera.lookAt(0, 0, 0);
 
-    controls.target.set(0, 0, 0);
+    controls.target.set(
+        0,
+        0,
+        0
+    );
+
     controls.update();
 }
 
