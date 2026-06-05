@@ -1431,32 +1431,57 @@ function applyMaterial(model, maps) {
 }
 
 function centerAndScale(model) {
-  const box = new THREE.Box3().setFromObject(model);
-  const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
 
-  model.position.set(
-    -center.x,
-    -center.y,
-    -center.z
-  );
+    const box = new THREE.Box3().setFromObject(model);
 
-  const maxSize = Math.max(size.x, size.y, size.z);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
 
-  const scale = 10 / maxSize;
-  model.scale.setScalar(scale);
+    model.position.set(
+        -center.x,
+        -center.y,
+        -center.z
+    );
 
-  model.rotation.set(0, Math.PI / 4, 0);
+    const maxSize = Math.max(
+        size.x,
+        size.y,
+        size.z
+    );
 
-  camera.position.set(0, 0, 8);
-  camera.lookAt(0, 0, 0);
+    // הרבה יותר קטן
+    const scale = 2 / maxSize;
 
-  controls.target.set(0, 0, 0);
-  controls.update();
+    model.scale.setScalar(scale);
 
-  console.log("size:", size);
-  console.log("center:", center);
-  console.log("scale:", scale);
+    model.rotation.set(
+        0,
+        Math.PI / 4,
+        0
+    );
+
+    // לחשב מרחק אוטומטי
+    const distance = maxSize * scale * 2.5;
+
+    camera.position.set(
+        0,
+        0,
+        distance
+    );
+
+    camera.lookAt(0, 0, 0);
+
+    controls.target.set(
+        0,
+        0,
+        0
+    );
+
+    controls.update();
+
+    console.log("SIZE:", size);
+    console.log("MAX:", maxSize);
+    console.log("DISTANCE:", distance);
 }
 
       function loadFbxWithPromise(loader, url) {
