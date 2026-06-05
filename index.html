@@ -1313,13 +1313,25 @@
       const controls = new OrbitControls(camera, renderer.domElement);
 
       // שליטה רק בהזזה על הצירים במסך: ימינה/שמאלה/למעלה/למטה
-      controls.enableRotate = false;
-      controls.enableZoom = false;
-      controls.enablePan = true;
-      controls.screenSpacePanning = true;
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.08;
-      controls.target.set(0, 0, 0);
+controls.enableRotate = false;
+controls.enableZoom = false;
+controls.enablePan = true;
+
+controls.screenSpacePanning = true;
+controls.mouseButtons = {
+  LEFT: THREE.MOUSE.PAN,
+  MIDDLE: THREE.MOUSE.PAN,
+  RIGHT: THREE.MOUSE.PAN
+};
+
+controls.touches = {
+  ONE: THREE.TOUCH.PAN,
+  TWO: THREE.TOUCH.PAN
+};
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.autoRotate = false;
       controls.update();
 
       scene.add(new THREE.AmbientLight(0xffffff, 1.7));
@@ -1497,7 +1509,6 @@ function centerAndScale(model) {
           applyMaterial(model, maps);
           centerAndScale(model);
           scene.add(model);
-          scene.add(new THREE.AxesHelper(5));
           console.log("MODEL ADDED:", model);
 console.log("MODEL POSITION:", model.position);
 console.log("MODEL SCALE:", model.scale);
