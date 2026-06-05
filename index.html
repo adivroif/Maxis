@@ -1435,20 +1435,28 @@ function centerAndScale(model) {
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
 
-  model.position.sub(center);
+  model.position.set(
+    -center.x,
+    -center.y,
+    -center.z
+  );
 
   const maxSize = Math.max(size.x, size.y, size.z);
 
-  const scale = 4 / maxSize;
+  const scale = 10 / maxSize;
   model.scale.setScalar(scale);
 
-  model.rotation.set(0, Math.PI / 5, 0);
+  model.rotation.set(0, Math.PI / 4, 0);
 
-  camera.position.set(0, 0, 6);
+  camera.position.set(0, 0, 8);
   camera.lookAt(0, 0, 0);
 
   controls.target.set(0, 0, 0);
   controls.update();
+
+  console.log("size:", size);
+  console.log("center:", center);
+  console.log("scale:", scale);
 }
 
       function loadFbxWithPromise(loader, url) {
@@ -1485,6 +1493,7 @@ function centerAndScale(model) {
           applyMaterial(model, maps);
           centerAndScale(model);
           scene.add(model);
+          scene.add(new THREE.AxesHelper(5));
           console.log("MODEL ADDED:", model);
 console.log("MODEL POSITION:", model.position);
 console.log("MODEL SCALE:", model.scale);
