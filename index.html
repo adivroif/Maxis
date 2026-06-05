@@ -1499,7 +1499,7 @@ function centerAndScale(model) {
         try {
           if (loading) loading.textContent = "טוען טקסטורות...";
           const maps = await loadTextureMaps();
-
+          console.log("Loaded maps:", maps);
           if (loading) loading.textContent = "טוען מודל תלת־ממדי...";
           const loader = new FBXLoader();
           const model = await loadFbxWithPromise(loader, FBX_URL);
