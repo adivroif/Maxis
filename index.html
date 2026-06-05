@@ -1272,6 +1272,7 @@
   <script type="module">
     import * as THREE from "three";
     import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+    import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
     const FBX_URL =
       "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=tenants&clientName=tenantA&fileName=Connector.fbx";
@@ -1304,7 +1305,13 @@
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.18;
+      renderer.toneMappingExposure = 1.35;
+
+      // Environment תאורתי פנימי של Three.js בלבד.
+      // לא נטענת כאן שום טקסטורת מודל חיצונית — מפות המודל מגיעות רק מה-JSON של TEXTURES_ENDPOINT.
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+
       container.appendChild(renderer.domElement);
 
       renderer.domElement.style.cursor = "grab";
@@ -1322,17 +1329,17 @@
       // חשוב: לא נטענות מפות חיצוניות בכלל.
       // כל מפות הטקסטורה מגיעות רק מה-JSON של TEXTURES_ENDPOINT.
 
-      scene.add(new THREE.AmbientLight(0xffffff, 1.45));
+      scene.add(new THREE.AmbientLight(0xffffff, 2.1));
 
-      const keyLight = new THREE.DirectionalLight(0xffffff, 2.8);
+      const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
       keyLight.position.set(5, 7, 6);
       scene.add(keyLight);
 
-      const fillLight = new THREE.DirectionalLight(0x7c5cff, 1.35);
+      const fillLight = new THREE.DirectionalLight(0xffffff, 1.8);
       fillLight.position.set(-5, 3, -4);
       scene.add(fillLight);
 
-      const rimLight = new THREE.DirectionalLight(0x00e5ff, 1.8);
+      const rimLight = new THREE.DirectionalLight(0x00e5ff, 1.4);
       rimLight.position.set(0, 5, -6);
       scene.add(rimLight);
 
@@ -1513,9 +1520,11 @@
             displacementMap: maps.displacementMap || null,
 
             color: maps.map ? 0xffffff : originalColor,
-            roughness: maps.roughnessMap ? 1.0 : 0.32,
-            metalness: maps.metalnessMap ? 1.0 : 0.72,
-            envMapIntensity: 0,
+
+            // ערכים מאוזנים: משתמשים במפות מה-JSON, אבל לא נותנים למתכת להפוך לשחורה מדי.
+            roughness: maps.roughnessMap ? 0.38 : 0.32,
+            metalness: maps.metalnessMap ? 0.85 : 0.72,
+            envMapIntensity: 1.65,
             side: THREE.DoubleSide
           });
 
@@ -1622,8 +1631,8 @@
           }
 
           // מסובב את המודל עצמו בלבד. המצלמה והריבוע לא זזים.
-          modelPivot.rotation.y += deltaX * 0.018;
-          modelPivot.rotation.x += deltaY * 0.012;
+          modelPivot.rotation.y += deltaX * 0.028;
+          modelPivot.rotation.x += deltaY * 0.018;
 
           // מגביל סיבוב אנכי כדי שהמודל לא יתהפך לגמרי.
           modelPivot.rotation.x = THREE.MathUtils.clamp(
