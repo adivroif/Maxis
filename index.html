@@ -1291,6 +1291,18 @@
       const loading = container.querySelector(".model-loading");
 
       const scene = new THREE.Scene();
+      const cubeTextureLoader = new THREE.CubeTextureLoader();
+
+const environmentMap = cubeTextureLoader.load([
+  "https://threejs.org/examples/textures/cube/Bridge2/posx.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/negx.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/posy.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/negy.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/posz.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/negz.jpg"
+]);
+
+scene.environment = environmentMap;
 
       const camera = new THREE.PerspectiveCamera(
         35,
@@ -1425,10 +1437,11 @@ function applyMaterial(model, maps) {
       map: maps.map || null,
       roughnessMap: maps.roughnessMap || null,
       metalnessMap: maps.metalnessMap || null,
-      normalMap: maps.normalMap || null,
-      color: maps.map ? 0xffffff : 0x8fb7ff,
-      roughness: 0.38,
-      metalness: 0.55,
+
+      color: 0xffffff,
+      roughness: 0.18,
+      metalness: 1.0,
+      envMapIntensity: 2.2,
       side: THREE.DoubleSide
     });
 
