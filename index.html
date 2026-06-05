@@ -1416,22 +1416,38 @@
         });
       }
 
-      function centerAndScale(model) {
-        const box = new THREE.Box3().setFromObject(model);
-        const size = new THREE.Vector3();
-        const center = new THREE.Vector3();
+function centerAndScale(model)
+{
+    const box = new THREE.Box3().setFromObject(model);
 
-        box.getSize(size);
-        box.getCenter(center);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
 
-        model.position.sub(center);
+    model.position.x -= center.x;
+    model.position.y -= center.y;
+    model.position.z -= center.z;
 
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = maxDim > 0 ? 3.1 / maxDim : 1;
+    const maxSize = Math.max(size.x, size.y, size.z);
 
-        model.scale.setScalar(scale);
-        model.rotation.y = Math.PI / 8;
-      }
+    const targetSize = 2.5;
+
+    const scale = targetSize / maxSize;
+
+    model.scale.set(scale, scale, scale);
+
+    const distance = maxSize * 2;
+
+    camera.position.set(
+        0,
+        maxSize * 0.6,
+        distance
+    );
+
+    camera.lookAt(0, 0, 0);
+
+    controls.target.set(0, 0, 0);
+    controls.update();
+}
 
       async function loadModel() {
         try {
@@ -1444,14 +1460,19 @@
           const fbxLoader = new FBXLoader();
 
           fbxLoader.load(
-            FBX_URL,
-            (model) => {
-              applyMaterial(model, maps);
-              centerAndScale(model);
-              scene.add(model);
+    FBX_URL,
+    (model) =>
+    {
+        applyMaterial(model, maps);
 
-              if (loading) loading.style.display = "none";
-            },
+        centerAndScale(model);
+
+        scene.add(model);
+
+        console.log("MODEL LOADED", model);
+
+        loading.style.display = "none";
+    },
             (xhr) => {
               if (loading && xhr.total) {
                 const percent = Math.round((xhr.loaded / xhr.total) * 100);
