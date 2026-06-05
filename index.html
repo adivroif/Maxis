@@ -1319,16 +1319,8 @@
       let previousMouseY = 0;
       let hasDragged = false;
 
-      const cubeTextureLoader = new THREE.CubeTextureLoader();
-      const environmentMap = cubeTextureLoader.load([
-        "https://threejs.org/examples/textures/cube/Bridge2/posx.jpg",
-        "https://threejs.org/examples/textures/cube/Bridge2/negx.jpg",
-        "https://threejs.org/examples/textures/cube/Bridge2/posy.jpg",
-        "https://threejs.org/examples/textures/cube/Bridge2/negy.jpg",
-        "https://threejs.org/examples/textures/cube/Bridge2/posz.jpg",
-        "https://threejs.org/examples/textures/cube/Bridge2/negz.jpg"
-      ]);
-      scene.environment = environmentMap;
+      // חשוב: לא נטענות מפות חיצוניות בכלל.
+      // כל מפות הטקסטורה מגיעות רק מה-JSON של TEXTURES_ENDPOINT.
 
       scene.add(new THREE.AmbientLight(0xffffff, 1.45));
 
@@ -1386,6 +1378,8 @@
       }
 
       async function loadTextureMaps() {
+        const textureLoader = new THREE.TextureLoader();
+
         try {
           const response = await fetch(TEXTURES_ENDPOINT);
 
@@ -1397,32 +1391,76 @@
           const textures = await response.json();
           console.table(textures);
 
-          const baseColorUrl = findTexture(textures, [
-            "basecolor",
-            "base color",
-            "diffuse",
-            "albedo",
-            "color"
-          ]);
+          // משתמשים אך ורק בקבצים שחזרו מה-JSON.
+          // קובץ Preview מיועד לתצוגה מקדימה ולא משמש כמפת חומר.
+          const validTextures = Array.isArray(textures)
+            ? textures.filter((texture) => {
+                const name = String(texture.fileName || texture.fullPath || texture.url || "").toLowerCase();
+                return texture.url && !name.includes("preview");
+              })
+            : [];
 
-          const roughnessUrl = findTexture(textures, ["roughness", "rough"]);
-          const metalnessUrl = findTexture(textures, ["metalness", "metallic", "metal"]);
-          const normalUrl = findTexture(textures, ["normal", "normalmap", "normal map"]);
-          const aoUrl = findTexture(textures, ["ao", "ambient occlusion", "ambientocclusion"]);
-          const alphaUrl = findTexture(textures, ["alpha", "opacity", "transparent"]);
-          const emissiveUrl = findTexture(textures, ["emissive", "emission", "glow"]);
-          const heightUrl = findTexture(textures, ["height", "displacement", "bump"]);
+          const findByName = (keywords) => {
+            return validTextures.find((texture) => {
+              const name = String(texture.fileName || texture.fullPath || texture.url || "")
+                .toLowerCase()
+                .replace(/%20/g, " ")
+                .replace(/[_.-]+/g, " ");
+
+              return keywords.some((keyword) => name.includes(keyword));
+            })?.url || null;
+          };
 
           const maps = {};
 
-          const baseColorMap = loadImageTexture(baseColorUrl, true);
-          const roughnessMap = loadImageTexture(roughnessUrl);
-          const metalnessMap = loadImageTexture(metalnessUrl);
-          const normalMap = loadImageTexture(normalUrl);
-          const aoMap = loadImageTexture(aoUrl);
-          const alphaMap = loadImageTexture(alphaUrl);
-          const emissiveMap = loadImageTexture(emissiveUrl, true);
-          const displacementMap = loadImageTexture(heightUrl);
+          const baseColorUrl = findByName([
+            "basecolor",
+            "base color",
+            "basecolour",
+            "base colour",
+            "diffuse",
+            "albedo",
+            "color",
+            "colour"
+          ]);
+
+          const roughnessUrl = findByName(["roughness", "rough"]);
+          const metalnessUrl = findByName(["metalness", "metallic", "metal"]);
+          const normalUrl = findByName(["normal", "normalmap", "normal map"]);
+          const aoUrl = findByName(["ambient occlusion", "ambientocclusion", "ao"]);
+          const alphaUrl = findByName(["alpha", "opacity", "transparent", "transparency"]);
+          const emissiveUrl = findByName(["emissive", "emission", "glow"]);
+          const heightUrl = findByName(["height", "displacement", "bump"]);
+
+          const loadTexture = (url, isColor = false) => {
+            if (!url) return null;
+
+            const texture = textureLoader.load(
+              url,
+              undefined,
+              undefined,
+              (error) => console.warn("Texture load warning:", url, error)
+            );
+
+            texture.colorSpace = isColor ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+
+            // אם הטקסטורה נראית הפוכה, החלף ל-false.
+            texture.flipY = true;
+            texture.needsUpdate = true;
+
+            return texture;
+          };
+
+          const baseColorMap = loadTexture(baseColorUrl, true);
+          const roughnessMap = loadTexture(roughnessUrl);
+          const metalnessMap = loadTexture(metalnessUrl);
+          const normalMap = loadTexture(normalUrl);
+          const aoMap = loadTexture(aoUrl);
+          const alphaMap = loadTexture(alphaUrl);
+          const emissiveMap = loadTexture(emissiveUrl, true);
+          const displacementMap = loadTexture(heightUrl);
 
           if (baseColorMap) maps.map = baseColorMap;
           if (roughnessMap) maps.roughnessMap = roughnessMap;
@@ -1433,7 +1471,7 @@
           if (emissiveMap) maps.emissiveMap = emissiveMap;
           if (displacementMap) maps.displacementMap = displacementMap;
 
-          console.log("Loaded texture maps:", maps);
+          console.log("Texture maps loaded only from endpoint JSON:", maps);
           return maps;
         } catch (error) {
           console.warn("Textures loading failed, loading FBX without textures:", error);
@@ -1462,20 +1500,22 @@
             ? oldMaterial.color.clone()
             : new THREE.Color(0xffffff);
 
+          // לא משתמשים במפות מתוך ה-FBX ולא במפות fallback חיצוניות.
+          // מפות נכנסות לחומר רק אם הן קיימות ב-JSON של TEXTURES_ENDPOINT.
           const material = new THREE.MeshStandardMaterial({
-            map: maps.map || oldMaterial?.map || null,
-            normalMap: maps.normalMap || oldMaterial?.normalMap || null,
-            roughnessMap: maps.roughnessMap || oldMaterial?.roughnessMap || null,
-            metalnessMap: maps.metalnessMap || oldMaterial?.metalnessMap || null,
-            aoMap: maps.aoMap || oldMaterial?.aoMap || null,
-            alphaMap: maps.alphaMap || oldMaterial?.alphaMap || null,
-            emissiveMap: maps.emissiveMap || oldMaterial?.emissiveMap || null,
-            displacementMap: maps.displacementMap || oldMaterial?.displacementMap || null,
+            map: maps.map || null,
+            normalMap: maps.normalMap || null,
+            roughnessMap: maps.roughnessMap || null,
+            metalnessMap: maps.metalnessMap || null,
+            aoMap: maps.aoMap || null,
+            alphaMap: maps.alphaMap || null,
+            emissiveMap: maps.emissiveMap || null,
+            displacementMap: maps.displacementMap || null,
 
             color: maps.map ? 0xffffff : originalColor,
-            roughness: maps.roughnessMap ? 1.0 : 0.18,
-            metalness: maps.metalnessMap ? 1.0 : 0.9,
-            envMapIntensity: 2.8,
+            roughness: maps.roughnessMap ? 1.0 : 0.32,
+            metalness: maps.metalnessMap ? 1.0 : 0.72,
+            envMapIntensity: 0,
             side: THREE.DoubleSide
           });
 
