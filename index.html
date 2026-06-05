@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -423,6 +424,13 @@
       gap: 20px;
     }
 
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+
     .card {
       padding: 28px;
       border-radius: 26px;
@@ -570,6 +578,39 @@
       line-height: 1.2;
       margin-bottom: 18px;
     }
+
+    .model-project{
+  padding:28px;
+}
+
+.model-preview{
+  width:100%;
+  height:430px;
+  border-radius:24px;
+  overflow:hidden;
+  margin-bottom:24px;
+  position:relative;
+  background:radial-gradient(circle at top, #1d5f86, #07101a 72%);
+  border:1px solid rgba(255,255,255,.18);
+}
+
+.model-preview canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.model-loading{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-weight:700;
+  z-index:2;
+  background:rgba(0,0,0,.25);
+}
 
     .project p {
       color: var(--muted);
@@ -793,6 +834,7 @@
       nav { display: none; }
       .hero-grid,
       .grid-3,
+      .grid-2,
       .portfolio { grid-template-columns: 1fr; }
       .showcase { min-height: 420px; }
       .stats { grid-template-columns: 1fr; }
@@ -1053,34 +1095,23 @@
 
       </a>
 
-            <!-- FBX Studio -->
-      <a class="project live-project"
-         href="https://fbxstudio.onrender.com"
-         target="_blank"
-         rel="noopener noreferrer">
+<a class="project model-project" href="#portfolio">
+  <div class="model-preview" id="fbxModelPreview">
+    <div class="model-loading">טוען מודל תלת־ממדי...</div>
+  </div>
 
-        <div class="live-preview">
-          <iframe
-            src="https://fbxstudio.onrender.com"
-            title="FBX Studio"
-            loading="lazy">
-          </iframe>
-        </div>
+  <h3>מודל תלת־ממדי חי</h3>
 
-        <h3>FBX Studio</h3>
+  <p>
+    מודל FBX שנטען ישירות מהמערכת יחד עם הטקסטורות שלו.
+  </p>
 
-        <p>
-          מערכת ניהול מתקדמת לניהול מודלים, לקוחות,
-          קבצים ותהליכי עבודה.
-        </p>
-
-        <div class="tag-list">
-          <span class="tag">ASP.NET Core</span>
-          <span class="tag">React</span>
-          <span class="tag">Back Office</span>
-        </div>
-
-      </a>
+  <div class="tag-list">
+    <span class="tag">FBX</span>
+    <span class="tag">Three.js</span>
+    <span class="tag">Live Model</span>
+  </div>
+</a>
 
     </div>
 
@@ -1219,5 +1250,262 @@
       window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
     }
   </script>
+
+
+  <!-- Three.js FBX Model Loader -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    /*
+      החלף רק את הכתובת כאן ל-endpoint האמיתי שלך.
+
+      ה-endpoint יכול להחזיר JSON באחד מהמבנים הבאים, לדוגמה:
+      {
+        "fbxUrl": "https://domain.com/files/model.fbx",
+        "textures": [
+          { "type": "diffuse", "url": "https://domain.com/files/diffuse.jpg" },
+          { "type": "normal", "url": "https://domain.com/files/normal.jpg" }
+        ]
+      }
+
+      או:
+      {
+        "fileUrl": "https://domain.com/files/model.fbx",
+        "textureUrl": "https://domain.com/files/texture.jpg"
+      }
+    */
+    const MODEL_ENDPOINT = "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=tenants&fileName=Connector&clientName=tenantA
+";
+
+    const container = document.getElementById("fbxModelPreview");
+
+    if (container) {
+      const loading = container.querySelector(".model-loading");
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        container.clientWidth / container.clientHeight,
+        0.1,
+        10000
+      );
+      camera.position.set(0, 1.8, 5.2);
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+      });
+
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 1.25;
+
+      scene.add(new THREE.AmbientLight(0xffffff, 1.35));
+
+      const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
+      keyLight.position.set(5, 8, 6);
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0x7c5cff, 1.2);
+      fillLight.position.set(-5, 3, -4);
+      scene.add(fillLight);
+
+      const rimLight = new THREE.DirectionalLight(0x00e5ff, 1.6);
+      rimLight.position.set(0, 5, -6);
+      scene.add(rimLight);
+
+      function getFirstValue(data, keys) {
+        for (const key of keys) {
+          if (data && data[key]) return data[key];
+        }
+        return null;
+      }
+
+      function normalizeUrl(url) {
+        if (!url) return null;
+        if (url.startsWith("http://") || url.startsWith("https://")) return url;
+
+        const endpointUrl = new URL(MODEL_ENDPOINT);
+        return `${endpointUrl.origin}${url.startsWith("/") ? "" : "/"}${url}`;
+      }
+
+      function findTextureUrl(data, textureType) {
+        const directMap = {
+          diffuse: ["textureUrl", "diffuseUrl", "albedoUrl", "baseColorUrl", "colorUrl"],
+          normal: ["normalUrl", "normalMapUrl"],
+          roughness: ["roughnessUrl", "roughnessMapUrl"],
+          metalness: ["metalnessUrl", "metalnessMapUrl"],
+        };
+
+        const direct = getFirstValue(data, directMap[textureType] || []);
+        if (direct) return normalizeUrl(direct);
+
+        const textures = data.textures || data.textureFiles || data.modelTextures || [];
+        if (!Array.isArray(textures)) return null;
+
+        const aliases = {
+          diffuse: ["diffuse", "albedo", "basecolor", "base_color", "color", "texture"],
+          normal: ["normal", "normalmap", "normal_map"],
+          roughness: ["roughness", "roughnessmap", "roughness_map"],
+          metalness: ["metalness", "metallic", "metalnessmap", "metallicmap"]
+        };
+
+        const match = textures.find((t) => {
+          const type = String(t.type || t.name || t.kind || "").toLowerCase();
+          return aliases[textureType]?.some(alias => type.includes(alias));
+        }) || (textureType === "diffuse" ? textures[0] : null);
+
+        return normalizeUrl(match?.url || match?.fileUrl || match?.path || match?.filePath || match?.src);
+      }
+
+      function applyTextures(object, data) {
+        const textureLoader = new THREE.TextureLoader();
+
+        const diffuseUrl = findTextureUrl(data, "diffuse");
+        const normalUrl = findTextureUrl(data, "normal");
+        const roughnessUrl = findTextureUrl(data, "roughness");
+        const metalnessUrl = findTextureUrl(data, "metalness");
+
+        const materialOptions = {
+          roughness: 0.55,
+          metalness: 0.12
+        };
+
+        if (diffuseUrl) {
+          const map = textureLoader.load(diffuseUrl);
+          map.colorSpace = THREE.SRGBColorSpace;
+          materialOptions.map = map;
+        }
+
+        if (normalUrl) materialOptions.normalMap = textureLoader.load(normalUrl);
+        if (roughnessUrl) materialOptions.roughnessMap = textureLoader.load(roughnessUrl);
+        if (metalnessUrl) materialOptions.metalnessMap = textureLoader.load(metalnessUrl);
+
+        object.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+
+            if (diffuseUrl || normalUrl || roughnessUrl || metalnessUrl) {
+              child.material = new THREE.MeshStandardMaterial(materialOptions);
+            } else if (child.material) {
+              child.material.needsUpdate = true;
+            }
+          }
+        });
+      }
+
+      function centerAndScale(object) {
+        const box = new THREE.Box3().setFromObject(object);
+        const size = new THREE.Vector3();
+        const center = new THREE.Vector3();
+
+        box.getSize(size);
+        box.getCenter(center);
+
+        object.position.sub(center);
+
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = maxDim > 0 ? 3.1 / maxDim : 1;
+        object.scale.setScalar(scale);
+
+        object.rotation.y = Math.PI / 8;
+      }
+
+      async function loadModel() {
+        try {
+          const response = await fetch(MODEL_ENDPOINT, {
+            headers: { "Accept": "application/json" }
+          });
+
+          if (!response.ok) {
+            throw new Error(`Endpoint error: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          const rawFbxUrl = getFirstValue(data, [
+            "fbxUrl",
+            "fileUrl",
+            "modelUrl",
+            "url",
+            "filePath",
+            "fbxFileUrl",
+            "downloadUrl"
+          ]);
+
+          const fbxUrl = normalizeUrl(rawFbxUrl);
+
+          if (!fbxUrl) {
+            throw new Error("לא נמצא שדה URL לקובץ FBX בתשובת ה-endpoint");
+          }
+
+          const loader = new FBXLoader();
+
+          loader.load(
+            fbxUrl,
+            (object) => {
+              applyTextures(object, data);
+              centerAndScale(object);
+              scene.add(object);
+
+              if (loading) loading.style.display = "none";
+            },
+            (xhr) => {
+              if (loading && xhr.total) {
+                const percent = Math.round((xhr.loaded / xhr.total) * 100);
+                loading.textContent = `טוען מודל תלת־ממדי... ${percent}%`;
+              }
+            },
+            (error) => {
+              console.error("FBX load error:", error);
+              if (loading) loading.textContent = "שגיאה בטעינת קובץ ה-FBX";
+            }
+          );
+        } catch (error) {
+          console.error("Model endpoint error:", error);
+          if (loading) loading.textContent = "שגיאה בטעינת נתוני המודל";
+        }
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      loadModel();
+      animate();
+
+      window.addEventListener("resize", () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    }
+  </script>
+
 </body>
 </html>
