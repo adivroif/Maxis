@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -1252,7 +1253,7 @@
   </script>
 
 
-  <!-- Three.js FBX Model Loader -->
+  <!-- Three.js FBX Model Loader - FBX direct + textures JSON -->
   <script type="importmap">
   {
     "imports": {
@@ -1268,31 +1269,24 @@
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
     /*
-      החלף רק את הכתובת כאן ל-endpoint האמיתי שלך.
+      החלף רק את שתי הכתובות האלה:
+      1. FBX_URL - endpoint שמחזיר ישירות קובץ FBX
+      2. TEXTURES_ENDPOINT - endpoint שמחזיר JSON של קבצי הטקסטורות
 
-      ה-endpoint יכול להחזיר JSON באחד מהמבנים הבאים, לדוגמה:
-      {
-        "fbxUrl": "https://domain.com/files/model.fbx",
-        "textures": [
-          { "type": "diffuse", "url": "https://domain.com/files/diffuse.jpg" },
-          { "type": "normal", "url": "https://domain.com/files/normal.jpg" }
-        ]
-      }
-
-      או:
-      {
-        "fileUrl": "https://domain.com/files/model.fbx",
-        "textureUrl": "https://domain.com/files/texture.jpg"
-      }
+      דוגמת JSON נתמכת:
+      [
+        { "fileName": "Connector Metalness.jpeg", "url": "https://..." },
+        { "fileName": "Connector Roughness.jpeg", "url": "https://..." },
+        { "fileName": "Connector baseColor.jpeg", "url": "https://..." }
+      ]
     */
-    const MODEL_ENDPOINT = "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=tenants&fileName=Connector&clientName=tenantA
-";
+    const FBX_URL = "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=tenants/tenantA&fileName=Connector.fbx";
+    const TEXTURES_ENDPOINT = "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-model-textures?modelName=Connector";
 
     const container = document.getElementById("fbxModelPreview");
+    const loading = container?.querySelector(".model-loading");
 
     if (container) {
-      const loading = container.querySelector(".model-loading");
-
       const scene = new THREE.Scene();
 
       const camera = new THREE.PerspectiveCamera(
@@ -1336,140 +1330,125 @@
       rimLight.position.set(0, 5, -6);
       scene.add(rimLight);
 
-      function getFirstValue(data, keys) {
-        for (const key of keys) {
-          if (data && data[key]) return data[key];
+      function findTexture(textures, keywords) {
+        return textures.find((texture) => {
+          const fileName = String(texture.fileName || "").toLowerCase();
+          const fullPath = String(texture.fullPath || "").toLowerCase();
+          const joinedName = `${fileName} ${fullPath}`;
+          return keywords.some((keyword) => joinedName.includes(keyword));
+        })?.url || null;
+      }
+
+      async function loadTextureMaps() {
+        const response = await fetch(TEXTURES_ENDPOINT);
+
+        if (!response.ok) {
+          throw new Error(`Textures endpoint error: ${response.status}`);
         }
-        return null;
-      }
 
-      function normalizeUrl(url) {
-        if (!url) return null;
-        if (url.startsWith("http://") || url.startsWith("https://")) return url;
+        const textures = await response.json();
 
-        const endpointUrl = new URL(MODEL_ENDPOINT);
-        return `${endpointUrl.origin}${url.startsWith("/") ? "" : "/"}${url}`;
-      }
+        if (!Array.isArray(textures)) {
+          throw new Error("Textures endpoint must return an array");
+        }
 
-      function findTextureUrl(data, textureType) {
-        const directMap = {
-          diffuse: ["textureUrl", "diffuseUrl", "albedoUrl", "baseColorUrl", "colorUrl"],
-          normal: ["normalUrl", "normalMapUrl"],
-          roughness: ["roughnessUrl", "roughnessMapUrl"],
-          metalness: ["metalnessUrl", "metalnessMapUrl"],
-        };
-
-        const direct = getFirstValue(data, directMap[textureType] || []);
-        if (direct) return normalizeUrl(direct);
-
-        const textures = data.textures || data.textureFiles || data.modelTextures || [];
-        if (!Array.isArray(textures)) return null;
-
-        const aliases = {
-          diffuse: ["diffuse", "albedo", "basecolor", "base_color", "color", "texture"],
-          normal: ["normal", "normalmap", "normal_map"],
-          roughness: ["roughness", "roughnessmap", "roughness_map"],
-          metalness: ["metalness", "metallic", "metalnessmap", "metallicmap"]
-        };
-
-        const match = textures.find((t) => {
-          const type = String(t.type || t.name || t.kind || "").toLowerCase();
-          return aliases[textureType]?.some(alias => type.includes(alias));
-        }) || (textureType === "diffuse" ? textures[0] : null);
-
-        return normalizeUrl(match?.url || match?.fileUrl || match?.path || match?.filePath || match?.src);
-      }
-
-      function applyTextures(object, data) {
         const textureLoader = new THREE.TextureLoader();
+        textureLoader.setCrossOrigin("anonymous");
 
-        const diffuseUrl = findTextureUrl(data, "diffuse");
-        const normalUrl = findTextureUrl(data, "normal");
-        const roughnessUrl = findTextureUrl(data, "roughness");
-        const metalnessUrl = findTextureUrl(data, "metalness");
+        const baseColorUrl = findTexture(textures, [
+          "basecolor",
+          "base color",
+          "base_color",
+          "diffuse",
+          "albedo",
+          "color"
+        ]);
 
-        const materialOptions = {
-          roughness: 0.55,
-          metalness: 0.12
-        };
+        const roughnessUrl = findTexture(textures, [
+          "roughness",
+          "rough"
+        ]);
 
-        if (diffuseUrl) {
-          const map = textureLoader.load(diffuseUrl);
-          map.colorSpace = THREE.SRGBColorSpace;
-          materialOptions.map = map;
+        const metalnessUrl = findTexture(textures, [
+          "metalness",
+          "metallic",
+          "metal"
+        ]);
+
+        const normalUrl = findTexture(textures, [
+          "normal"
+        ]);
+
+        const maps = {};
+
+        if (baseColorUrl) {
+          maps.map = textureLoader.load(baseColorUrl);
+          maps.map.colorSpace = THREE.SRGBColorSpace;
         }
 
-        if (normalUrl) materialOptions.normalMap = textureLoader.load(normalUrl);
-        if (roughnessUrl) materialOptions.roughnessMap = textureLoader.load(roughnessUrl);
-        if (metalnessUrl) materialOptions.metalnessMap = textureLoader.load(metalnessUrl);
+        if (roughnessUrl) {
+          maps.roughnessMap = textureLoader.load(roughnessUrl);
+        }
 
-        object.traverse((child) => {
-          if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
+        if (metalnessUrl) {
+          maps.metalnessMap = textureLoader.load(metalnessUrl);
+        }
 
-            if (diffuseUrl || normalUrl || roughnessUrl || metalnessUrl) {
-              child.material = new THREE.MeshStandardMaterial(materialOptions);
-            } else if (child.material) {
-              child.material.needsUpdate = true;
-            }
-          }
+        if (normalUrl) {
+          maps.normalMap = textureLoader.load(normalUrl);
+        }
+
+        return maps;
+      }
+
+      function applyMaterial(model, maps) {
+        model.traverse((child) => {
+          if (!child.isMesh) return;
+
+          child.castShadow = true;
+          child.receiveShadow = true;
+
+          child.material = new THREE.MeshStandardMaterial({
+            ...maps,
+            roughness: maps.roughnessMap ? 1 : 0.55,
+            metalness: maps.metalnessMap ? 1 : 0.12
+          });
         });
       }
 
-      function centerAndScale(object) {
-        const box = new THREE.Box3().setFromObject(object);
+      function centerAndScale(model) {
+        const box = new THREE.Box3().setFromObject(model);
         const size = new THREE.Vector3();
         const center = new THREE.Vector3();
 
         box.getSize(size);
         box.getCenter(center);
 
-        object.position.sub(center);
+        model.position.sub(center);
 
         const maxDim = Math.max(size.x, size.y, size.z);
         const scale = maxDim > 0 ? 3.1 / maxDim : 1;
-        object.scale.setScalar(scale);
 
-        object.rotation.y = Math.PI / 8;
+        model.scale.setScalar(scale);
+        model.rotation.y = Math.PI / 8;
       }
 
       async function loadModel() {
         try {
-          const response = await fetch(MODEL_ENDPOINT, {
-            headers: { "Accept": "application/json" }
-          });
+          if (loading) loading.textContent = "טוען טקסטורות...";
 
-          if (!response.ok) {
-            throw new Error(`Endpoint error: ${response.status}`);
-          }
+          const maps = await loadTextureMaps();
 
-          const data = await response.json();
+          if (loading) loading.textContent = "טוען מודל תלת־ממדי...";
 
-          const rawFbxUrl = getFirstValue(data, [
-            "fbxUrl",
-            "fileUrl",
-            "modelUrl",
-            "url",
-            "filePath",
-            "fbxFileUrl",
-            "downloadUrl"
-          ]);
+          const fbxLoader = new FBXLoader();
 
-          const fbxUrl = normalizeUrl(rawFbxUrl);
-
-          if (!fbxUrl) {
-            throw new Error("לא נמצא שדה URL לקובץ FBX בתשובת ה-endpoint");
-          }
-
-          const loader = new FBXLoader();
-
-          loader.load(
-            fbxUrl,
-            (object) => {
-              applyTextures(object, data);
-              centerAndScale(object);
-              scene.add(object);
+          fbxLoader.load(
+            FBX_URL,
+            (model) => {
+              applyMaterial(model, maps);
+              centerAndScale(model);
+              scene.add(model);
 
               if (loading) loading.style.display = "none";
             },
@@ -1481,12 +1460,12 @@
             },
             (error) => {
               console.error("FBX load error:", error);
-              if (loading) loading.textContent = "שגיאה בטעינת קובץ ה-FBX";
+              if (loading) loading.textContent = "שגיאה בטעינת קובץ ה־FBX";
             }
           );
         } catch (error) {
-          console.error("Model endpoint error:", error);
-          if (loading) loading.textContent = "שגיאה בטעינת נתוני המודל";
+          console.error("Model/textures loading error:", error);
+          if (loading) loading.textContent = "שגיאה בטעינת המודל או הטקסטורות";
         }
       }
 
