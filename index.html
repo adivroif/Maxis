@@ -1293,16 +1293,6 @@
       const scene = new THREE.Scene();
       const cubeTextureLoader = new THREE.CubeTextureLoader();
 
-const environmentMap = cubeTextureLoader.load([
-  "https://threejs.org/examples/textures/cube/Bridge2/posx.jpg",
-  "https://threejs.org/examples/textures/cube/Bridge2/negx.jpg",
-  "https://threejs.org/examples/textures/cube/Bridge2/posy.jpg",
-  "https://threejs.org/examples/textures/cube/Bridge2/negy.jpg",
-  "https://threejs.org/examples/textures/cube/Bridge2/posz.jpg",
-  "https://threejs.org/examples/textures/cube/Bridge2/negz.jpg"
-]);
-
-scene.environment = environmentMap;
 
       const camera = new THREE.PerspectiveCamera(
         35,
