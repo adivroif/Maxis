@@ -1389,31 +1389,127 @@
           maps.roughnessMap = textureLoader.load(roughnessUrl);
         }
 
-        if (metalnessUrl) {
-          maps.metalnessMap = textureLoader.load(metalnessUrl);
-        }
+<script type="module">
+import * as THREE from "three";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-        if (normalUrl) {
-          maps.normalMap = textureLoader.load(normalUrl);
-        }
+const FBX_URL =
+  "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=tenants&clientName=tenantA&fileName=Connector.fbx";
 
-        return maps;
-      }
+const TEXTURES_ENDPOINT =
+  "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-model-textures?modelName=Connector";
 
-      function applyMaterial(model, maps) {
-        model.traverse((child) => {
-          if (!child.isMesh) return;
+const container = document.getElementById("fbxModelPreview");
+const loading = container.querySelector(".model-loading");
 
-          child.castShadow = true;
-          child.receiveShadow = true;
+const scene = new THREE.Scene();
 
-          child.material = new THREE.MeshStandardMaterial({
-            ...maps,
-            roughness: maps.roughnessMap ? 1 : 0.55,
-            metalness: maps.metalnessMap ? 1 : 0.12
-          });
-        });
-      }
+const camera = new THREE.PerspectiveCamera(
+  35,
+  container.clientWidth / container.clientHeight,
+  0.1,
+  10000
+);
+
+camera.position.set(0, 0, 4.2);
+
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true
+});
+
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+
+controls.enableRotate = false;
+controls.enableZoom = false;
+controls.enablePan = true;
+controls.screenSpacePanning = true;
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 0, 0);
+
+scene.add(new THREE.AmbientLight(0xffffff, 1.6));
+
+const light1 = new THREE.DirectionalLight(0xffffff, 2.6);
+light1.position.set(5, 7, 5);
+scene.add(light1);
+
+const light2 = new THREE.DirectionalLight(0x00e5ff, 1.4);
+light2.position.set(-5, 3, -4);
+scene.add(light2);
+
+const light3 = new THREE.DirectionalLight(0x7c5cff, 1.2);
+light3.position.set(0, -4, 5);
+scene.add(light3);
+
+function findTexture(textures, keywords) {
+  return textures.find((texture) => {
+    const name = texture.fileName.toLowerCase();
+    return keywords.some((keyword) => name.includes(keyword));
+  })?.url || null;
+}
+
+async function loadTextureMaps() {
+  const response = await fetch(TEXTURES_ENDPOINT);
+
+  if (!response.ok) {
+    throw new Error("Failed to load textures");
+  }
+
+  const textures = await response.json();
+  const textureLoader = new THREE.TextureLoader();
+
+  const baseColorUrl = findTexture(textures, [
+    "basecolor",
+    "base color",
+    "diffuse",
+    "albedo",
+    "color"
+  ]);
+
+  const roughnessUrl = findTexture(textures, ["roughness"]);
+  const metalnessUrl = findTexture(textures, ["metalness", "metallic"]);
+  const normalUrl = findTexture(textures, ["normal"]);
+
+  const maps = {};
+
+  if (baseColorUrl) {
+    maps.map = textureLoader.load(baseColorUrl);
+    maps.map.colorSpace = THREE.SRGBColorSpace;
+  }
+
+  if (roughnessUrl) {
+    maps.roughnessMap = textureLoader.load(roughnessUrl);
+  }
+
+  if (metalnessUrl) {
+    maps.metalnessMap = textureLoader.load(metalnessUrl);
+  }
+
+  if (normalUrl) {
+    maps.normalMap = textureLoader.load(normalUrl);
+  }
+
+  return maps;
+}
+
+function applyMaterial(model, maps) {
+  model.traverse((child) => {
+    if (!child.isMesh) return;
+
+    child.material = new THREE.MeshStandardMaterial({
+      ...maps,
+      roughness: 0.45,
+      metalness: 0.35
+    });
+  });
+}
 
 function centerAndScale(model) {
   const box = new THREE.Box3().setFromObject(model);
@@ -1424,77 +1520,65 @@ function centerAndScale(model) {
 
   const maxSize = Math.max(size.x, size.y, size.z);
 
-  // זום חזק אבל לא מוגזם
-  const scale = 5 / maxSize;
+  const scale = 7 / maxSize;
   model.scale.setScalar(scale);
 
-  model.rotation.y = Math.PI / 6;
+  model.rotation.x = 0;
+  model.rotation.y = Math.PI / 5;
+  model.rotation.z = 0;
 
-  // מצלמה קרובה, אבל לא בתוך המודל
-  camera.position.set(0, 0.6, 5);
+  camera.position.set(0, 0, 4.2);
   camera.lookAt(0, 0, 0);
 
   controls.target.set(0, 0, 0);
   controls.update();
 }
 
-      async function loadModel() {
-        try {
-          if (loading) loading.textContent = "טוען טקסטורות...";
+async function loadModel() {
+  try {
+    loading.textContent = "טוען טקסטורות...";
 
-          const maps = await loadTextureMaps();
+    const maps = await loadTextureMaps();
 
-          if (loading) loading.textContent = "טוען מודל תלת־ממדי...";
+    loading.textContent = "טוען מודל תלת־ממדי...";
 
-          const fbxLoader = new FBXLoader();
+    const loader = new FBXLoader();
 
-          fbxLoader.load(
-    FBX_URL,
-    (model) =>
-    {
+    loader.load(
+      FBX_URL,
+      (model) => {
         applyMaterial(model, maps);
-
         centerAndScale(model);
-
         scene.add(model);
 
-        console.log("MODEL LOADED", model);
-
         loading.style.display = "none";
-    },
-            (xhr) => {
-              if (loading && xhr.total) {
-                const percent = Math.round((xhr.loaded / xhr.total) * 100);
-                loading.textContent = `טוען מודל תלת־ממדי... ${percent}%`;
-              }
-            },
-            (error) => {
-              console.error("FBX load error:", error);
-              if (loading) loading.textContent = "שגיאה בטעינת קובץ ה־FBX";
-            }
-          );
-        } catch (error) {
-          console.error("Model/textures loading error:", error);
-          if (loading) loading.textContent = "שגיאה בטעינת המודל או הטקסטורות";
-        }
+      },
+      undefined,
+      (error) => {
+        console.error("FBX load error:", error);
+        loading.textContent = "שגיאה בטעינת המודל";
       }
+    );
+  } catch (error) {
+    console.error("Model/textures loading error:", error);
+    loading.textContent = "שגיאה בטעינת המודל או הטקסטורות";
+  }
+}
 
-      function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-      }
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
 
-      loadModel();
-      animate();
+loadModel();
+animate();
 
-      window.addEventListener("resize", () => {
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
-      });
-    }
-  </script>
-
+window.addEventListener("resize", () => {
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+});
+</script>
 </body>
 </html>
