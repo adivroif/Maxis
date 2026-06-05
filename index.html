@@ -1431,18 +1431,30 @@ function applyMaterial(model, maps) {
 }
 
 function centerAndScale(model) {
-  const box = new THREE.Box3().setFromObject(model);
-  const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
+  // איפוס לפני חישוב
+  model.position.set(0, 0, 0);
+  model.rotation.set(0, Math.PI / 4, 0);
+  model.scale.set(1, 1, 1);
 
-  model.position.set(-center.x, -center.y, -center.z);
+  // חישוב גודל מקורי
+  let box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
 
   const maxSize = Math.max(size.x, size.y, size.z);
 
+  // גודל המודל בתוך המסך
   const scale = 3 / maxSize;
   model.scale.setScalar(scale);
 
-  model.rotation.set(0, Math.PI / 4, 0);
+  // חישוב מחדש אחרי סקייל ורוטציה
+  box = new THREE.Box3().setFromObject(model);
+  const center = box.getCenter(new THREE.Vector3());
+
+  // ממרכז בדיוק לאמצע הסצנה
+  model.position.sub(center);
+
+  // אם עדיין קצת למטה/למעלה, אפשר לכוון כאן:
+  model.position.y += 0.15;
 
   camera.position.set(0, 0, 7);
   camera.lookAt(0, 0, 0);
