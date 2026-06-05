@@ -1411,55 +1411,45 @@
         }
       }
 
-      function applyMaterial(model, maps) {
-        const hasMaps = Object.keys(maps).length > 0;
+function applyMaterial(model, maps) {
+  model.traverse((child) => {
+    if (!child.isMesh) return;
 
-        model.traverse((child) => {
-          if (!child.isMesh) return;
+    child.material = new THREE.MeshStandardMaterial({
+      map: maps.map || null,
+      roughnessMap: maps.roughnessMap || null,
+      metalnessMap: maps.metalnessMap || null,
+      normalMap: maps.normalMap || null,
+      color: maps.map ? 0xffffff : 0x8fb7ff,
+      roughness: 0.38,
+      metalness: 0.55,
+      side: THREE.DoubleSide
+    });
 
-          child.castShadow = true;
-          child.receiveShadow = true;
+    child.material.needsUpdate = true;
+  });
+}
 
-          if (hasMaps) {
-            child.material = new THREE.MeshStandardMaterial({
-              ...maps,
-              roughness: maps.roughnessMap ? 0.85 : 0.45,
-              metalness: maps.metalnessMap ? 0.85 : 0.28
-            });
-          } else {
-            child.material = new THREE.MeshStandardMaterial({
-              color: 0xb8c7d9,
-              roughness: 0.38,
-              metalness: 0.55
-            });
-          }
-        });
-      }
+function centerAndScale(model) {
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
 
-      function centerAndScale(model) {
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-        const center = box.getCenter(new THREE.Vector3());
+  model.position.sub(center);
 
-        model.position.sub(center);
+  const maxSize = Math.max(size.x, size.y, size.z);
 
-        const maxSize = Math.max(size.x, size.y, size.z);
+  const scale = 4 / maxSize;
+  model.scale.setScalar(scale);
 
-        // גודל בטוח: ממורכז וברור, בלי להיעלם מהפריים
-        const scale = maxSize > 0 ? 5.8 / maxSize : 1;
-        model.scale.setScalar(scale);
+  model.rotation.set(0, Math.PI / 5, 0);
 
-        // זווית התחלתית קבועה, בלי תנועה אוטומטית
-        model.rotation.x = 0;
-        model.rotation.y = Math.PI / 5;
-        model.rotation.z = 0;
+  camera.position.set(0, 0, 6);
+  camera.lookAt(0, 0, 0);
 
-        camera.position.set(0, 0, 4.5);
-        camera.lookAt(0, 0, 0);
-
-        controls.target.set(0, 0, 0);
-        controls.update();
-      }
+  controls.target.set(0, 0, 0);
+  controls.update();
+}
 
       function loadFbxWithPromise(loader, url) {
         return new Promise((resolve, reject) => {
@@ -1495,6 +1485,9 @@
           applyMaterial(model, maps);
           centerAndScale(model);
           scene.add(model);
+          console.log("MODEL ADDED:", model);
+console.log("MODEL POSITION:", model.position);
+console.log("MODEL SCALE:", model.scale);
 
           if (loading) loading.style.display = "none";
         } catch (error) {
