@@ -1499,59 +1499,87 @@
 
           ensureUV2ForAO(child.geometry);
 
-          const oldMaterial = Array.isArray(child.material)
-            ? child.material[0]
-            : child.material;
+          const originalMaterials = Array.isArray(child.material)
+            ? child.material
+            : [child.material];
 
-          const originalColor = oldMaterial?.color
-            ? oldMaterial.color.clone()
-            : new THREE.Color(0xffffff);
+          const updatedMaterials = originalMaterials.map((oldMaterial) => {
+            const originalColor = oldMaterial && oldMaterial.color
+              ? oldMaterial.color.clone()
+              : new THREE.Color(0xffffff);
 
-          // לא משתמשים במפות מתוך ה-FBX ולא במפות fallback חיצוניות.
-          // מפות נכנסות לחומר רק אם הן קיימות ב-JSON של TEXTURES_ENDPOINT.
-          const material = new THREE.MeshStandardMaterial({
-            map: maps.map || null,
-            normalMap: maps.normalMap || null,
-            roughnessMap: maps.roughnessMap || null,
-            metalnessMap: maps.metalnessMap || null,
-            aoMap: maps.aoMap || null,
-            alphaMap: maps.alphaMap || null,
-            emissiveMap: maps.emissiveMap || null,
-            displacementMap: maps.displacementMap || null,
+            const originalName = oldMaterial && oldMaterial.name
+              ? oldMaterial.name
+              : "FBX Material";
 
-            color: maps.map ? 0xffffff : originalColor,
+            const wasTransparent = !!(
+              oldMaterial && (
+                oldMaterial.transparent ||
+                oldMaterial.opacity < 1 ||
+                oldMaterial.alphaMap
+              )
+            );
 
-            // ערכים מאוזנים: משתמשים במפות מה-JSON, אבל לא נותנים למתכת להפוך לשחורה מדי.
-            roughness: maps.roughnessMap ? 0.38 : 0.32,
-            metalness: maps.metalnessMap ? 0.85 : 0.72,
-            envMapIntensity: 1.65,
-            side: THREE.DoubleSide
+            /*
+              חשוב:
+              לא לוקחים מפות מתוך ה-FBX ולא מפות חיצוניות.
+              כל המפות כאן מגיעות אך ורק מה-JSON של TEXTURES_ENDPOINT:
+              baseColor / roughness / metalness / normal / ao / alpha / emissive / height.
+              כן שומרים את הצבע המקורי של החומר כדי לא לאבד הבדלים בין חלקים במודל.
+            */
+            const material = new THREE.MeshStandardMaterial({
+              name: originalName,
+
+              map: maps.map || null,
+              normalMap: maps.normalMap || null,
+              roughnessMap: maps.roughnessMap || null,
+              metalnessMap: maps.metalnessMap || null,
+              aoMap: maps.aoMap || null,
+              alphaMap: maps.alphaMap || null,
+              emissiveMap: maps.emissiveMap || null,
+              displacementMap: maps.displacementMap || null,
+
+              color: maps.map ? 0xffffff : originalColor,
+
+              // ערכים דומים יותר ל-Preview: מתכת מבריקה אבל לא שחורה מדי.
+              roughness: maps.roughnessMap ? 0.26 : 0.22,
+              metalness: maps.metalnessMap ? 0.92 : 0.82,
+              envMapIntensity: 1.9,
+
+              side: THREE.DoubleSide,
+              transparent: !!maps.alphaMap || wasTransparent,
+              opacity: oldMaterial && oldMaterial.opacity !== undefined ? oldMaterial.opacity : 1
+            });
+
+            if (maps.alphaMap) {
+              material.alphaTest = 0.05;
+              material.depthWrite = false;
+            }
+
+            if (maps.emissiveMap) {
+              material.emissive.set(0xffffff);
+              material.emissiveIntensity = 0.7;
+            }
+
+            if (maps.aoMap) {
+              material.aoMapIntensity = 1.0;
+            }
+
+            if (maps.displacementMap) {
+              material.displacementScale = 0.025;
+            }
+
+            material.needsUpdate = true;
+            return material;
           });
 
-          if (maps.alphaMap) {
-            material.transparent = true;
-            material.alphaTest = 0.05;
-            material.depthWrite = false;
-          }
+          child.material = Array.isArray(child.material)
+            ? updatedMaterials
+            : updatedMaterials[0];
 
-          if (maps.emissiveMap) {
-            material.emissive.set(0xffffff);
-            material.emissiveIntensity = 0.8;
-          }
-
-          if (maps.aoMap) {
-            material.aoMapIntensity = 1.0;
-          }
-
-          if (maps.displacementMap) {
-            material.displacementScale = 0.03;
-          }
-
-          child.material = material;
           child.castShadow = true;
           child.receiveShadow = true;
           child.frustumCulled = false;
-          child.material.needsUpdate = true;
         });
       }
 
