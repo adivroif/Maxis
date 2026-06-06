@@ -1340,12 +1340,6 @@
         floor.receiveShadow = true;
         roomGroup.add(floor);
 
-        const grid = new THREE.GridHelper(18, 18, 0x6366f1, 0xc7d2fe);
-        grid.position.set(0, -1.64, 0);
-        grid.material.opacity = 0.18;
-        grid.material.transparent = true;
-        roomGroup.add(grid);
-
         const wallMaterial = new THREE.MeshStandardMaterial({
           color: 0xf5f2ed,
           roughness: 1,
