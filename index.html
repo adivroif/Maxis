@@ -1381,20 +1381,19 @@
       // חשוב: לא נטענות מפות חיצוניות בכלל.
       // כל מפות הטקסטורה מגיעות רק מה-JSON של TEXTURES_ENDPOINT.
 
-      scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+scene.add(new THREE.AmbientLight(0xffffff, 0.45));
 
-      const spotLight = new THREE.SpotLight(0xffffff, 2.4, 80, 0.22, 0.9, 1.0);
-      spotLight.position.set(4.5, 6.5, 5.5);
-      spotLight.castShadow = true;
-      scene.add(spotLight);
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
+keyLight.position.set(4, 6, 5);
+scene.add(keyLight);
 
-      const keyLight = new THREE.DirectionalLight(0xffffff, 1.55);
-      keyLight.position.set(-4, 5, 4);
-      scene.add(keyLight);
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.45);
+fillLight.position.set(-5, 3, -4);
+scene.add(fillLight);
 
-      const softFill = new THREE.DirectionalLight(0xffffff, 0.65);
-      softFill.position.set(5, 3, -4);
-      scene.add(softFill);
+const rimLight = new THREE.DirectionalLight(0x9fdcff, 0.55);
+rimLight.position.set(0, 4, -5);
+scene.add(rimLight);
 
       function normalizeName(value) {
         return String(value || "")
@@ -1595,9 +1594,9 @@
               color: maps.map ? 0xffffff : originalColor,
 
               // ערכים דומים יותר ל-Preview: מתכת מבריקה אבל לא שחורה מדי.
-              roughness: maps.roughnessMap ? 1.0 : 0.5,
-              metalness: maps.metalnessMap ? 1.0 : 0.5,
-              envMapIntensity: 2.15,
+roughness: maps.roughnessMap ? 0.85 : 0.28,
+metalness: maps.metalnessMap ? 0.85 : 0.75,
+envMapIntensity: 1.15,
 
               side: THREE.DoubleSide,
               transparent: !!maps.alphaMap || wasTransparent,
