@@ -4,8 +4,6 @@
 
 
 
-
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -596,50 +594,20 @@
   overflow:hidden;
   margin-bottom:24px;
   position:relative;
-  background:#dedede;
+  background:linear-gradient(180deg, #fdfbf7 0%, #f7f4ee 100%);
   border:1px solid rgba(255,255,255,.18);
 }
 
 .model-watermark{
   position:absolute;
   inset:0;
+  pointer-events:none;
   z-index:0;
-  pointer-events:none;
-  background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png");
+  background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis.png");
+  background-position:center;
   background-repeat:no-repeat;
-  background-position:center center;
-  background-size:78%;
-  opacity:0.22;
-  filter:grayscale(100%);
-}
-
-
-.corner-logo{
-  position:absolute;
-  left:16px;
-  top:16px;
-  width:52px;
-  height:52px;
-  z-index:5;
-  pointer-events:none;
-  opacity:0.85;
-  object-fit:contain;
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.22));
-}
-
-@media (max-width: 560px) {
-  .corner-logo{
-    left:12px;
-    top:12px;
-    width:42px;
-    height:42px;
-  }
-}
-
-@media (max-width: 768px) {
-  .model-preview{
-    height:320px;
-  }
+  background-size:70%;
+  opacity:.08;
 }
 
 .model-preview canvas{
@@ -649,7 +617,7 @@
   cursor:grab;
   position:absolute;
   inset:0;
-  z-index:2;
+  z-index:1;
   background:transparent !important;
 }
 
@@ -665,26 +633,35 @@
   justify-content:center;
   color:#18181b;
   font-weight:700;
-  z-index:3;
+  z-index:4;
   background:rgba(255,255,255,.72);
 }
 
-.model-animation-button{
+.model-animation-controls{
   position:absolute;
-  right:16px;
-  bottom:16px;
-  z-index:6;
+  right:14px;
+  bottom:14px;
+  z-index:5;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  justify-content:flex-end;
+  pointer-events:auto;
+}
+
+.model-animation-button{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:8px;
-  padding:10px 16px;
+  padding:9px 14px;
   border:0;
   border-radius:999px;
-  background:rgba(7,9,20,.88);
+  background:rgba(7,9,20,.86);
   color:#fff;
   font-family:inherit;
-  font-size:14px;
+  font-size:13px;
   font-weight:800;
   cursor:pointer;
   box-shadow:0 10px 24px rgba(0,0,0,.22);
@@ -704,10 +681,14 @@
 }
 
 @media (max-width:560px){
+  .model-animation-controls{
+    right:10px;
+    bottom:10px;
+    gap:6px;
+  }
+
   .model-animation-button{
-    right:12px;
-    bottom:12px;
-    padding:8px 12px;
+    padding:8px 10px;
     font-size:12px;
   }
 }
@@ -1198,15 +1179,16 @@
 <a class="project model-project" href="#portfolio">
   <div class="model-preview" id="fbxModelPreview">
     <div class="model-watermark" aria-hidden="true"></div>
-    <img
-      class="corner-logo"
-      src="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
-      alt="Maxiss"
-      aria-hidden="true"
-    />
-    <button class="model-animation-button" type="button" disabled>
-      ▶ הפעל אנימציה
-    </button>
+
+    <div class="model-animation-controls" aria-label="פקדי אנימציה">
+      <button class="model-animation-button" id="playForwardAnimation" type="button" disabled>
+        ▶ הפעל אנימציה
+      </button>
+      <button class="model-animation-button" id="playBackwardAnimation" type="button" disabled>
+        ◀ אנימציה אחורה
+      </button>
+    </div>
+
     <div class="model-loading">טוען מודל תלת־ממדי...</div>
   </div>
 
@@ -1387,7 +1369,8 @@
 
     if (container) {
       const loading = container.querySelector(".model-loading");
-      const animationButton = container.querySelector(".model-animation-button");
+      const playForwardButton = document.getElementById("playForwardAnimation");
+      const playBackwardButton = document.getElementById("playBackwardAnimation");
 
       const scene = new THREE.Scene();
       scene.background = null;
@@ -1469,20 +1452,18 @@
         scene.add(roomGroup);
       }
 
-      // לא מפעילים את חדר הרקע כאן, כדי שסמל המים שמאחורי ה-canvas יישאר גלוי.
-      // אם תרצה להחזיר חדר תלת־ממדי, צריך להפוך את הקירות לשקופים.
-      // addPreviewRoom();
+      addPreviewRoom();
 
       let loadedModel = null;
-      let mixer = null;
-      let activeAnimationAction = null;
-      let isAnimationPlaying = false;
-      const animationClock = new THREE.Clock();
-
       let isDraggingModel = false;
       let previousMouseX = 0;
       let previousMouseY = 0;
       let hasDragged = false;
+
+      let mixer = null;
+      let activeAnimationAction = null;
+      let isAnimationPlaying = false;
+      const animationClock = new THREE.Clock();
 
       // חשוב: לא נטענות מפות חיצוניות בכלל.
       // כל מפות הטקסטורה מגיעות רק מה-JSON של TEXTURES_ENDPOINT.
@@ -1750,9 +1731,7 @@ envMapIntensity: 1.15,
         let box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxSize = Math.max(size.x, size.y, size.z);
-        const isMobileModelView = window.innerWidth <= 768;
-        const targetModelSize = isMobileModelView ? 2.85 : 3.35;
-        const scale = maxSize > 0 ? targetModelSize / maxSize : 1;
+        const scale = maxSize > 0 ? 3.35 / maxSize : 1;
 
         model.scale.setScalar(scale);
         model.updateMatrixWorld(true);
@@ -1790,8 +1769,9 @@ envMapIntensity: 1.15,
       }
 
       function setupModelRotation() {
-        const ROTATION_SPEED = 0.010;
-        const SMOOTHING = 0.20;
+        const ROTATION_SPEED = 0.008;
+        const SMOOTHING = 0.18;
+        const MAX_VERTICAL_ROTATION = 0.4;
 
         let targetRotationX = modelPivot.rotation.x;
         let targetRotationY = modelPivot.rotation.y;
@@ -1829,6 +1809,12 @@ envMapIntensity: 1.15,
 
           targetRotationY += deltaX * ROTATION_SPEED;
           targetRotationX += deltaY * ROTATION_SPEED;
+
+          targetRotationX = THREE.MathUtils.clamp(
+            targetRotationX,
+            -MAX_VERTICAL_ROTATION,
+            MAX_VERTICAL_ROTATION
+          );
 
           previousMouseX = event.clientX;
           previousMouseY = event.clientY;
@@ -1872,54 +1858,107 @@ envMapIntensity: 1.15,
         };
       }
 
-      function setupModelAnimation(model) {
-        if (!animationButton) return;
+      function stopCurrentAnimation() {
+        if (!activeAnimationAction) return;
 
+        activeAnimationAction.paused = true;
+        activeAnimationAction.stop();
+        isAnimationPlaying = false;
+      }
+
+      function setAnimationButtonsState(enabled) {
+        if (playForwardButton) playForwardButton.disabled = !enabled;
+        if (playBackwardButton) playBackwardButton.disabled = !enabled;
+      }
+
+      function updateAnimationButtonsText(state = "idle") {
+        if (!playForwardButton || !playBackwardButton) return;
+
+        if (state === "forward") {
+          playForwardButton.textContent = "מריץ אנימציה...";
+          playBackwardButton.textContent = "◀ אנימציה אחורה";
+          return;
+        }
+
+        if (state === "backward") {
+          playForwardButton.textContent = "▶ הפעל אנימציה";
+          playBackwardButton.textContent = "מחזיר אחורה...";
+          return;
+        }
+
+        playForwardButton.textContent = "▶ הפעל אנימציה";
+        playBackwardButton.textContent = "◀ אנימציה אחורה";
+      }
+
+      function playAnimationOnce(direction) {
+        if (!activeAnimationAction) return;
+
+        const clip = activeAnimationAction.getClip();
+        const duration = clip.duration || 0;
+
+        stopCurrentAnimation();
+
+        activeAnimationAction.reset();
+        activeAnimationAction.enabled = true;
+        activeAnimationAction.setLoop(THREE.LoopOnce, 1);
+        activeAnimationAction.clampWhenFinished = true;
+        activeAnimationAction.paused = false;
+
+        if (direction === "backward") {
+          // מתחילים מסוף האנימציה ומריצים אחורה פעם אחת.
+          activeAnimationAction.time = duration;
+          activeAnimationAction.timeScale = -1;
+          updateAnimationButtonsText("backward");
+        } else {
+          // מתחילים מההתחלה ומריצים קדימה פעם אחת.
+          activeAnimationAction.time = 0;
+          activeAnimationAction.timeScale = 1;
+          updateAnimationButtonsText("forward");
+        }
+
+        isAnimationPlaying = true;
+        activeAnimationAction.play();
+      }
+
+      function setupModelAnimation(model) {
         const animations = Array.isArray(model.animations) ? model.animations : [];
 
         if (!animations.length) {
-          animationButton.textContent = "אין אנימציה";
-          animationButton.disabled = true;
+          setAnimationButtonsState(false);
+          if (playForwardButton) playForwardButton.textContent = "אין אנימציה";
+          if (playBackwardButton) playBackwardButton.textContent = "אין אנימציה אחורה";
           return;
         }
 
         mixer = new THREE.AnimationMixer(model);
         activeAnimationAction = mixer.clipAction(animations[0]);
+        activeAnimationAction.setLoop(THREE.LoopOnce, 1);
         activeAnimationAction.clampWhenFinished = true;
-        activeAnimationAction.loop = THREE.LoopOnce;
+        activeAnimationAction.enabled = true;
+        activeAnimationAction.paused = true;
 
-        animationButton.disabled = false;
-        animationButton.textContent = "▶ הפעל אנימציה";
+        setAnimationButtonsState(true);
+        updateAnimationButtonsText("idle");
 
-        animationButton.addEventListener("click", (event) => {
-          event.preventDefault();
-          event.stopPropagation();
+        if (playForwardButton) {
+          playForwardButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            playAnimationOnce("forward");
+          });
+        }
 
-          if (!activeAnimationAction) return;
-
-          if (isAnimationPlaying) {
-            activeAnimationAction.paused = true;
-            isAnimationPlaying = false;
-            animationButton.textContent = "▶ המשך אנימציה";
-            return;
-          }
-
-          // אם האנימציה הסתיימה, מתחילים מחדש מהתחלה.
-          if (activeAnimationAction.time >= activeAnimationAction.getClip().duration) {
-            activeAnimationAction.reset();
-          }
-
-          activeAnimationAction.paused = false;
-          activeAnimationAction.play();
-          isAnimationPlaying = true;
-          animationButton.textContent = "⏸ עצור אנימציה";
-        });
+        if (playBackwardButton) {
+          playBackwardButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            playAnimationOnce("backward");
+          });
+        }
 
         mixer.addEventListener("finished", () => {
           isAnimationPlaying = false;
-          if (animationButton) {
-            animationButton.textContent = "↻ הפעל שוב";
-          }
+          updateAnimationButtonsText("idle");
         });
       }
 
@@ -1953,8 +1992,8 @@ envMapIntensity: 1.15,
       function animate() {
         requestAnimationFrame(animate);
 
-        const delta = animationClock.getDelta();
-        if (mixer) mixer.update(delta);
+        const animationDelta = animationClock.getDelta();
+        if (mixer) mixer.update(animationDelta);
 
         updateRotation();
         renderer.render(scene, camera);
