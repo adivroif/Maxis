@@ -1792,7 +1792,6 @@ envMapIntensity: 1.15,
       function setupModelRotation() {
         const ROTATION_SPEED = 0.004;
         const SMOOTHING = 0.15;
-        const MAX_VERTICAL_ROTATION = 0.4;
 
         let targetRotationX = modelPivot.rotation.x;
         let targetRotationY = modelPivot.rotation.y;
@@ -1830,12 +1829,6 @@ envMapIntensity: 1.15,
 
           targetRotationY += deltaX * ROTATION_SPEED;
           targetRotationX += deltaY * ROTATION_SPEED;
-
-          targetRotationX = THREE.MathUtils.clamp(
-            targetRotationX,
-            -MAX_VERTICAL_ROTATION,
-            MAX_VERTICAL_ROTATION
-          );
 
           previousMouseX = event.clientX;
           previousMouseY = event.clientY;
