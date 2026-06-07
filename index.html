@@ -595,7 +595,7 @@
   overflow:hidden;
   margin-bottom:24px;
   position:relative;
-  background:#f5f5f5;
+  background:#dedede;
   border:1px solid rgba(255,255,255,.18);
 }
 
@@ -608,8 +608,34 @@
   background-repeat:no-repeat;
   background-position:center center;
   background-size:78%;
-  opacity:0.16;
+  opacity:0.22;
   filter:grayscale(100%);
+}
+
+
+.corner-logo{
+  position:absolute;
+  left:16px;
+  bottom:16px;
+  width:52px;
+  height:52px;
+  z-index:1;
+  pointer-events:none;
+  opacity:0.78;
+  background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.18));
+}
+
+@media (max-width: 560px) {
+  .corner-logo{
+    left:12px;
+    bottom:12px;
+    width:42px;
+    height:42px;
+  }
 }
 
 .model-preview canvas{
@@ -1125,6 +1151,7 @@
 <a class="project model-project" href="#portfolio">
   <div class="model-preview" id="fbxModelPreview">
     <div class="model-watermark" aria-hidden="true"></div>
+    <div class="corner-logo" aria-hidden="true"></div>
     <div class="model-loading">טוען מודל תלת־ממדי...</div>
   </div>
 
