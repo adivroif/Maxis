@@ -1751,7 +1751,7 @@ envMapIntensity: 1.15,
         const size = box.getSize(new THREE.Vector3());
         const maxSize = Math.max(size.x, size.y, size.z);
         const isMobileModelView = window.innerWidth <= 768;
-        const targetModelSize = isMobileModelView ? 2.55 : 3.35;
+        const targetModelSize = isMobileModelView ? 2.85 : 3.35;
         const scale = maxSize > 0 ? targetModelSize / maxSize : 1;
 
         model.scale.setScalar(scale);
