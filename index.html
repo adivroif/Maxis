@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -594,7 +595,7 @@
   overflow:hidden;
   margin-bottom:24px;
   position:relative;
-  background:linear-gradient(180deg, #fdfbf7 0%, #f7f4ee 100%);
+  background:#d8d8d8;
   border:1px solid rgba(255,255,255,.18);
 }
 
@@ -603,11 +604,25 @@
   inset:0;
   pointer-events:none;
   z-index:0;
-  background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis.png");
+  background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png");
   background-position:center;
   background-repeat:no-repeat;
-  background-size:70%;
-  opacity:.08;
+  background-size:80%;
+  opacity:.22;
+  filter:grayscale(100%);
+}
+
+.corner-logo{
+  position:absolute;
+  left:14px;
+  top:14px;
+  width:46px;
+  height:46px;
+  object-fit:contain;
+  opacity:.9;
+  z-index:10;
+  pointer-events:none;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.25));
 }
 
 .model-preview canvas{
@@ -617,7 +632,7 @@
   cursor:grab;
   position:absolute;
   inset:0;
-  z-index:1;
+  z-index:2;
   background:transparent !important;
 }
 
@@ -690,6 +705,17 @@
   .model-animation-button{
     padding:8px 10px;
     font-size:12px;
+  }
+
+  .model-preview{
+    height:320px;
+  }
+
+  .corner-logo{
+    left:10px;
+    top:10px;
+    width:38px;
+    height:38px;
   }
 }
 
@@ -1179,6 +1205,12 @@
 <a class="project model-project" href="#portfolio">
   <div class="model-preview" id="fbxModelPreview">
     <div class="model-watermark" aria-hidden="true"></div>
+    <img
+      class="corner-logo"
+      src="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
+      alt="Maxiss"
+      aria-hidden="true"
+    />
 
     <div class="model-animation-controls" aria-label="פקדי אנימציה">
       <button class="model-animation-button" id="playForwardAnimation" type="button" disabled>
@@ -1731,7 +1763,9 @@ envMapIntensity: 1.15,
         let box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxSize = Math.max(size.x, size.y, size.z);
-        const scale = maxSize > 0 ? 3.35 / maxSize : 1;
+        const isMobile = window.innerWidth <= 768;
+        const targetSize = isMobile ? 2.95 : 3.35;
+        const scale = maxSize > 0 ? targetSize / maxSize : 1;
 
         model.scale.setScalar(scale);
         model.updateMatrixWorld(true);
@@ -1771,8 +1805,6 @@ envMapIntensity: 1.15,
       function setupModelRotation() {
         const ROTATION_SPEED = 0.008;
         const SMOOTHING = 0.18;
-        const MAX_VERTICAL_ROTATION = 0.4;
-
         let targetRotationX = modelPivot.rotation.x;
         let targetRotationY = modelPivot.rotation.y;
 
@@ -1808,13 +1840,7 @@ envMapIntensity: 1.15,
           }
 
           targetRotationY += deltaX * ROTATION_SPEED;
-          targetRotationX += deltaY * ROTATION_SPEED;
-
-          targetRotationX = THREE.MathUtils.clamp(
-            targetRotationX,
-            -MAX_VERTICAL_ROTATION,
-            MAX_VERTICAL_ROTATION
-          );
+           += deltaY * ROTATION_SPEED;
 
           previousMouseX = event.clientX;
           previousMouseY = event.clientY;
