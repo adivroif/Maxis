@@ -595,7 +595,7 @@
   overflow:hidden;
   margin-bottom:24px;
   position:relative;
-  background:#d8d8d8;
+  background:linear-gradient(180deg, #fdfbf7 0%, #f7f4ee 100%);
   border:1px solid rgba(255,255,255,.18);
 }
 
@@ -604,12 +604,11 @@
   inset:0;
   pointer-events:none;
   z-index:0;
-  background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png");
+  background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis.png");
   background-position:center;
   background-repeat:no-repeat;
-  background-size:80%;
-  opacity:.22;
-  filter:grayscale(100%);
+  background-size:70%;
+  opacity:.08;
 }
 
 .corner-logo{
@@ -619,10 +618,10 @@
   width:46px;
   height:46px;
   object-fit:contain;
-  opacity:.9;
-  z-index:10;
+  opacity:.92;
+  z-index:6;
   pointer-events:none;
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.25));
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.28));
 }
 
 .model-preview canvas{
@@ -632,7 +631,7 @@
   cursor:grab;
   position:absolute;
   inset:0;
-  z-index:2;
+  z-index:1;
   background:transparent !important;
 }
 
@@ -696,6 +695,17 @@
 }
 
 @media (max-width:560px){
+  .corner-logo{
+    left:10px;
+    top:10px;
+    width:38px;
+    height:38px;
+  }
+
+  .model-preview{
+    height:320px;
+  }
+
   .model-animation-controls{
     right:10px;
     bottom:10px;
@@ -705,17 +715,6 @@
   .model-animation-button{
     padding:8px 10px;
     font-size:12px;
-  }
-
-  .model-preview{
-    height:320px;
-  }
-
-  .corner-logo{
-    left:10px;
-    top:10px;
-    width:38px;
-    height:38px;
   }
 }
 
@@ -1217,7 +1216,7 @@
         ▶ הפעל אנימציה
       </button>
       <button class="model-animation-button" id="playBackwardAnimation" type="button" disabled>
-        ◀ שחזר אנימציה 
+        ◀ אנימציה אחורה
       </button>
     </div>
 
@@ -1484,7 +1483,8 @@
         scene.add(roomGroup);
       }
 
-      addPreviewRoom();
+      // לא מפעילים את חדר הרקע כדי שסמל המים והלוגו יישארו גלויים מאחורי המודל.
+      // addPreviewRoom();
 
       let loadedModel = null;
       let isDraggingModel = false;
@@ -1555,11 +1555,28 @@ scene.add(rimLight);
         return texture;
       }
 
+      function fetchWithTimeout(url, timeoutMs = 5000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+        return fetch(url, { signal: controller.signal })
+          .finally(() => clearTimeout(timer));
+      }
+
+      function withTimeout(promise, timeoutMs, errorMessage) {
+        return Promise.race([
+          promise,
+          new Promise((_, reject) => {
+            setTimeout(() => reject(new Error(errorMessage)), timeoutMs);
+          })
+        ]);
+      }
+
       async function loadTextureMaps() {
         const textureLoader = new THREE.TextureLoader();
 
         try {
-          const response = await fetch(TEXTURES_ENDPOINT);
+          const response = await fetchWithTimeout(TEXTURES_ENDPOINT, 5000);
 
           if (!response.ok) {
             console.warn("Textures endpoint failed:", response.status);
@@ -1840,7 +1857,8 @@ envMapIntensity: 1.15,
           }
 
           targetRotationY += deltaX * ROTATION_SPEED;
-           += deltaY * ROTATION_SPEED;
+          targetRotationX += deltaY * ROTATION_SPEED;
+
 
           previousMouseX = event.clientX;
           previousMouseY = event.clientY;
@@ -1990,12 +2008,23 @@ envMapIntensity: 1.15,
 
       async function loadModel() {
         try {
-          if (loading) loading.textContent = "טוען טקסטורות...";
-          const maps = await loadTextureMaps();
+          if (loading) loading.textContent = "טוען מודל תלת־ממדי...";
+
+          let maps = {};
+          try {
+            maps = await withTimeout(loadTextureMaps(), 6000, "Texture loading timeout");
+          } catch (textureError) {
+            console.warn("Texture loading skipped:", textureError);
+            maps = {};
+          }
 
           if (loading) loading.textContent = "טוען מודל תלת־ממדי...";
           const loader = new FBXLoader();
-          const model = await loadFbxWithPromise(loader, FBX_URL);
+          const model = await withTimeout(
+            loadFbxWithPromise(loader, FBX_URL),
+            25000,
+            "FBX loading timeout"
+          );
 
           console.log("FBX LOADED:", model);
 
@@ -2009,7 +2038,7 @@ envMapIntensity: 1.15,
           if (loading) loading.style.display = "none";
         } catch (error) {
           console.error("FBX load error:", error);
-          if (loading) loading.textContent = "שגיאה בטעינת קובץ ה־FBX";
+          if (loading) loading.textContent = "שגיאה בטעינת המודל. בדוק שה־FBX זמין בשרת.";
         }
       }
 
