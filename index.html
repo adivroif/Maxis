@@ -596,7 +596,7 @@
   overflow:hidden;
   margin-bottom:24px;
   position:relative;
-  background:#d8d8d8;
+  background:#dedede;
   border:1px solid rgba(255,255,255,.18);
 }
 
@@ -605,40 +605,40 @@
   inset:0;
   z-index:0;
   pointer-events:none;
-
   background-image:url("https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png");
   background-repeat:no-repeat;
   background-position:center center;
-  background-size:58%;
-
-  opacity:0.18;
-  filter:none;
+  background-size:78%;
+  opacity:0.22;
+  filter:grayscale(100%);
 }
 
 
 .corner-logo{
   position:absolute;
-  left:14px;
-  bottom:14px;
-
-  width:46px;
-  height:46px;
-
-  object-fit:contain;
-  opacity:0.9;
-
+  left:16px;
+  top:16px;
+  width:52px;
+  height:52px;
   z-index:5;
   pointer-events:none;
-
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.28));
+  opacity:0.85;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.22));
 }
 
 @media (max-width: 560px) {
   .corner-logo{
     left:12px;
-    bottom:12px;
-    width:38px;
-    height:38px;
+    top:12px;
+    width:42px;
+    height:42px;
+  }
+}
+
+@media (max-width: 768px) {
+  .model-preview{
+    height:320px;
   }
 }
 
@@ -1698,7 +1698,9 @@ envMapIntensity: 1.15,
         let box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxSize = Math.max(size.x, size.y, size.z);
-        const scale = maxSize > 0 ? 3.35 / maxSize : 1;
+        const isMobileModelView = window.innerWidth <= 768;
+        const targetModelSize = isMobileModelView ? 2.55 : 3.35;
+        const scale = maxSize > 0 ? targetModelSize / maxSize : 1;
 
         model.scale.setScalar(scale);
         model.updateMatrixWorld(true);
