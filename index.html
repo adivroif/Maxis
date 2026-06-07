@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -602,6 +603,8 @@
   height:100%;
   display:block;
   cursor:grab;
+  position:relative;
+  z-index:1;
 }
 
 .model-preview canvas:active{
@@ -1105,6 +1108,7 @@
 
 <a class="project model-project" href="#portfolio">
   <div class="model-preview" id="fbxModelPreview">
+    <div class="model-watermark" aria-hidden="true"></div>
     <div class="model-loading">טוען מודל תלת־ממדי...</div>
   </div>
 
@@ -1287,7 +1291,7 @@
       const loading = container.querySelector(".model-loading");
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xfdfbf7);
+      scene.background = null;
 
       const camera = new THREE.PerspectiveCamera(
         35,
@@ -1300,9 +1304,10 @@
 
       const renderer = new THREE.WebGLRenderer({
         antialias: true,
-        alpha: false
+        alpha: true
       });
 
+      renderer.setClearColor(0x000000, 0);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -1677,16 +1682,12 @@ envMapIntensity: 1.15,
       }
 
       function setupModelRotation() {
-        const ROTATION_SPEED_X = 0.0025; // סיבוב ימינה/שמאלה לפי תנועת העכבר
-        const ROTATION_SPEED_Y = 0.0015; // סיבוב למעלה/למטה לפי תנועת העכבר
-        const SMOOTHING = 0.07;          // כמה מהר המודל מגיע ליעד. נמוך יותר = חלק ואיטי יותר
-        const INERTIA = 0.92;            // אינרציה אחרי שחרור העכבר. נמוך יותר = עצירה מהירה יותר
-        const MAX_VERTICAL_ROTATION = Math.PI / 5;
+        const ROTATION_SPEED = 0.004;
+        const SMOOTHING = 0.15;
+        const MAX_VERTICAL_ROTATION = 0.4;
 
         let targetRotationX = modelPivot.rotation.x;
         let targetRotationY = modelPivot.rotation.y;
-        let velocityX = 0;
-        let velocityY = 0;
 
         renderer.domElement.addEventListener("pointerdown", (event) => {
           if (!loadedModel) return;
@@ -1699,11 +1700,8 @@ envMapIntensity: 1.15,
           previousMouseX = event.clientX;
           previousMouseY = event.clientY;
 
-          // מתחילים מהזווית הנוכחית כדי שלא תהיה קפיצה בתחילת גרירה.
           targetRotationX = modelPivot.rotation.x;
           targetRotationY = modelPivot.rotation.y;
-          velocityX = 0;
-          velocityY = 0;
 
           renderer.domElement.setPointerCapture(event.pointerId);
           renderer.domElement.style.cursor = "grabbing";
@@ -1722,14 +1720,9 @@ envMapIntensity: 1.15,
             hasDragged = true;
           }
 
-          // לא מסובבים ישירות את המודל — מעדכנים יעד, והאנימציה מחליקה אליו.
-          velocityY = deltaX * ROTATION_SPEED_X;
-          velocityX = deltaY * ROTATION_SPEED_Y;
+          targetRotationY += deltaX * ROTATION_SPEED;
+          targetRotationX += deltaY * ROTATION_SPEED;
 
-          targetRotationY += velocityY;
-          targetRotationX += velocityX;
-
-          // מגביל סיבוב אנכי כדי שהמודל לא יתהפך לגמרי.
           targetRotationX = THREE.MathUtils.clamp(
             targetRotationX,
             -MAX_VERTICAL_ROTATION,
@@ -1767,35 +1760,15 @@ envMapIntensity: 1.15,
           }
         });
 
-        function updateSmoothRotation() {
+        return function updateRotation() {
           if (!loadedModel) return;
-
-          // אחרי שחרור העכבר — אינרציה עדינה שנחלשת בהדרגה.
-          if (!isDraggingModel) {
-            targetRotationY += velocityY;
-            targetRotationX += velocityX;
-
-            velocityY *= INERTIA;
-            velocityX *= INERTIA;
-
-            targetRotationX = THREE.MathUtils.clamp(
-              targetRotationX,
-              -MAX_VERTICAL_ROTATION,
-              MAX_VERTICAL_ROTATION
-            );
-
-            if (Math.abs(velocityY) < 0.00001) velocityY = 0;
-            if (Math.abs(velocityX) < 0.00001) velocityX = 0;
-          }
 
           modelPivot.rotation.y +=
             (targetRotationY - modelPivot.rotation.y) * SMOOTHING;
 
           modelPivot.rotation.x +=
             (targetRotationX - modelPivot.rotation.x) * SMOOTHING;
-        }
-
-        return updateSmoothRotation;
+        };
       }
 
       async function loadModel() {
@@ -1822,12 +1795,12 @@ envMapIntensity: 1.15,
         }
       }
 
-      const updateSmoothRotation = setupModelRotation();
+      const updateRotation = setupModelRotation();
 
       function animate() {
         requestAnimationFrame(animate);
 
-        updateSmoothRotation();
+        updateRotation();
         renderer.render(scene, camera);
       }
 
