@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -1676,6 +1677,17 @@ envMapIntensity: 1.15,
       }
 
       function setupModelRotation() {
+        const ROTATION_SPEED_X = 0.0025; // סיבוב ימינה/שמאלה לפי תנועת העכבר
+        const ROTATION_SPEED_Y = 0.0015; // סיבוב למעלה/למטה לפי תנועת העכבר
+        const SMOOTHING = 0.07;          // כמה מהר המודל מגיע ליעד. נמוך יותר = חלק ואיטי יותר
+        const INERTIA = 0.92;            // אינרציה אחרי שחרור העכבר. נמוך יותר = עצירה מהירה יותר
+        const MAX_VERTICAL_ROTATION = Math.PI / 5;
+
+        let targetRotationX = modelPivot.rotation.x;
+        let targetRotationY = modelPivot.rotation.y;
+        let velocityX = 0;
+        let velocityY = 0;
+
         renderer.domElement.addEventListener("pointerdown", (event) => {
           if (!loadedModel) return;
 
@@ -1686,6 +1698,12 @@ envMapIntensity: 1.15,
           hasDragged = false;
           previousMouseX = event.clientX;
           previousMouseY = event.clientY;
+
+          // מתחילים מהזווית הנוכחית כדי שלא תהיה קפיצה בתחילת גרירה.
+          targetRotationX = modelPivot.rotation.x;
+          targetRotationY = modelPivot.rotation.y;
+          velocityX = 0;
+          velocityY = 0;
 
           renderer.domElement.setPointerCapture(event.pointerId);
           renderer.domElement.style.cursor = "grabbing";
@@ -1704,17 +1722,18 @@ envMapIntensity: 1.15,
             hasDragged = true;
           }
 
-const ROTATION_SPEED_X = 0.006;
-const ROTATION_SPEED_Y = 0.004;
+          // לא מסובבים ישירות את המודל — מעדכנים יעד, והאנימציה מחליקה אליו.
+          velocityY = deltaX * ROTATION_SPEED_X;
+          velocityX = deltaY * ROTATION_SPEED_Y;
 
-modelPivot.rotation.y += deltaX * ROTATION_SPEED_X;
-modelPivot.rotation.x += deltaY * ROTATION_SPEED_Y;
+          targetRotationY += velocityY;
+          targetRotationX += velocityX;
 
           // מגביל סיבוב אנכי כדי שהמודל לא יתהפך לגמרי.
-          modelPivot.rotation.x = THREE.MathUtils.clamp(
-            modelPivot.rotation.x,
-            -Math.PI / 4,
-            Math.PI / 4
+          targetRotationX = THREE.MathUtils.clamp(
+            targetRotationX,
+            -MAX_VERTICAL_ROTATION,
+            MAX_VERTICAL_ROTATION
           );
 
           previousMouseX = event.clientX;
@@ -1747,6 +1766,36 @@ modelPivot.rotation.x += deltaY * ROTATION_SPEED_Y;
             hasDragged = false;
           }
         });
+
+        function updateSmoothRotation() {
+          if (!loadedModel) return;
+
+          // אחרי שחרור העכבר — אינרציה עדינה שנחלשת בהדרגה.
+          if (!isDraggingModel) {
+            targetRotationY += velocityY;
+            targetRotationX += velocityX;
+
+            velocityY *= INERTIA;
+            velocityX *= INERTIA;
+
+            targetRotationX = THREE.MathUtils.clamp(
+              targetRotationX,
+              -MAX_VERTICAL_ROTATION,
+              MAX_VERTICAL_ROTATION
+            );
+
+            if (Math.abs(velocityY) < 0.00001) velocityY = 0;
+            if (Math.abs(velocityX) < 0.00001) velocityX = 0;
+          }
+
+          modelPivot.rotation.y +=
+            (targetRotationY - modelPivot.rotation.y) * SMOOTHING;
+
+          modelPivot.rotation.x +=
+            (targetRotationX - modelPivot.rotation.x) * SMOOTHING;
+        }
+
+        return updateSmoothRotation;
       }
 
       async function loadModel() {
@@ -1773,12 +1822,15 @@ modelPivot.rotation.x += deltaY * ROTATION_SPEED_Y;
         }
       }
 
+      const updateSmoothRotation = setupModelRotation();
+
       function animate() {
         requestAnimationFrame(animate);
+
+        updateSmoothRotation();
         renderer.render(scene, camera);
       }
 
-      setupModelRotation();
       loadModel();
       animate();
 
