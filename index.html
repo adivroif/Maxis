@@ -669,6 +669,49 @@
   background:rgba(255,255,255,.72);
 }
 
+.model-animation-button{
+  position:absolute;
+  right:16px;
+  bottom:16px;
+  z-index:6;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 16px;
+  border:0;
+  border-radius:999px;
+  background:rgba(7,9,20,.88);
+  color:#fff;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(0,0,0,.22);
+  backdrop-filter:blur(10px);
+  transition:.2s ease;
+}
+
+.model-animation-button:hover{
+  transform:translateY(-2px);
+  background:rgba(7,9,20,.96);
+}
+
+.model-animation-button:disabled{
+  cursor:not-allowed;
+  opacity:.45;
+  transform:none;
+}
+
+@media (max-width:560px){
+  .model-animation-button{
+    right:12px;
+    bottom:12px;
+    padding:8px 12px;
+    font-size:12px;
+  }
+}
+
     .project p {
       color: var(--muted);
       max-width: 95%;
@@ -1161,6 +1204,9 @@
       alt="Maxiss"
       aria-hidden="true"
     />
+    <button class="model-animation-button" type="button" disabled>
+      ▶ הפעל אנימציה
+    </button>
     <div class="model-loading">טוען מודל תלת־ממדי...</div>
   </div>
 
@@ -1332,15 +1378,16 @@
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
     const FBX_URL =
-      "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=tenants&clientName=tenantA&fileName=Chest.fbx";
+      "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=tenants&clientName=tenantA&fileName=Connector.fbx";
 
     const TEXTURES_ENDPOINT =
-      "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-model-textures?modelName=Chest";
+      "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-model-textures?modelName=Connector";
 
     const container = document.getElementById("fbxModelPreview");
 
     if (container) {
       const loading = container.querySelector(".model-loading");
+      const animationButton = container.querySelector(".model-animation-button");
 
       const scene = new THREE.Scene();
       scene.background = null;
@@ -1427,6 +1474,11 @@
       // addPreviewRoom();
 
       let loadedModel = null;
+      let mixer = null;
+      let activeAnimationAction = null;
+      let isAnimationPlaying = false;
+      const animationClock = new THREE.Clock();
+
       let isDraggingModel = false;
       let previousMouseX = 0;
       let previousMouseY = 0;
@@ -1827,6 +1879,57 @@ envMapIntensity: 1.15,
         };
       }
 
+      function setupModelAnimation(model) {
+        if (!animationButton) return;
+
+        const animations = Array.isArray(model.animations) ? model.animations : [];
+
+        if (!animations.length) {
+          animationButton.textContent = "אין אנימציה";
+          animationButton.disabled = true;
+          return;
+        }
+
+        mixer = new THREE.AnimationMixer(model);
+        activeAnimationAction = mixer.clipAction(animations[0]);
+        activeAnimationAction.clampWhenFinished = true;
+        activeAnimationAction.loop = THREE.LoopOnce;
+
+        animationButton.disabled = false;
+        animationButton.textContent = "▶ הפעל אנימציה";
+
+        animationButton.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (!activeAnimationAction) return;
+
+          if (isAnimationPlaying) {
+            activeAnimationAction.paused = true;
+            isAnimationPlaying = false;
+            animationButton.textContent = "▶ המשך אנימציה";
+            return;
+          }
+
+          // אם האנימציה הסתיימה, מתחילים מחדש מהתחלה.
+          if (activeAnimationAction.time >= activeAnimationAction.getClip().duration) {
+            activeAnimationAction.reset();
+          }
+
+          activeAnimationAction.paused = false;
+          activeAnimationAction.play();
+          isAnimationPlaying = true;
+          animationButton.textContent = "⏸ עצור אנימציה";
+        });
+
+        mixer.addEventListener("finished", () => {
+          isAnimationPlaying = false;
+          if (animationButton) {
+            animationButton.textContent = "↻ הפעל שוב";
+          }
+        });
+      }
+
       async function loadModel() {
         try {
           if (loading) loading.textContent = "טוען טקסטורות...";
@@ -1843,6 +1946,7 @@ envMapIntensity: 1.15,
 
           loadedModel = model;
           modelPivot.add(model);
+          setupModelAnimation(model);
 
           if (loading) loading.style.display = "none";
         } catch (error) {
@@ -1855,6 +1959,9 @@ envMapIntensity: 1.15,
 
       function animate() {
         requestAnimationFrame(animate);
+
+        const delta = animationClock.getDelta();
+        if (mixer) mixer.update(delta);
 
         updateRotation();
         renderer.render(scene, camera);
