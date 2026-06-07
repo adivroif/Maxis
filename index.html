@@ -1704,9 +1704,11 @@ envMapIntensity: 1.15,
             hasDragged = true;
           }
 
-          // מסובב את המודל עצמו בלבד. המצלמה והריבוע לא זזים.
-          modelPivot.rotation.y += deltaX * 0.028;
-          modelPivot.rotation.x += deltaY * 0.018;
+const ROTATION_SPEED_X = 0.006;
+const ROTATION_SPEED_Y = 0.004;
+
+modelPivot.rotation.y += deltaX * ROTATION_SPEED_X;
+modelPivot.rotation.x += deltaY * ROTATION_SPEED_Y;
 
           // מגביל סיבוב אנכי כדי שהמודל לא יתהפך לגמרי.
           modelPivot.rotation.x = THREE.MathUtils.clamp(
