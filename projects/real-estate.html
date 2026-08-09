@@ -1628,8 +1628,6 @@ function renderProduct(product){
 
   const title =
 
-    product.productDisplayTitle_he ||
-
     product.productDisplayTitle_en ||
 
     product.productTitle ||
@@ -1714,8 +1712,6 @@ function renderProduct(product){
   /* DESCRIPTION */
 
   const description =
-
-    product.productDescription_he ||
 
     product.productDescription_en ||
 
@@ -4286,7 +4282,7 @@ function getPartId(part,index){
 function getPartDisplayName(part){
 
   return (
-    part.display_name_he ||
+    part.display_name_en ||
     part.displayName_he ||
     part.display_name ||
     part.displayName ||
@@ -4303,7 +4299,7 @@ function getPartDisplayName(part){
 function getPartDescription(part){
 
   return (
-    part.description_he ||
+    part.description_en ||
     part.descriptionHe ||
     part.description ||
     part.partDescription ||
@@ -4349,7 +4345,7 @@ function findMeshForPart(
 
   const hebrewName =
     normalizePartName(
-      part.display_name_he ||
+      part.display_name_en ||
       part.displayName_he ||
       part.partName_he
     );
