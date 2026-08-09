@@ -2,1288 +2,1290 @@
 <html lang="he" dir="rtl">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>טוען מוצר... | Maxis3D</title>
-
-  <!-- FAVICON -->
-  <link
-    rel="icon"
-    type="image/png"
-    href="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
-  />
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-
-      background:
-        radial-gradient(
-          circle at top right,
-          rgba(0, 229, 255, 0.10),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at bottom left,
-          rgba(82, 89, 255, 0.10),
-          transparent 35%
-        ),
-        #070914;
-
-      color: #fff;
-      min-height: 100vh;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      font-family: inherit;
-    }
-
-    .page {
-      max-width: 1450px;
-      margin: auto;
-      padding: 28px;
-    }
-
-    /* =====================================================
-       HEADER
-    ===================================================== */
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 35px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
-
-    .logo img {
-      width: 45px;
-      height: 45px;
-      object-fit: contain;
-    }
-
-    .logo span {
-      color: #00e5ff;
-    }
-
-    .back-btn {
-      padding: 11px 18px;
-
-      border:
-        1px solid
-        rgba(255, 255, 255, 0.14);
-
-      background:
-        rgba(255, 255, 255, 0.04);
-
-      border-radius: 12px;
-
-      transition: 0.25s;
 
-      color: #cfd5e6;
-    }
+<meta charset="UTF-8">
 
-    .back-btn:hover {
-      border-color: #00e5ff;
-      color: #fff;
-      transform: translateY(-2px);
-    }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* =====================================================
-       HERO
-    ===================================================== */
+<title>Connector | Maxis3D</title>
 
-    .hero {
-      display: grid;
+<link
+  rel="icon"
+  type="image/png"
+  sizes="64x64"
+  href="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png">
 
-      grid-template-columns:
-        minmax(0, 1.2fr)
-        minmax(380px, 0.8fr);
+<style>
 
-      gap: 28px;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-      align-items: stretch;
-    }
+body{
+  font-family:Arial,sans-serif;
 
-    .viewer-card,
-    .info-card {
-      background:
-        rgba(13, 17, 35, 0.78);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(0,229,255,.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(82,89,255,.10),
+      transparent 35%
+    ),
+    #070914;
 
-      border:
-        1px solid
-        rgba(255, 255, 255, 0.09);
+  color:#fff;
 
-      border-radius: 24px;
+  min-height:100vh;
+}
 
-      box-shadow:
-        0 20px 60px
-        rgba(0, 0, 0, 0.28);
+a{
+  text-decoration:none;
+  color:inherit;
+}
 
-      backdrop-filter: blur(18px);
-    }
+button{
+  font-family:inherit;
+}
 
-    /* =====================================================
-       VIEWER
-    ===================================================== */
+.page{
+  max-width:1450px;
+  margin:auto;
+  padding:28px;
+}
 
-    .viewer-card {
-      min-height: 650px;
 
-      overflow: hidden;
+/* ======================================================
+   HEADER
+====================================================== */
 
-      position: relative;
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:35px;
+}
 
-      display: flex;
-      flex-direction: column;
-    }
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
 
-    .viewer-header {
-      padding: 18px 22px;
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:2px;
+}
 
-      display: flex;
+.logo img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+}
 
-      justify-content: space-between;
+.logo span{
+  color:#00e5ff;
+}
 
-      align-items: center;
+.back-btn{
+  padding:11px 18px;
 
-      border-bottom:
-        1px solid
-        rgba(255, 255, 255, 0.07);
-    }
+  border:1px solid rgba(255,255,255,.14);
 
-    .viewer-title {
-      font-size: 14px;
-      color: #9da7bf;
-    }
+  background:rgba(255,255,255,.04);
 
-    .viewer-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+  border-radius:12px;
 
-      font-size: 13px;
+  color:#cfd5e6;
 
-      color: #ffda6a;
-    }
+  transition:.25s;
+}
 
-    .viewer-status.ready {
-      color: #8fffa9;
-    }
+.back-btn:hover{
+  border-color:#00e5ff;
+  color:#fff;
+  transform:translateY(-2px);
+}
 
-    .viewer-status.error {
-      color: #ff7e7e;
-    }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
+/* ======================================================
+   MAIN
+====================================================== */
 
-      background: #ffcc4d;
+.hero{
+  display:grid;
 
-      border-radius: 50%;
+  grid-template-columns:
+    minmax(0,1.2fr)
+    minmax(380px,.8fr);
 
-      box-shadow:
-        0 0 12px
-        #ffcc4d;
-    }
+  gap:28px;
 
-    .viewer-status.ready .status-dot {
-      background: #43ff7d;
+  align-items:stretch;
+}
 
-      box-shadow:
-        0 0 12px
-        #43ff7d;
-    }
+.viewer-card,
+.info-card{
 
-    .viewer-status.error .status-dot {
-      background: #ff4d4d;
+  background:rgba(13,17,35,.78);
 
-      box-shadow:
-        0 0 12px
-        #ff4d4d;
-    }
+  border:1px solid rgba(255,255,255,.09);
 
-    .viewer {
-      flex: 1;
+  border-radius:24px;
 
-      position: relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
 
-      overflow: hidden;
+  backdrop-filter:blur(18px);
+}
 
-      min-height: 520px;
 
-      background:
-        linear-gradient(
-          rgba(255,255,255,.025) 1px,
-          transparent 1px
-        ),
+/* ======================================================
+   VIEWER
+====================================================== */
 
-        linear-gradient(
-          90deg,
-          rgba(255,255,255,.025) 1px,
-          transparent 1px
-        ),
+.viewer-card{
+  min-height:650px;
 
-        radial-gradient(
-          circle at center,
-          #17203f 0%,
-          #0b0f22 50%,
-          #070914 100%
-        );
+  overflow:hidden;
 
-      background-size:
-        45px 45px,
-        45px 45px,
-        auto;
-    }
+  position:relative;
 
-    #threeContainer {
-      position: absolute;
+  display:flex;
+  flex-direction:column;
+}
 
-      inset: 0;
 
-      width: 100%;
-      height: 100%;
+.viewer-header{
 
-      z-index: 1;
-    }
+  padding:18px 22px;
 
-    #threeContainer canvas {
-      width: 100% !important;
-      height: 100% !important;
+  display:flex;
 
-      display: block;
+  justify-content:space-between;
 
-      outline: none;
+  align-items:center;
 
-      cursor: grab;
-    }
+  border-bottom:
+    1px solid rgba(255,255,255,.07);
+}
 
-    #threeContainer canvas:active {
-      cursor: grabbing;
-    }
 
-    .viewer-controls {
-      position: absolute;
+.viewer-title{
+  font-size:14px;
+  color:#9da7bf;
+}
 
-      left: 20px;
-      top: 20px;
 
-      display: flex;
-      flex-direction: column;
+.viewer-status{
 
-      gap: 9px;
+  display:flex;
 
-      z-index: 20;
-    }
+  align-items:center;
 
-    .control-btn {
-      width: 44px;
-      height: 44px;
+  gap:8px;
 
-      border:
-        1px solid
-        rgba(255,255,255,.12);
+  font-size:13px;
 
-      background:
-        rgba(7,9,20,.74);
+  color:#ffda6a;
+}
 
-      color: #fff;
 
-      border-radius: 13px;
+.viewer-status.ready{
+  color:#8fffa9;
+}
 
-      cursor: pointer;
 
-      font-size: 18px;
+.viewer-status.error{
+  color:#ff8d8d;
+}
 
-      transition: .2s;
 
-      backdrop-filter: blur(10px);
-    }
+.status-dot{
 
-    .control-btn:hover {
-      background: #00e5ff;
+  width:8px;
+  height:8px;
 
-      color: #07101a;
+  border-radius:50%;
 
-      transform: translateY(-2px);
-    }
+  background:#ffcc4d;
 
-    .viewer-message {
-      position: absolute;
+  box-shadow:0 0 12px #ffcc4d;
+}
 
-      bottom: 26px;
 
-      left: 50%;
+.viewer-status.ready .status-dot{
 
-      transform: translateX(-50%);
+  background:#43ff7d;
 
-      background:
-        rgba(5, 8, 20, 0.78);
+  box-shadow:0 0 12px #43ff7d;
+}
 
-      border:
-        1px solid
-        rgba(255,255,255,.1);
 
-      padding:
-        12px 18px;
+.viewer-status.error .status-dot{
 
-      border-radius: 999px;
+  background:#ff5555;
 
-      color: #cbd4eb;
+  box-shadow:0 0 12px #ff5555;
+}
 
-      font-size: 14px;
 
-      white-space: nowrap;
+/* ======================================================
+   MODEL VIEWER
+====================================================== */
 
-      backdrop-filter: blur(10px);
+.model-preview{
 
-      z-index: 20;
+  position:relative;
 
-      pointer-events: none;
-    }
+  flex:1;
 
-    .viewer-message strong {
-      color: #fff;
-    }
+  min-height:570px;
 
-    /* =====================================================
-       MODEL LOADING
-    ===================================================== */
+  overflow:hidden;
 
-    .model-loading {
-      position: absolute;
+  /*
+  הרקע הבהיר מהקוד המקורי שלך
+  */
 
-      inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      #fdfbf7 0%,
+      #f7f4ee 100%
+    );
+}
 
-      display: flex;
 
-      flex-direction: column;
+/* ======================================================
+   WATERMARK
+====================================================== */
 
-      align-items: center;
+.model-watermark{
 
-      justify-content: center;
+  position:absolute;
 
-      gap: 18px;
+  inset:0;
 
-      background:
-        rgba(7, 9, 20, .78);
+  pointer-events:none;
 
-      backdrop-filter: blur(4px);
+  z-index:0;
 
-      z-index: 15;
+  background-image:
+    url(
+      "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis.png"
+    );
 
-      transition:
-        opacity .3s ease,
-        visibility .3s ease;
-    }
+  background-position:center;
 
-    .model-loading.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+  background-repeat:no-repeat;
 
-    .loader {
-      width: 48px;
-      height: 48px;
+  background-size:65%;
 
-      border:
-        4px solid
-        rgba(255,255,255,.14);
+  opacity:.08;
+}
 
-      border-top-color:
-        #00e5ff;
 
-      border-radius: 50%;
+/* ======================================================
+   CORNER LOGO
+====================================================== */
 
-      animation:
-        loaderSpin
-        .8s linear infinite;
-    }
+.corner-logo{
 
-    @keyframes loaderSpin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+  position:absolute;
 
-    .loading-title {
-      font-weight: bold;
-      font-size: 16px;
-    }
+  left:18px;
 
-    .loading-subtitle {
-      color: #8f99b1;
-      font-size: 13px;
-    }
+  top:18px;
 
-    .model-error {
-      display: none;
+  width:58px;
 
-      position: absolute;
+  height:58px;
 
-      inset: 0;
+  object-fit:contain;
 
-      align-items: center;
+  opacity:.95;
 
-      justify-content: center;
+  z-index:6;
 
-      text-align: center;
+  pointer-events:none;
 
-      padding: 30px;
+  filter:
+    drop-shadow(
+      0 4px 10px rgba(0,0,0,.28)
+    );
+}
 
-      background:
-        rgba(7, 9, 20, .9);
 
-      z-index: 16;
-    }
+/* ======================================================
+   THREE CANVAS
+====================================================== */
 
-    .model-error.show {
-      display: flex;
-    }
+.model-preview canvas{
 
-    .model-error-box {
-      max-width: 450px;
-    }
+  width:100%;
 
-    .model-error-box h3 {
-      color: #ff7c7c;
-      margin-bottom: 10px;
-    }
+  height:100%;
 
-    .model-error-box p {
-      color: #aeb7cc;
-      line-height: 1.7;
-    }
+  display:block;
 
-    /* =====================================================
-       PRODUCT INFORMATION
-    ===================================================== */
+  position:absolute;
 
-    .info-card {
-      padding: 34px;
+  inset:0;
 
-      display: flex;
-      flex-direction: column;
+  z-index:1;
 
-      min-height: 650px;
-    }
+  cursor:grab;
 
-    .category {
-      color: #00e5ff;
+  background:transparent !important;
+}
 
-      font-weight: bold;
 
-      margin-bottom: 14px;
+.model-preview canvas:active{
+  cursor:grabbing;
+}
 
-      font-size: 14px;
-    }
 
-    h1 {
-      font-size:
-        clamp(34px, 4vw, 54px);
+/* ======================================================
+   LOADING
+====================================================== */
 
-      line-height: 1.05;
+.model-loading{
 
-      margin-bottom: 18px;
+  position:absolute;
 
-      letter-spacing: -1.5px;
-    }
+  inset:0;
 
-    .internal-product-name {
-      color: #7c8498;
+  display:flex;
 
-      font-size: 13px;
+  align-items:center;
 
-      margin-top: -7px;
+  justify-content:center;
 
-      margin-bottom: 20px;
-    }
+  color:#18181b;
 
-    .description {
-      color: #adb6cc;
+  font-weight:700;
 
-      line-height: 1.85;
+  z-index:4;
 
-      font-size: 17px;
+  background:rgba(255,255,255,.72);
+}
 
-      margin-bottom: 25px;
-    }
 
-    .tags {
-      display: flex;
+/* ======================================================
+   ANIMATION BUTTONS
+====================================================== */
 
-      gap: 8px;
+.model-animation-controls{
 
-      flex-wrap: wrap;
+  position:absolute;
 
-      margin-bottom: 28px;
-    }
+  right:18px;
 
-    .tag {
-      padding: 8px 11px;
+  bottom:18px;
 
-      border-radius: 999px;
+  z-index:5;
 
-      background:
-        rgba(0,229,255,.08);
+  display:flex;
 
-      color: #7eedff;
+  flex-wrap:wrap;
 
-      border:
-        1px solid
-        rgba(0,229,255,.16);
+  gap:8px;
 
-      font-size: 12px;
-    }
+  pointer-events:auto;
+}
 
-    .divider {
-      height: 1px;
 
-      background:
-        rgba(255,255,255,.08);
+.model-animation-button{
 
-      margin-bottom: 24px;
-    }
+  display:inline-flex;
 
-    .specs {
-      display: grid;
+  align-items:center;
 
-      grid-template-columns:
-        1fr 1fr;
+  justify-content:center;
 
-      gap: 12px;
+  gap:8px;
 
-      margin-bottom: 28px;
-    }
+  padding:10px 15px;
 
-    .spec {
-      padding: 16px;
+  border:0;
 
-      background:
-        rgba(255,255,255,.035);
+  border-radius:999px;
 
-      border:
-        1px solid
-        rgba(255,255,255,.07);
+  background:rgba(7,9,20,.88);
 
-      border-radius: 15px;
-    }
+  color:#fff;
 
-    .spec-label {
-      color: #79839a;
+  font-size:13px;
 
-      font-size: 12px;
+  font-weight:800;
 
-      margin-bottom: 7px;
-    }
+  cursor:pointer;
 
-    .spec-value {
-      font-size: 15px;
-      font-weight: bold;
-    }
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.22);
 
-    .price {
-      color: #5fffc2;
-    }
+  backdrop-filter:blur(10px);
 
-    .active-status {
-      display: inline-flex;
+  transition:.2s ease;
+}
 
-      align-items: center;
 
-      gap: 7px;
-    }
+.model-animation-button:hover{
 
-    .active-status::before {
-      content: "";
+  transform:translateY(-2px);
 
-      width: 7px;
-      height: 7px;
+  background:rgba(7,9,20,.98);
+}
 
-      background: #43ff7d;
 
-      border-radius: 50%;
+.model-animation-button:disabled{
 
-      box-shadow:
-        0 0 8px #43ff7d;
-    }
+  cursor:not-allowed;
 
-    .actions {
-      margin-top: auto;
+  opacity:.45;
 
-      display: grid;
+  transform:none;
+}
 
-      grid-template-columns:
-        1fr 1fr;
 
-      gap: 12px;
-    }
+/* ======================================================
+   VIEWER MESSAGE
+====================================================== */
 
-    .btn {
-      border: none;
+.viewer-message{
 
-      border-radius: 14px;
+  position:absolute;
 
-      padding: 15px 18px;
+  left:50%;
 
-      cursor: pointer;
+  bottom:75px;
 
-      font-weight: bold;
+  transform:translateX(-50%);
 
-      font-size: 15px;
+  background:rgba(7,9,20,.82);
 
-      transition: .25s;
-    }
+  border:1px solid rgba(255,255,255,.12);
 
-    .btn-primary {
-      background:
-        linear-gradient(
-          135deg,
-          #00e5ff,
-          #5365ff
-        );
+  padding:10px 16px;
 
-      color: #041019;
+  border-radius:999px;
 
-      grid-column:
-        span 2;
-    }
+  color:#fff;
 
-    .btn-primary:hover {
-      transform:
-        translateY(-2px);
+  font-size:13px;
 
-      box-shadow:
-        0 12px 30px
-        rgba(0,229,255,.2);
-    }
+  z-index:5;
 
-    .btn-secondary {
-      background:
-        rgba(255,255,255,.06);
+  pointer-events:none;
 
-      color: white;
+  white-space:nowrap;
 
-      border:
-        1px solid
-        rgba(255,255,255,.09);
-    }
+  backdrop-filter:blur(10px);
+}
 
-    .btn-secondary:hover {
-      background:
-        rgba(255,255,255,.1);
-    }
 
-    /* =====================================================
-       FEATURES
-    ===================================================== */
+/* ======================================================
+   INFO CARD
+====================================================== */
 
-    .features {
-      margin-top: 28px;
+.info-card{
 
-      display: grid;
+  padding:34px;
 
-      grid-template-columns:
-        repeat(3, 1fr);
+  display:flex;
 
-      gap: 18px;
-    }
+  flex-direction:column;
 
-    .feature {
-      background:
-        rgba(13,17,35,.65);
+  min-height:650px;
+}
 
-      border:
-        1px solid
-        rgba(255,255,255,.07);
 
-      padding: 25px;
+.category{
 
-      border-radius: 20px;
-    }
+  color:#00e5ff;
 
-    .feature-icon {
-      font-size: 27px;
-      margin-bottom: 14px;
-    }
+  font-weight:bold;
 
-    .feature h3 {
-      font-size: 17px;
-      margin-bottom: 10px;
-    }
+  margin-bottom:14px;
 
-    .feature p {
-      color: #929cb2;
+  font-size:14px;
+}
 
-      line-height: 1.65;
 
-      font-size: 14px;
-    }
+h1{
 
-    .customer-note {
-      margin-top: 28px;
+  font-size:clamp(34px,4vw,54px);
 
-      padding: 30px;
+  line-height:1.05;
 
-      text-align: center;
+  margin-bottom:18px;
 
-      border-radius: 24px;
+  letter-spacing:-1.5px;
+}
 
-      background:
-        linear-gradient(
-          135deg,
-          rgba(0,229,255,.08),
-          rgba(80,86,255,.08)
-        );
 
-      border:
-        1px solid
-        rgba(0,229,255,.15);
-    }
+.product-internal-name{
 
-    .customer-note h2 {
-      margin-bottom: 12px;
-      font-size: 25px;
-    }
+  color:#79839a;
 
-    .customer-note p {
-      color: #aeb7cc;
+  font-size:13px;
 
-      max-width: 720px;
+  margin-top:-8px;
 
-      margin: auto;
+  margin-bottom:20px;
+}
 
-      line-height: 1.7;
-    }
 
-    /* =====================================================
-       TOAST
-    ===================================================== */
+.description{
 
-    .toast {
-      position: fixed;
+  color:#adb6cc;
 
-      bottom: 25px;
+  line-height:1.85;
 
-      left: 50%;
+  font-size:17px;
 
-      transform:
-        translate(-50%, 120px);
+  margin-bottom:25px;
+}
 
-      background: #fff;
 
-      color: #07101a;
+.tags{
 
-      padding:
-        13px 20px;
+  display:flex;
 
-      border-radius: 12px;
+  gap:8px;
 
-      font-weight: bold;
+  flex-wrap:wrap;
 
-      transition: .3s;
+  margin-bottom:28px;
+}
 
-      z-index: 1000;
 
-      box-shadow:
-        0 20px 50px
-        rgba(0,0,0,.35);
-    }
+.tag{
 
-    .toast.show {
-      transform:
-        translate(-50%, 0);
-    }
+  padding:8px 11px;
 
-    /* =====================================================
-       API ERROR
-    ===================================================== */
+  border-radius:999px;
 
-    .api-error {
-      display: none;
+  background:rgba(0,229,255,.08);
 
-      padding: 12px 15px;
+  color:#7eedff;
 
-      margin-bottom: 20px;
+  border:1px solid rgba(0,229,255,.16);
 
-      border-radius: 12px;
+  font-size:12px;
+}
 
-      border:
-        1px solid
-        rgba(255,90,90,.3);
 
-      background:
-        rgba(255,90,90,.08);
+.divider{
 
-      color: #ff9999;
+  height:1px;
 
-      font-size: 13px;
-    }
+  background:rgba(255,255,255,.08);
 
-    .api-error.show {
-      display: block;
-    }
+  margin-bottom:24px;
+}
 
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
 
-    @media (max-width: 950px) {
+.specs{
 
-      .hero {
-        grid-template-columns: 1fr;
-      }
+  display:grid;
 
-      .viewer-card {
-        min-height: 520px;
-      }
+  grid-template-columns:1fr 1fr;
 
-      .features {
-        grid-template-columns: 1fr;
-      }
+  gap:12px;
 
-      .info-card {
-        min-height: auto;
-      }
-    }
+  margin-bottom:28px;
+}
 
-    @media (max-width: 620px) {
 
-      .page {
-        padding: 16px;
-      }
+.spec{
 
-      .topbar {
-        margin-bottom: 20px;
-      }
+  padding:16px;
 
-      .viewer-card {
-        min-height: 430px;
-      }
+  background:rgba(255,255,255,.035);
 
-      .viewer {
-        min-height: 390px;
-      }
+  border:1px solid rgba(255,255,255,.07);
 
-      .info-card {
-        padding: 24px 19px;
-      }
+  border-radius:15px;
+}
 
-      .specs {
-        grid-template-columns: 1fr;
-      }
 
-      .actions {
-        grid-template-columns: 1fr;
-      }
+.spec-label{
 
-      .btn-primary {
-        grid-column: auto;
-      }
+  color:#79839a;
 
-      .viewer-message {
-        max-width: 85%;
-        white-space: normal;
-        text-align: center;
-      }
+  font-size:12px;
 
-      .logo img {
-        width: 36px;
-        height: 36px;
-      }
+  margin-bottom:7px;
+}
 
-      .logo {
-        font-size: 19px;
-      }
-    }
 
-  </style>
+.spec-value{
+
+  font-size:15px;
+
+  font-weight:bold;
+}
+
+
+.price{
+  color:#66ffc4;
+}
+
+
+.active-status{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:7px;
+}
+
+
+.active-status::before{
+
+  content:"";
+
+  width:7px;
+
+  height:7px;
+
+  border-radius:50%;
+
+  background:#43ff7d;
+
+  box-shadow:0 0 8px #43ff7d;
+}
+
+
+/* ======================================================
+   ACTIONS
+====================================================== */
+
+.actions{
+
+  margin-top:auto;
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:12px;
+}
+
+
+.btn{
+
+  border:none;
+
+  border-radius:14px;
+
+  padding:15px 18px;
+
+  cursor:pointer;
+
+  font-weight:bold;
+
+  font-size:15px;
+
+  transition:.25s;
+}
+
+
+.btn-primary{
+
+  background:
+    linear-gradient(
+      135deg,
+      #00e5ff,
+      #5365ff
+    );
+
+  color:#041019;
+
+  grid-column:span 2;
+}
+
+
+.btn-primary:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 12px 30px rgba(0,229,255,.2);
+}
+
+
+.btn-secondary{
+
+  background:rgba(255,255,255,.06);
+
+  color:#fff;
+
+  border:
+    1px solid rgba(255,255,255,.09);
+}
+
+
+.btn-secondary:hover{
+
+  background:rgba(255,255,255,.1);
+}
+
+
+/* ======================================================
+   FEATURES
+====================================================== */
+
+.features{
+
+  margin-top:28px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:18px;
+}
+
+
+.feature{
+
+  background:rgba(13,17,35,.65);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  padding:25px;
+
+  border-radius:20px;
+}
+
+
+.feature-icon{
+
+  font-size:27px;
+
+  margin-bottom:14px;
+}
+
+
+.feature h3{
+
+  font-size:17px;
+
+  margin-bottom:10px;
+}
+
+
+.feature p{
+
+  color:#929cb2;
+
+  line-height:1.65;
+
+  font-size:14px;
+}
+
+
+.customer-note{
+
+  margin-top:28px;
+
+  padding:30px;
+
+  text-align:center;
+
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,229,255,.08),
+      rgba(80,86,255,.08)
+    );
+
+  border:
+    1px solid rgba(0,229,255,.15);
+}
+
+
+.customer-note h2{
+
+  margin-bottom:12px;
+
+  font-size:25px;
+}
+
+
+.customer-note p{
+
+  color:#aeb7cc;
+
+  max-width:720px;
+
+  margin:auto;
+
+  line-height:1.7;
+}
+
+
+/* ======================================================
+   TOAST
+====================================================== */
+
+.toast{
+
+  position:fixed;
+
+  bottom:25px;
+
+  left:50%;
+
+  transform:
+    translate(-50%,120px);
+
+  background:#fff;
+
+  color:#07101a;
+
+  padding:13px 20px;
+
+  border-radius:12px;
+
+  font-weight:bold;
+
+  transition:.3s;
+
+  z-index:1000;
+}
+
+
+.toast.show{
+
+  transform:
+    translate(-50%,0);
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media(max-width:950px){
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .features{
+    grid-template-columns:1fr;
+  }
+
+}
+
+
+@media(max-width:620px){
+
+  .page{
+    padding:16px;
+  }
+
+  .model-preview{
+    min-height:430px;
+  }
+
+  .corner-logo{
+    left:10px;
+    top:10px;
+    width:42px;
+    height:42px;
+  }
+
+  .model-animation-controls{
+    right:10px;
+    bottom:10px;
+  }
+
+  .model-animation-button{
+    font-size:11px;
+    padding:8px 10px;
+  }
+
+  .viewer-message{
+    display:none;
+  }
+
+  .info-card{
+    padding:24px 19px;
+  }
+
+  .specs{
+    grid-template-columns:1fr;
+  }
+
+  .actions{
+    grid-template-columns:1fr;
+  }
+
+  .btn-primary{
+    grid-column:auto;
+  }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="page">
 
-  <!-- ===================================================
-       HEADER
-  ==================================================== -->
 
-  <header class="topbar">
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-    <div class="logo">
+<header class="topbar">
 
-      <img
-        src="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
-        alt="Maxis3D"
-      />
+  <div class="logo">
 
-      <div>
-        MAXIS<span>3D</span>
-      </div>
+    <img
+      src="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
+      alt="Maxis3D">
+
+    MAXIS<span>3D</span>
+
+  </div>
+
+
+  <a
+    href="../index.html"
+    class="back-btn">
+
+    ← חזרה לאתר
+
+  </a>
+
+</header>
+
+
+
+<main class="hero">
+
+
+<!-- =====================================================
+     VIEWER
+===================================================== -->
+
+<section class="viewer-card">
+
+
+  <div class="viewer-header">
+
+    <div class="viewer-title">
+      תצוגת מוצר אינטראקטיבית
+    </div>
+
+
+    <div
+      class="viewer-status"
+      id="viewerStatus">
+
+      <span class="status-dot"></span>
+
+      <span id="viewerStatusText">
+        טוען מודל...
+      </span>
 
     </div>
 
-    <a
-      href="../index.html"
-      class="back-btn">
-      ← חזרה לאתר
-    </a>
+  </div>
 
-  </header>
 
 
-  <!-- ===================================================
-       MAIN
-  ==================================================== -->
+  <div
+    class="model-preview"
+    id="fbxModelPreview">
 
-  <main class="hero">
 
+    <!-- WATERMARK -->
 
-    <!-- =================================================
-         3D VIEWER
-    ================================================== -->
+    <div
+      class="model-watermark"
+      aria-hidden="true">
+    </div>
 
-    <section class="viewer-card">
 
-      <div class="viewer-header">
+    <!-- LOGO -->
 
-        <div class="viewer-title">
-          תצוגת מוצר אינטראקטיבית
-        </div>
+    <img
+      class="corner-logo"
 
-        <div
-          class="viewer-status"
-          id="viewerStatus">
+      src="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
 
-          <span class="status-dot"></span>
+      alt="Maxis3D"
 
-          <span id="viewerStatusText">
-            טוען מודל...
-          </span>
+      aria-hidden="true"
+    >
 
-        </div>
 
-      </div>
+    <!-- ANIMATION -->
 
+    <div
+      class="model-animation-controls">
 
-      <div
-        class="viewer"
-        id="viewer">
+      <button
+        class="model-animation-button"
+        id="playForwardAnimation"
+        type="button"
+        disabled>
 
+        ▶ הפעל אנימציה
 
-        <!-- THREE.JS -->
-        <div id="threeContainer"></div>
+      </button>
 
 
-        <!-- CONTROLS -->
-        <div class="viewer-controls">
+      <button
+        class="model-animation-button"
+        id="playBackwardAnimation"
+        type="button"
+        disabled>
 
-          <button
-            class="control-btn"
-            title="מסך מלא"
-            onclick="fullscreenViewer()">
-            ⛶
-          </button>
+        ◀ שחזר אנימציה
 
-          <button
-            class="control-btn"
-            id="rotationButton"
-            title="עצור / הפעל סיבוב"
-            onclick="toggleRotation()">
-            ↻
-          </button>
-
-          <button
-            class="control-btn"
-            title="איפוס תצוגה"
-            onclick="resetCamera()">
-            ⌂
-          </button>
-
-        </div>
-
-
-        <!-- LOADING -->
-        <div
-          class="model-loading"
-          id="modelLoading">
-
-          <div class="loader"></div>
-
-          <div class="loading-title">
-            טוען את Connector...
-          </div>
-
-          <div class="loading-subtitle">
-            המודל נטען ישירות מהשרת
-          </div>
-
-        </div>
-
-
-        <!-- MODEL ERROR -->
-        <div
-          class="model-error"
-          id="modelError">
-
-          <div class="model-error-box">
-
-            <h3>
-              לא ניתן לטעון את המודל
-            </h3>
-
-            <p id="modelErrorText">
-              אירעה שגיאה בעת טעינת קובץ ה־FBX.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="viewer-message">
-          🖱️
-          <strong>
-            גררו את המוצר
-          </strong>
-          לצפייה מכל זווית
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         PRODUCT INFORMATION
-    ================================================== -->
-
-    <section class="info-card">
-
-
-      <div
-        class="api-error"
-        id="apiError">
-
-        לא ניתן היה לטעון את פרטי המוצר.
-
-      </div>
-
-
-      <div
-        class="category"
-        id="productCategory">
-
-        טוען פרטי מוצר...
-
-      </div>
-
-
-      <h1 id="productTitle">
-        Connector
-      </h1>
-
-
-      <div
-        class="internal-product-name"
-        id="internalProductName">
-      </div>
-
-
-      <p
-        class="description"
-        id="productDescription">
-
-        טוען מידע על המוצר...
-
-      </p>
-
-
-      <div
-        class="tags"
-        id="productTags">
-      </div>
-
-
-      <div class="divider"></div>
-
-
-      <div
-        class="specs"
-        id="productSpecs">
-
-        <!-- נוצר אוטומטית מה-API -->
-
-      </div>
-
-
-      <div class="actions">
-
-        <button
-          class="btn btn-primary"
-          onclick="shareProduct()">
-
-          🔗 שלח את המוצר ללקוח
-
-        </button>
-
-
-        <button
-          class="btn btn-secondary"
-          onclick="copyLink()">
-
-          🔗 העתק קישור
-
-        </button>
-
-
-        <button
-          class="btn btn-secondary"
-          onclick="speakProduct()">
-
-          🔊 הקראת המוצר
-
-        </button>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- ===================================================
-       FEATURES
-  ==================================================== -->
-
-  <section class="features">
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        🔄
-      </div>
-
-      <h3>
-        צפייה מכל זווית
-      </h3>
-
-      <p>
-        ניתן לסובב את המוצר,
-        להתקרב ולהתרחק ולבחון
-        אותו בצורה אינטראקטיבית.
-      </p>
+      </button>
 
     </div>
 
 
-    <div class="feature">
+    <!-- HELP -->
 
-      <div class="feature-icon">
-        🌐
-      </div>
+    <div class="viewer-message">
 
-      <h3>
-        ללא התקנה
-      </h3>
-
-      <p>
-        המודל נפתח ישירות בדפדפן
-        באמצעות קישור שניתן לשלוח
-        ללקוח.
-      </p>
+      🖱️
+      <strong>
+        גררו את המוצר
+      </strong>
+      לצפייה מכל זווית
 
     </div>
 
 
-    <div class="feature">
+    <!-- LOADING -->
 
-      <div class="feature-icon">
-        🔊
-      </div>
+    <div class="model-loading">
 
-      <h3>
-        הקראה קולית
-      </h3>
-
-      <p>
-        פרטי המוצר יכולים להיות
-        מוקראים ישירות מתוך
-        עמוד המוצר.
-      </p>
+      טוען מודל תלת־ממדי...
 
     </div>
 
-  </section>
+
+  </div>
+
+</section>
 
 
-  <section class="customer-note">
 
-    <h2>
-      מוצר אחד. קישור אחד. חוויית מכירה מלאה.
-    </h2>
+<!-- =====================================================
+     PRODUCT INFO
+===================================================== -->
+
+<section class="info-card">
+
+
+  <div
+    class="category"
+    id="productCategory">
+
+    טוען קטגוריה...
+
+  </div>
+
+
+  <h1 id="productTitle">
+
+    Connector
+
+  </h1>
+
+
+  <div
+    class="product-internal-name"
+    id="productInternalName">
+  </div>
+
+
+  <p
+    class="description"
+    id="productDescription">
+
+    טוען פרטי מוצר...
+
+  </p>
+
+
+  <div
+    class="tags"
+    id="productTags">
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <div
+    class="specs"
+    id="productSpecs">
+  </div>
+
+
+
+  <div class="actions">
+
+
+    <button
+      class="btn btn-primary"
+      onclick="shareProduct()">
+
+      🔗 שלח את המוצר ללקוח
+
+    </button>
+
+
+    <button
+      class="btn btn-secondary"
+      onclick="copyLink()">
+
+      העתק קישור
+
+    </button>
+
+
+    <button
+      class="btn btn-secondary"
+      onclick="speakProduct()">
+
+      🔊 הקראת המוצר
+
+    </button>
+
+
+  </div>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="features">
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      🔄
+    </div>
+
+    <h3>
+      צפייה מכל זווית
+    </h3>
 
     <p>
-      כל המידע על המוצר יחד עם המודל
-      התלת־ממדי נמצא בעמוד אחד שניתן
-      לשלוח ישירות ללקוח.
+      גררו את המודל עם העכבר
+      וצפו במוצר מכל זווית.
     </p>
 
-  </section>
+  </div>
+
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      ⚙️
+    </div>
+
+    <h3>
+      אנימציה אינטראקטיבית
+    </h3>
+
+    <p>
+      כאשר המודל מכיל אנימציה ניתן
+      להפעיל אותה קדימה או להחזיר
+      אותה לאחור.
+    </p>
+
+  </div>
+
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      🔊
+    </div>
+
+    <h3>
+      הקראה קולית
+    </h3>
+
+    <p>
+      פרטי המוצר ניתנים להקראה
+      ישירות מתוך הדפדפן.
+    </p>
+
+  </div>
+
+
+</section>
+
+
+
+<section class="customer-note">
+
+  <h2>
+    מוצר אחד. קישור אחד. חוויית מכירה מלאה.
+  </h2>
+
+  <p>
+    המודל התלת־ממדי ופרטי המוצר
+    נטענים ישירות מהמערכת ומוצגים
+    ללקוח בעמוד אחד.
+  </p>
+
+</section>
+
 
 </div>
+
 
 
 <div
   class="toast"
   id="toast">
+
   הקישור הועתק
+
 </div>
 
-
-<!-- =====================================================
-     THREE.JS IMPORT MAP
-===================================================== -->
-
-<script type="importmap">
-{
-  "imports": {
-    "three":
-      "https://unpkg.com/three@0.160.0/build/three.module.js",
-
-    "three/addons/":
-      "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
 
 
 <!-- =====================================================
@@ -1292,1657 +1294,2751 @@
 
 <script>
 
-  /*
-  ========================================================
-  PRODUCT CONFIGURATION
-  ========================================================
-  */
-
-  const PRODUCT_NAME =
-    "Connector";
+const PRODUCT_NAME =
+  "Connector";
 
 
-  const PRODUCT_API_URL =
-    "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/Products/productTitle/Connector";
+const PRODUCT_API =
+  "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/Products/productTitle/Connector";
 
 
-  let currentProduct = null;
+let currentProduct = null;
 
 
-  /*
-  ========================================================
-  LOAD PRODUCT FROM API
-  ========================================================
-  */
 
-  async function loadProduct() {
+async function loadProduct(){
 
-    try {
+  try{
 
-      const response =
-        await fetch(
-          PRODUCT_API_URL,
-          {
-            method: "GET",
-            headers: {
-              "Accept": "application/json"
-            }
-          }
-        );
+    const response =
+      await fetch(PRODUCT_API);
 
 
-      if (!response.ok) {
+    if(!response.ok){
 
-        throw new Error(
-          `HTTP ${response.status}`
-        );
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      /*
-      ה-endpoint מחזיר מערך.
-      לכן אנחנו לוקחים את המוצר הראשון.
-      */
-
-      const product =
-        Array.isArray(data)
-          ? data[0]
-          : data;
-
-
-      if (!product) {
-
-        throw new Error(
-          "המוצר לא נמצא"
-        );
-
-      }
-
-
-      currentProduct =
-        product;
-
-
-      renderProduct(product);
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Product API error:",
-        error
+      throw new Error(
+        `Product HTTP ${response.status}`
       );
 
-
-      document
-        .getElementById("apiError")
-        .classList
-        .add("show");
+    }
 
 
-      document
-        .getElementById("productCategory")
-        .textContent =
-        "מוצר תלת־ממדי";
+    const result =
+      await response.json();
 
 
-      document
-        .getElementById("productTitle")
-        .textContent =
-        PRODUCT_NAME;
+    const product =
+      Array.isArray(result)
+        ? result[0]
+        : result;
 
 
-      document
-        .getElementById("productDescription")
-        .textContent =
-        "לא ניתן היה לטעון כרגע את פרטי המוצר.";
+    if(!product){
+
+      throw new Error(
+        "Product not found"
+      );
 
     }
 
+
+    currentProduct =
+      product;
+
+
+    renderProduct(
+      product
+    );
+
+
   }
+  catch(error){
+
+    console.error(
+      "Product API error:",
+      error
+    );
 
 
-  /*
-  ========================================================
-  RENDER PRODUCT
-  ========================================================
-  */
+    document
+      .getElementById(
+        "productCategory"
+      )
+      .textContent =
+      "מוצר תלת־ממדי";
 
-  function renderProduct(product) {
 
-    /*
-    -------------------------------------------------------
-    TITLE
-    -------------------------------------------------------
-    */
-
-    const displayTitle =
-      product.productDisplayTitle_he ||
-      product.productDisplayTitle_en ||
-      product.productTitle ||
+    document
+      .getElementById(
+        "productTitle"
+      )
+      .textContent =
       PRODUCT_NAME;
 
 
     document
-      .getElementById("productTitle")
-      .textContent =
-      displayTitle;
-
-
-    document.title =
-      `${displayTitle} | Maxis3D`;
-
-
-    /*
-    -------------------------------------------------------
-    INTERNAL NAME
-    -------------------------------------------------------
-    */
-
-    const internalNameElement =
-      document.getElementById(
-        "internalProductName"
-      );
-
-
-    if (
-      product.productTitle &&
-      product.productTitle !== displayTitle
-    ) {
-
-      internalNameElement.textContent =
-        product.productTitle;
-
-    }
-    else {
-
-      internalNameElement.style.display =
-        "none";
-
-    }
-
-
-    /*
-    -------------------------------------------------------
-    CATEGORY
-    -------------------------------------------------------
-    */
-
-    const categoryParts = [];
-
-
-    if (product.productCategory) {
-
-      categoryParts.push(
-        product.productCategory
-      );
-
-    }
-
-
-    if (product.subProductCategory) {
-
-      categoryParts.push(
-        product.subProductCategory
-      );
-
-    }
-
-
-    document
-      .getElementById("productCategory")
-      .textContent =
-      categoryParts.length
-        ? categoryParts.join(" • ")
-        : "מוצר תלת־ממדי";
-
-
-    /*
-    -------------------------------------------------------
-    DESCRIPTION
-    -------------------------------------------------------
-    */
-
-    const description =
-      product.productDescription_he ||
-      product.productDescription_en ||
-      product.productDescription_ar ||
-      product.productDescription_ru;
-
-
-    const descriptionElement =
-      document.getElementById(
+      .getElementById(
         "productDescription"
-      );
+      )
+      .textContent =
+      "לא ניתן היה לטעון כרגע את פרטי המוצר.";
+
+  }
+
+}
 
 
-    if (description) {
 
-      descriptionElement.textContent =
-        description;
-
-    }
-    else {
-
-      /*
-      אין תיאור ב-API כרגע,
-      ולכן לא ממציאים תיאור מוצר.
-      */
-
-      descriptionElement.textContent =
-        "צפו במוצר בתלת־ממד מכל זווית ישירות מהדפדפן.";
-
-    }
+function renderProduct(product){
 
 
-    /*
-    -------------------------------------------------------
-    TAGS
-    -------------------------------------------------------
-    */
+  const title =
 
-    const tags =
-      document.getElementById(
-        "productTags"
-      );
+    product.productDisplayTitle_he ||
 
+    product.productDisplayTitle_en ||
 
-    tags.innerHTML = "";
+    product.productTitle ||
+
+    PRODUCT_NAME;
 
 
-    addTag(
+  document
+    .getElementById(
+      "productTitle"
+    )
+    .textContent =
+    title;
+
+
+  document.title =
+    `${title} | Maxis3D`;
+
+
+
+  /* INTERNAL NAME */
+
+  const internal =
+    document.getElementById(
+      "productInternalName"
+    );
+
+
+  if(
+    product.productTitle &&
+    product.productTitle !== title
+  ){
+
+    internal.textContent =
+      product.productTitle;
+
+  }
+  else{
+
+    internal.style.display =
+      "none";
+
+  }
+
+
+
+  /* CATEGORY */
+
+  const categoryArray = [];
+
+
+  if(product.productCategory){
+
+    categoryArray.push(
       product.productCategory
     );
 
+  }
 
-    addTag(
+
+  if(product.subProductCategory){
+
+    categoryArray.push(
       product.subProductCategory
     );
 
+  }
 
-    addTag(
-      "3D Viewer"
+
+  document
+    .getElementById(
+      "productCategory"
+    )
+    .textContent =
+
+    categoryArray.length
+      ? categoryArray.join(" • ")
+      : "מוצר תלת־ממדי";
+
+
+
+  /* DESCRIPTION */
+
+  const description =
+
+    product.productDescription_he ||
+
+    product.productDescription_en ||
+
+    product.productDescription ||
+
+    product.productDescription_ar ||
+
+    product.productDescription_ru;
+
+
+  document
+    .getElementById(
+      "productDescription"
+    )
+    .textContent =
+
+    description ||
+
+    "צפו במוצר בתלת־ממד מכל זווית ישירות מהדפדפן.";
+
+
+
+  /* TAGS */
+
+  const tags =
+    document.getElementById(
+      "productTags"
     );
 
 
-    /*
-    -------------------------------------------------------
-    SPECS
-    -------------------------------------------------------
-    */
-
-    const specs =
-      document.getElementById(
-        "productSpecs"
-      );
+  tags.innerHTML = "";
 
 
-    specs.innerHTML = "";
+  addTag(
+    product.productCategory
+  );
 
 
-    /*
-    SKU
-    */
-
-    if (
-      product.sku &&
-      product.sku.trim() &&
-      product.sku !== "string"
-    ) {
-
-      addSpec(
-        "מק״ט",
-        product.sku
-      );
-
-    }
+  addTag(
+    product.subProductCategory
+  );
 
 
-    /*
-    PRICE
-    */
-
-    if (
-      product.productPrice !== null &&
-      product.productPrice !== undefined
-    ) {
-
-      addSpec(
-        "מחיר",
-        formatPrice(
-          product.productPrice
-        ),
-        "price"
-      );
-
-    }
+  addTag(
+    "3D Viewer"
+  );
 
 
-    /*
-    CATEGORY
-    */
 
-    if (product.productCategory) {
+  /* SPECS */
 
-      addSpec(
-        "קטגוריה",
-        product.productCategory
-      );
-
-    }
+  const specs =
+    document.getElementById(
+      "productSpecs"
+    );
 
 
-    /*
-    SUB CATEGORY
-    */
-
-    if (product.subProductCategory) {
-
-      addSpec(
-        "תת־קטגוריה",
-        product.subProductCategory
-      );
-
-    }
+  specs.innerHTML = "";
 
 
-    /*
-    LENGTH
-    */
+  if(
+    product.sku &&
+    product.sku !== "string"
+  ){
 
-    if (hasValue(product.length)) {
-
-      addSpec(
-        "אורך",
-        `${product.length}`
-      );
-
-    }
-
-
-    /*
-    WIDTH
-    */
-
-    if (hasValue(product.width)) {
-
-      addSpec(
-        "רוחב",
-        `${product.width}`
-      );
-
-    }
-
-
-    /*
-    HEIGHT
-    */
-
-    if (hasValue(product.height)) {
-
-      addSpec(
-        "גובה",
-        `${product.height}`
-      );
-
-    }
-
-
-    /*
-    ACTIVE
-    */
-
-    if (product.productActive !== undefined) {
-
-      addSpec(
-        "סטטוס",
-        product.productActive
-          ? "פעיל"
-          : "לא פעיל",
-        product.productActive
-          ? "active-status"
-          : ""
-      );
-
-    }
-
-
-    /*
-    DISPLAY IN SITE
-    */
-
-    if (
-      product.displayInSite !== undefined
-    ) {
-
-      addSpec(
-        "מוצג באתר",
-        product.displayInSite
-          ? "כן"
-          : "לא"
-      );
-
-    }
+    addSpec(
+      "מק״ט",
+      product.sku
+    );
 
   }
 
 
-  /*
-  ========================================================
-  ADD TAG
-  ========================================================
-  */
+  if(
+    product.productPrice !== null &&
+    product.productPrice !== undefined
+  ){
 
-  function addTag(value) {
+    addSpec(
+      "מחיר",
+      formatPrice(
+        product.productPrice
+      ),
+      "price"
+    );
 
-    if (!value)
-      return;
-
-
-    const element =
-      document.createElement("span");
-
-
-    element.className =
-      "tag";
+  }
 
 
-    element.textContent =
-      value;
+  if(product.productCategory){
+
+    addSpec(
+      "קטגוריה",
+      product.productCategory
+    );
+
+  }
 
 
+  if(product.subProductCategory){
+
+    addSpec(
+      "תת־קטגוריה",
+      product.subProductCategory
+    );
+
+  }
+
+
+  if(hasValue(product.length)){
+
+    addSpec(
+      "אורך",
+      product.length
+    );
+
+  }
+
+
+  if(hasValue(product.width)){
+
+    addSpec(
+      "רוחב",
+      product.width
+    );
+
+  }
+
+
+  if(hasValue(product.height)){
+
+    addSpec(
+      "גובה",
+      product.height
+    );
+
+  }
+
+
+  if(
+    product.productActive !==
+    undefined
+  ){
+
+    addSpec(
+
+      "סטטוס",
+
+      product.productActive
+        ? "פעיל"
+        : "לא פעיל",
+
+      product.productActive
+        ? "active-status"
+        : ""
+
+    );
+
+  }
+
+}
+
+
+
+function addTag(value){
+
+  if(!value)
+    return;
+
+
+  const tag =
+    document.createElement(
+      "span"
+    );
+
+
+  tag.className =
+    "tag";
+
+
+  tag.textContent =
+    value;
+
+
+  document
+    .getElementById(
+      "productTags"
+    )
+    .appendChild(tag);
+
+}
+
+
+
+function addSpec(
+  label,
+  value,
+  valueClass = ""
+){
+
+  if(!hasValue(value))
+    return;
+
+
+  const spec =
+    document.createElement(
+      "div"
+    );
+
+
+  spec.className =
+    "spec";
+
+
+  const labelElement =
+    document.createElement(
+      "div"
+    );
+
+
+  labelElement.className =
+    "spec-label";
+
+
+  labelElement.textContent =
+    label;
+
+
+  const valueElement =
+    document.createElement(
+      "div"
+    );
+
+
+  valueElement.className =
+    "spec-value";
+
+
+  if(valueClass){
+
+    valueElement.classList.add(
+      valueClass
+    );
+
+  }
+
+
+  valueElement.textContent =
+    value;
+
+
+  spec.appendChild(
+    labelElement
+  );
+
+
+  spec.appendChild(
+    valueElement
+  );
+
+
+  document
+    .getElementById(
+      "productSpecs"
+    )
+    .appendChild(spec);
+
+}
+
+
+
+function hasValue(value){
+
+  return (
+    value !== null &&
+    value !== undefined &&
+    value !== ""
+  );
+
+}
+
+
+
+function formatPrice(price){
+
+  return new Intl.NumberFormat(
+    "he-IL",
+    {
+      style:"currency",
+      currency:"ILS"
+    }
+  ).format(price);
+
+}
+
+
+
+async function copyLink(){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      window.location.href
+    );
+
+
+    showToast(
+      "הקישור למוצר הועתק"
+    );
+
+  }
+  catch{
+
+    showToast(
+      "לא ניתן היה להעתיק"
+    );
+
+  }
+
+}
+
+
+
+async function shareProduct(){
+
+  const title =
     document
-      .getElementById("productTags")
-      .appendChild(element);
-
-  }
-
-
-  /*
-  ========================================================
-  ADD SPEC
-  ========================================================
-  */
-
-  function addSpec(
-    label,
-    value,
-    valueClass = ""
-  ) {
-
-    if (!hasValue(value))
-      return;
-
-
-    const spec =
-      document.createElement("div");
-
-
-    spec.className =
-      "spec";
-
-
-    const labelElement =
-      document.createElement("div");
-
-
-    labelElement.className =
-      "spec-label";
-
-
-    labelElement.textContent =
-      label;
-
-
-    const valueElement =
-      document.createElement("div");
-
-
-    valueElement.className =
-      "spec-value";
-
-
-    if (valueClass) {
-
-      valueElement.classList.add(
-        valueClass
-      );
-
-    }
-
-
-    valueElement.textContent =
-      value;
-
-
-    spec.appendChild(
-      labelElement
-    );
-
-
-    spec.appendChild(
-      valueElement
-    );
-
-
-    document
-      .getElementById("productSpecs")
-      .appendChild(spec);
-
-  }
-
-
-  /*
-  ========================================================
-  HELPERS
-  ========================================================
-  */
-
-  function hasValue(value) {
-
-    return (
-      value !== null &&
-      value !== undefined &&
-      value !== ""
-    );
-
-  }
-
-
-  function formatPrice(price) {
-
-    return new Intl.NumberFormat(
-      "he-IL",
-      {
-        style: "currency",
-        currency: "ILS",
-        maximumFractionDigits: 2
-      }
-    ).format(price);
-
-  }
-
-
-  /*
-  ========================================================
-  SHARE
-  ========================================================
-  */
-
-  async function copyLink() {
-
-    try {
-
-      await navigator.clipboard.writeText(
-        window.location.href
-      );
-
-
-      showToast(
-        "הקישור למוצר הועתק"
-      );
-
-    }
-
-    catch {
-
-      showToast(
-        "לא ניתן היה להעתיק את הקישור"
-      );
-
-    }
-
-  }
-
-
-  async function shareProduct() {
-
-    const title =
-      currentProduct
-        ?.productDisplayTitle_he ||
-      currentProduct
-        ?.productDisplayTitle_en ||
-      currentProduct
-        ?.productTitle ||
-      PRODUCT_NAME;
-
-
-    const shareData = {
-
-      title: title,
-
-      text:
-        `צפה במוצר ${title} בתלת־ממד`,
-
-      url:
-        window.location.href
-
-    };
-
-
-    if (navigator.share) {
-
-      try {
-
-        await navigator.share(
-          shareData
-        );
-
-      }
-      catch (error) {
-
-        console.log(
-          "Share cancelled"
-        );
-
-      }
-
-    }
-    else {
-
-      copyLink();
-
-    }
-
-  }
-
-
-  /*
-  ========================================================
-  SPEECH
-  ========================================================
-  */
-
-  function speakProduct() {
-
-    if (
-      !(
-        "speechSynthesis"
-        in window
+      .getElementById(
+        "productTitle"
       )
-    ) {
+      .textContent;
 
-      showToast(
-        "הדפדפן אינו תומך בהקראה"
+
+  const shareData = {
+
+    title:title,
+
+    text:
+      `צפה במוצר ${title} בתלת־ממד`,
+
+    url:
+      window.location.href
+
+  };
+
+
+  if(navigator.share){
+
+    try{
+
+      await navigator.share(
+        shareData
       );
-
-      return;
 
     }
+    catch{}
+
+  }
+  else{
+
+    copyLink();
+
+  }
+
+}
 
 
-    speechSynthesis.cancel();
 
+function speakProduct(){
 
-    const title =
-      document
-        .getElementById(
-          "productTitle"
-        )
-        .textContent;
+  if(
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ){
 
-
-    const description =
-      document
-        .getElementById(
-          "productDescription"
-        )
-        .textContent;
-
-
-    const speech =
-      new SpeechSynthesisUtterance(
-        `${title}. ${description}`
-      );
-
-
-    speech.lang =
-      "he-IL";
-
-
-    speech.rate =
-      0.95;
-
-
-    window.speechSynthesis.speak(
-      speech
-    );
+    return;
 
   }
 
 
-  /*
-  ========================================================
-  FULLSCREEN
-  ========================================================
-  */
-
-  function fullscreenViewer() {
-
-    const viewer =
-      document.getElementById(
-        "viewer"
-      );
+  speechSynthesis.cancel();
 
 
-    if (
-      !document.fullscreenElement
-    ) {
-
-      viewer
-        .requestFullscreen?.();
-
-    }
-    else {
-
-      document
-        .exitFullscreen?.();
-
-    }
-
-  }
+  const title =
+    document
+      .getElementById(
+        "productTitle"
+      )
+      .textContent;
 
 
-  /*
-  ========================================================
-  TOAST
-  ========================================================
-  */
-
-  function showToast(message) {
-
-    const toast =
-      document.getElementById(
-        "toast"
-      );
+  const description =
+    document
+      .getElementById(
+        "productDescription"
+      )
+      .textContent;
 
 
-    toast.textContent =
-      message;
-
-
-    toast.classList.add(
-      "show"
+  const speech =
+    new SpeechSynthesisUtterance(
+      `${title}. ${description}`
     );
 
 
-    setTimeout(
-      () => {
+  speech.lang =
+    "he-IL";
 
-        toast.classList.remove(
-          "show"
-        );
 
-      },
-      2200
+  speech.rate =
+    .95;
+
+
+  speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+
+function showToast(message){
+
+  const toast =
+    document.getElementById(
+      "toast"
     );
 
-  }
+
+  toast.textContent =
+    message;
 
 
-  /*
-  ========================================================
-  INITIAL PRODUCT LOAD
-  ========================================================
-  */
+  toast.classList.add(
+    "show"
+  );
 
-  loadProduct();
+
+  setTimeout(
+    ()=>{
+
+      toast.classList.remove(
+        "show"
+      );
+
+    },
+    2200
+  );
+
+}
+
+
+loadProduct();
 
 </script>
 
 
+
 <!-- =====================================================
-     THREE.JS MODEL
+     THREE.JS
 ===================================================== -->
+
+<script type="importmap">
+
+{
+  "imports": {
+
+    "three":
+      "https://unpkg.com/three@0.160.0/build/three.module.js",
+
+    "three/addons/":
+      "https://unpkg.com/three@0.160.0/examples/jsm/"
+
+  }
+}
+
+</script>
+
+
 
 <script type="module">
 
-  import * as THREE
-    from "three";
+
+import * as THREE
+from "three";
 
 
-  import {
-    FBXLoader
-  }
-  from
-    "three/addons/loaders/FBXLoader.js";
+import {
+  FBXLoader
+}
+from "three/addons/loaders/FBXLoader.js";
 
 
-  import {
-    OrbitControls
-  }
-  from
-    "three/addons/controls/OrbitControls.js";
+import {
+  RoomEnvironment
+}
+from "three/addons/environments/RoomEnvironment.js";
 
 
-  import {
-    RoomEnvironment
-  }
-  from
-    "three/addons/environments/RoomEnvironment.js";
+
+/*
+=========================================================
+CONNECTOR
+=========================================================
+*/
+
+const FBX_URL =
+
+  "https://files.fbxstudio.co.il/tenants/tenantA/Connector.fbx";
 
 
-  /*
-  ========================================================
-  MODEL URL
-  ========================================================
-  */
+const TEXTURES_ENDPOINT =
 
-  const MODEL_URL =
-    "https://files.fbxstudio.co.il/tenants/tenantA/Connector.fbx";
+  "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-model-textures?modelName=Connector";
 
 
-  /*
-  ========================================================
-  CONTAINER
-  ========================================================
-  */
 
-  const container =
-    document.getElementById(
-      "threeContainer"
-    );
+const container =
+  document.getElementById(
+    "fbxModelPreview"
+  );
 
 
-  const viewer =
-    document.getElementById(
-      "viewer"
-    );
+const loading =
+  container.querySelector(
+    ".model-loading"
+  );
 
 
-  const loadingElement =
-    document.getElementById(
-      "modelLoading"
-    );
+const playForwardButton =
+  document.getElementById(
+    "playForwardAnimation"
+  );
 
 
-  const errorElement =
-    document.getElementById(
-      "modelError"
-    );
+const playBackwardButton =
+  document.getElementById(
+    "playBackwardAnimation"
+  );
 
 
-  const errorText =
-    document.getElementById(
-      "modelErrorText"
-    );
+const viewerStatus =
+  document.getElementById(
+    "viewerStatus"
+  );
 
 
-  const status =
-    document.getElementById(
-      "viewerStatus"
-    );
+const viewerStatusText =
+  document.getElementById(
+    "viewerStatusText"
+  );
 
 
-  const statusText =
-    document.getElementById(
-      "viewerStatusText"
-    );
+
+/*
+=========================================================
+SCENE
+=========================================================
+*/
+
+const scene =
+  new THREE.Scene();
 
 
-  /*
-  ========================================================
-  SCENE
-  ========================================================
-  */
-
-  const scene =
-    new THREE.Scene();
+scene.background =
+  null;
 
 
-  scene.background =
-    null;
 
+/*
+=========================================================
+CAMERA
+=========================================================
+*/
 
-  /*
-  ========================================================
-  CAMERA
-  ========================================================
-  */
+const camera =
+  new THREE.PerspectiveCamera(
 
-  const camera =
-    new THREE.PerspectiveCamera(
-      35,
-      container.clientWidth /
+    35,
+
+    container.clientWidth /
       container.clientHeight,
-      0.01,
-      100000
+
+    .1,
+
+    10000
+
+  );
+
+
+camera.position.set(
+  0,
+  0,
+  7
+);
+
+
+camera.lookAt(
+  0,
+  0,
+  0
+);
+
+
+
+/*
+=========================================================
+RENDERER
+=========================================================
+*/
+
+const renderer =
+  new THREE.WebGLRenderer({
+
+    antialias:true,
+
+    alpha:true
+
+  });
+
+
+renderer.setClearColor(
+  0x000000,
+  0
+);
+
+
+renderer.setPixelRatio(
+
+  Math.min(
+    window.devicePixelRatio,
+    2
+  )
+
+);
+
+
+renderer.setSize(
+
+  container.clientWidth,
+
+  container.clientHeight
+
+);
+
+
+renderer.outputColorSpace =
+  THREE.SRGBColorSpace;
+
+
+renderer.toneMapping =
+  THREE.ACESFilmicToneMapping;
+
+
+renderer.toneMappingExposure =
+  1.05;
+
+
+
+/*
+Environment
+*/
+
+const pmremGenerator =
+  new THREE.PMREMGenerator(
+    renderer
+  );
+
+
+scene.environment =
+  pmremGenerator
+    .fromScene(
+      new RoomEnvironment(),
+      .04
+    )
+    .texture;
+
+
+container.appendChild(
+  renderer.domElement
+);
+
+
+renderer.domElement.style.cursor =
+  "grab";
+
+
+renderer.domElement.style.touchAction =
+  "none";
+
+
+
+/*
+=========================================================
+MODEL PIVOT
+=========================================================
+*/
+
+const modelPivot =
+  new THREE.Group();
+
+
+scene.add(
+  modelPivot
+);
+
+
+
+/*
+=========================================================
+LIGHTS
+=========================================================
+*/
+
+scene.add(
+
+  new THREE.AmbientLight(
+    0xffffff,
+    .45
+  )
+
+);
+
+
+
+const keyLight =
+  new THREE.DirectionalLight(
+    0xffffff,
+    1.8
+  );
+
+
+keyLight.position.set(
+  4,
+  6,
+  5
+);
+
+
+scene.add(
+  keyLight
+);
+
+
+
+const fillLight =
+  new THREE.DirectionalLight(
+    0xffffff,
+    .45
+  );
+
+
+fillLight.position.set(
+  -5,
+  3,
+  -4
+);
+
+
+scene.add(
+  fillLight
+);
+
+
+
+const rimLight =
+  new THREE.DirectionalLight(
+    0x9fdcff,
+    .55
+  );
+
+
+rimLight.position.set(
+  0,
+  4,
+  -5
+);
+
+
+scene.add(
+  rimLight
+);
+
+
+
+/*
+=========================================================
+VALUES
+=========================================================
+*/
+
+let loadedModel =
+  null;
+
+
+let isDraggingModel =
+  false;
+
+
+let previousMouseX =
+  0;
+
+
+let previousMouseY =
+  0;
+
+
+let hasDragged =
+  false;
+
+
+let mixer =
+  null;
+
+
+let activeAnimationAction =
+  null;
+
+
+let isAnimationPlaying =
+  false;
+
+
+const animationClock =
+  new THREE.Clock();
+
+
+
+/*
+=========================================================
+TIMEOUT
+=========================================================
+*/
+
+function fetchWithTimeout(
+  url,
+  timeoutMs = 8000
+){
+
+  const controller =
+    new AbortController();
+
+
+  const timer =
+    setTimeout(
+      () => controller.abort(),
+      timeoutMs
     );
 
 
-  camera.position.set(
-    4,
-    3,
-    7
+  return fetch(
+    url,
+    {
+      signal:
+        controller.signal
+    }
+  )
+  .finally(
+    () => clearTimeout(timer)
   );
 
-
-  /*
-  ========================================================
-  RENDERER
-  ========================================================
-  */
-
-  const renderer =
-    new THREE.WebGLRenderer({
-
-      antialias: true,
-
-      alpha: true
-
-    });
+}
 
 
-  renderer.setPixelRatio(
-    Math.min(
-      window.devicePixelRatio,
-      2
+
+function withTimeout(
+  promise,
+  timeoutMs,
+  errorMessage
+){
+
+  return Promise.race([
+
+    promise,
+
+    new Promise(
+      (_,reject)=>{
+
+        setTimeout(
+
+          ()=>
+            reject(
+              new Error(
+                errorMessage
+              )
+            ),
+
+          timeoutMs
+
+        );
+
+      }
     )
+
+  ]);
+
+}
+
+
+
+/*
+=========================================================
+TEXTURES
+=========================================================
+*/
+
+async function loadTextureMaps(){
+
+  const textureLoader =
+    new THREE.TextureLoader();
+
+
+  try{
+
+    const response =
+      await fetchWithTimeout(
+        TEXTURES_ENDPOINT,
+        8000
+      );
+
+
+    if(!response.ok){
+
+      console.warn(
+        "Textures endpoint failed:",
+        response.status
+      );
+
+      return {};
+
+    }
+
+
+    const textures =
+      await response.json();
+
+
+    console.log(
+      "CONNECTOR TEXTURES:",
+      textures
+    );
+
+
+    const validTextures =
+      Array.isArray(textures)
+
+      ? textures.filter(
+          texture => {
+
+            const name =
+              String(
+                texture.fileName ||
+                texture.fullPath ||
+                texture.url ||
+                ""
+              ).toLowerCase();
+
+
+            return (
+              texture.url &&
+              !name.includes(
+                "preview"
+              )
+            );
+
+          }
+        )
+
+      : [];
+
+
+    const findByName =
+      keywords => {
+
+        return validTextures.find(
+          texture => {
+
+            const name =
+              String(
+
+                texture.fileName ||
+
+                texture.fullPath ||
+
+                texture.url ||
+
+                ""
+
+              )
+
+              .toLowerCase()
+
+              .replace(
+                /%20/g,
+                " "
+              )
+
+              .replace(
+                /[_.-]+/g,
+                " "
+              );
+
+
+            return keywords.some(
+              keyword =>
+                name.includes(
+                  keyword
+                )
+            );
+
+          }
+        )?.url || null;
+
+      };
+
+
+    const maps = {};
+
+
+    const baseColorUrl =
+      findByName([
+        "basecolor",
+        "base color",
+        "basecolour",
+        "base colour",
+        "diffuse",
+        "albedo",
+        "color",
+        "colour"
+      ]);
+
+
+    const roughnessUrl =
+      findByName([
+        "roughness",
+        "rough"
+      ]);
+
+
+    const metalnessUrl =
+      findByName([
+        "metalness",
+        "metallic",
+        "metal"
+      ]);
+
+
+    const normalUrl =
+      findByName([
+        "normal",
+        "normalmap",
+        "normal map"
+      ]);
+
+
+    const aoUrl =
+      findByName([
+        "ambient occlusion",
+        "ambientocclusion",
+        "ao"
+      ]);
+
+
+    const alphaUrl =
+      findByName([
+        "alpha",
+        "opacity",
+        "transparent",
+        "transparency"
+      ]);
+
+
+    const emissiveUrl =
+      findByName([
+        "emissive",
+        "emission",
+        "glow"
+      ]);
+
+
+    const heightUrl =
+      findByName([
+        "height",
+        "displacement",
+        "bump"
+      ]);
+
+
+
+    function loadTexture(
+      url,
+      isColor = false
+    ){
+
+      if(!url)
+        return null;
+
+
+      const texture =
+        textureLoader.load(
+
+          url,
+
+          undefined,
+
+          undefined,
+
+          error =>
+            console.warn(
+              "Texture load warning:",
+              url,
+              error
+            )
+
+        );
+
+
+      texture.colorSpace =
+        isColor
+
+        ? THREE.SRGBColorSpace
+
+        : THREE.NoColorSpace;
+
+
+      texture.wrapS =
+        THREE.RepeatWrapping;
+
+
+      texture.wrapT =
+        THREE.RepeatWrapping;
+
+
+      /*
+      אותו כיוון שיש בקוד המקורי שלך.
+      */
+
+      texture.flipY =
+        true;
+
+
+      texture.needsUpdate =
+        true;
+
+
+      return texture;
+
+    }
+
+
+
+    const baseColorMap =
+      loadTexture(
+        baseColorUrl,
+        true
+      );
+
+
+    const roughnessMap =
+      loadTexture(
+        roughnessUrl
+      );
+
+
+    const metalnessMap =
+      loadTexture(
+        metalnessUrl
+      );
+
+
+    const normalMap =
+      loadTexture(
+        normalUrl
+      );
+
+
+    const aoMap =
+      loadTexture(
+        aoUrl
+      );
+
+
+    const alphaMap =
+      loadTexture(
+        alphaUrl
+      );
+
+
+    const emissiveMap =
+      loadTexture(
+        emissiveUrl,
+        true
+      );
+
+
+    const displacementMap =
+      loadTexture(
+        heightUrl
+      );
+
+
+    if(baseColorMap)
+      maps.map =
+        baseColorMap;
+
+
+    if(roughnessMap)
+      maps.roughnessMap =
+        roughnessMap;
+
+
+    if(metalnessMap)
+      maps.metalnessMap =
+        metalnessMap;
+
+
+    if(normalMap)
+      maps.normalMap =
+        normalMap;
+
+
+    if(aoMap)
+      maps.aoMap =
+        aoMap;
+
+
+    if(alphaMap)
+      maps.alphaMap =
+        alphaMap;
+
+
+    if(emissiveMap)
+      maps.emissiveMap =
+        emissiveMap;
+
+
+    if(displacementMap)
+      maps.displacementMap =
+        displacementMap;
+
+
+    return maps;
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Textures loading failed:",
+      error
+    );
+
+
+    return {};
+
+  }
+
+}
+
+
+
+/*
+=========================================================
+UV2
+=========================================================
+*/
+
+function ensureUV2ForAO(
+  geometry
+){
+
+  if(
+    !geometry ||
+    !geometry.attributes ||
+    !geometry.attributes.uv
+  )
+    return;
+
+
+  if(
+    !geometry.attributes.uv2
+  ){
+
+    geometry.setAttribute(
+      "uv2",
+      geometry.attributes.uv
+    );
+
+  }
+
+}
+
+
+
+/*
+=========================================================
+MATERIALS
+=========================================================
+*/
+
+function applyMaterial(
+  model,
+  maps
+){
+
+  model.traverse(
+    child => {
+
+
+      if(!child.isMesh)
+        return;
+
+
+      ensureUV2ForAO(
+        child.geometry
+      );
+
+
+      const originalMaterials =
+
+        Array.isArray(
+          child.material
+        )
+
+        ? child.material
+
+        : [child.material];
+
+
+
+      const updatedMaterials =
+
+        originalMaterials.map(
+          oldMaterial => {
+
+
+            const originalColor =
+
+              oldMaterial &&
+              oldMaterial.color
+
+              ? oldMaterial
+                  .color
+                  .clone()
+
+              : new THREE.Color(
+                  0xffffff
+                );
+
+
+
+            const originalName =
+
+              oldMaterial &&
+              oldMaterial.name
+
+              ? oldMaterial.name
+
+              : "FBX Material";
+
+
+
+            const wasTransparent =
+              !!(
+
+                oldMaterial &&
+                (
+
+                  oldMaterial.transparent ||
+
+                  oldMaterial.opacity < 1 ||
+
+                  oldMaterial.alphaMap
+
+                )
+
+              );
+
+
+
+            const material =
+
+              new THREE.MeshStandardMaterial({
+
+                name:
+                  originalName,
+
+
+                map:
+                  maps.map || null,
+
+
+                normalMap:
+                  maps.normalMap || null,
+
+
+                roughnessMap:
+                  maps.roughnessMap || null,
+
+
+                metalnessMap:
+                  maps.metalnessMap || null,
+
+
+                aoMap:
+                  maps.aoMap || null,
+
+
+                alphaMap:
+                  maps.alphaMap || null,
+
+
+                emissiveMap:
+                  maps.emissiveMap || null,
+
+
+                displacementMap:
+                  maps.displacementMap || null,
+
+
+                color:
+                  maps.map
+                    ? 0xffffff
+                    : originalColor,
+
+
+                roughness:
+                  maps.roughnessMap
+                    ? .85
+                    : .28,
+
+
+                metalness:
+                  maps.metalnessMap
+                    ? .85
+                    : .75,
+
+
+                envMapIntensity:
+                  1.15,
+
+
+                side:
+                  THREE.DoubleSide,
+
+
+                transparent:
+                  !!maps.alphaMap ||
+                  wasTransparent,
+
+
+                opacity:
+
+                  oldMaterial &&
+                  oldMaterial.opacity !==
+                    undefined
+
+                  ? oldMaterial.opacity
+
+                  : 1
+
+              });
+
+
+
+            if(maps.alphaMap){
+
+              material.alphaTest =
+                .05;
+
+
+              material.depthWrite =
+                false;
+
+            }
+
+
+
+            if(maps.emissiveMap){
+
+              material.emissive.set(
+                0xffffff
+              );
+
+
+              material.emissiveIntensity =
+                .7;
+
+            }
+
+
+
+            if(maps.aoMap){
+
+              material.aoMapIntensity =
+                1;
+
+            }
+
+
+
+            if(maps.displacementMap){
+
+              material.displacementScale =
+                .025;
+
+            }
+
+
+            material.needsUpdate =
+              true;
+
+
+            return material;
+
+          }
+
+        );
+
+
+
+      child.material =
+
+        Array.isArray(
+          child.material
+        )
+
+        ? updatedMaterials
+
+        : updatedMaterials[0];
+
+
+
+      child.castShadow =
+        true;
+
+
+      child.receiveShadow =
+        true;
+
+
+      child.frustumCulled =
+        false;
+
+    }
   );
 
-
-  renderer.setSize(
-    container.clientWidth,
-    container.clientHeight
-  );
+}
 
 
-  renderer.setClearColor(
-    0x000000,
+
+/*
+=========================================================
+CENTER + SCALE
+=========================================================
+*/
+
+function centerAndScale(
+  model
+){
+
+  model.position.set(
+    0,
+    0,
     0
   );
 
 
-  renderer.outputColorSpace =
-    THREE.SRGBColorSpace;
-
-
-  renderer.toneMapping =
-    THREE.ACESFilmicToneMapping;
-
-
-  renderer.toneMappingExposure =
-    1.1;
-
-
-  container.appendChild(
-    renderer.domElement
-  );
-
-
-  /*
-  ========================================================
-  ENVIRONMENT
-  ========================================================
-  */
-
-  const pmremGenerator =
-    new THREE.PMREMGenerator(
-      renderer
-    );
-
-
-  const environment =
-    pmremGenerator.fromScene(
-      new RoomEnvironment(),
-      0.04
-    );
-
-
-  scene.environment =
-    environment.texture;
-
-
-  /*
-  ========================================================
-  LIGHTS
-  ========================================================
-  */
-
-  const ambient =
-    new THREE.AmbientLight(
-      0xffffff,
-      1.2
-    );
-
-
-  scene.add(
-    ambient
-  );
-
-
-  const keyLight =
-    new THREE.DirectionalLight(
-      0xffffff,
-      2.5
-    );
-
-
-  keyLight.position.set(
-    5,
-    8,
-    6
-  );
-
-
-  scene.add(
-    keyLight
-  );
-
-
-  const fillLight =
-    new THREE.DirectionalLight(
-      0xffffff,
-      1.2
-    );
-
-
-  fillLight.position.set(
-    -6,
-    3,
-    5
-  );
-
-
-  scene.add(
-    fillLight
-  );
-
-
-  const backLight =
-    new THREE.DirectionalLight(
-      0x8fdcff,
-      1.4
-    );
-
-
-  backLight.position.set(
+  model.rotation.set(
     0,
-    5,
-    -7
+    Math.PI / 4,
+    0
   );
 
 
-  scene.add(
-    backLight
+  model.scale.set(
+    1,
+    1,
+    1
   );
 
 
-  /*
-  ========================================================
-  CONTROLS
-  ========================================================
-  */
-
-  const controls =
-    new OrbitControls(
-      camera,
-      renderer.domElement
-    );
+  model.updateMatrixWorld(
+    true
+  );
 
 
-  controls.enableDamping =
-    true;
-
-
-  controls.dampingFactor =
-    0.08;
-
-
-  controls.enablePan =
-    true;
-
-
-  controls.enableZoom =
-    true;
-
-
-  controls.autoRotate =
-    true;
-
-
-  controls.autoRotateSpeed =
-    1.4;
-
-
-  controls.minDistance =
-    0.1;
-
-
-  controls.maxDistance =
-    100000;
-
-
-  /*
-  ========================================================
-  GLOBAL VALUES
-  ========================================================
-  */
-
-  let loadedModel =
-    null;
-
-
-  let originalCameraPosition =
-    new THREE.Vector3();
-
-
-  let originalTarget =
-    new THREE.Vector3();
-
-
-  /*
-  ========================================================
-  LOAD FBX
-  ========================================================
-  */
-
-  const loader =
-    new FBXLoader();
-
-
-  loader.load(
-
-    MODEL_URL,
-
-
-    /*
-    SUCCESS
-    */
-
-    function (model) {
-
-      console.log(
-        "FBX loaded:",
+  let box =
+    new THREE.Box3()
+      .setFromObject(
         model
       );
 
 
-      loadedModel =
-        model;
+  const size =
+    box.getSize(
+      new THREE.Vector3()
+    );
 
 
-      /*
-      Materials
-      */
-
-      model.traverse(
-        function (child) {
-
-          if (
-            child.isMesh
-          ) {
-
-            child.frustumCulled =
-              false;
+  const maxSize =
+    Math.max(
+      size.x,
+      size.y,
+      size.z
+    );
 
 
-            /*
-            FBX יכול להכיל חומר יחיד
-            או מערך חומרים.
-            */
-
-            const materials =
-              Array.isArray(
-                child.material
-              )
-                ? child.material
-                : [child.material];
+  const isMobile =
+    window.innerWidth <=
+      768;
 
 
-            materials.forEach(
-              material => {
+  /*
+  הגדלתי טיפה את המודל
+  לעומת המקור.
+  */
 
-                if (!material)
-                  return;
+  const targetSize =
+    isMobile
+      ? 3.05
+      : 3.65;
 
 
-                material.side =
-                  THREE.DoubleSide;
+  const scale =
+    maxSize > 0
+
+      ? targetSize /
+        maxSize
+
+      : 1;
 
 
-                material.needsUpdate =
-                  true;
+  model.scale.setScalar(
+    scale
+  );
 
-              }
-            );
+
+  model.updateMatrixWorld(
+    true
+  );
+
+
+  box =
+    new THREE.Box3()
+      .setFromObject(
+        model
+      );
+
+
+  const center =
+    box.getCenter(
+      new THREE.Vector3()
+    );
+
+
+  model.position.sub(
+    center
+  );
+
+
+  model.position.y +=
+    .1;
+
+
+  camera.position.set(
+    0,
+    0,
+    7
+  );
+
+
+  camera.lookAt(
+    0,
+    0,
+    0
+  );
+
+}
+
+
+
+/*
+=========================================================
+FBX LOAD
+=========================================================
+*/
+
+function loadFbxWithPromise(
+  loader,
+  url
+){
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+
+      loader.load(
+
+        url,
+
+
+        model =>
+          resolve(model),
+
+
+        xhr => {
+
+          if(!loading)
+            return;
+
+
+          if(xhr.total){
+
+            const percent =
+              Math.round(
+
+                xhr.loaded /
+                xhr.total *
+                100
+
+              );
+
+
+            loading.textContent =
+
+              `טוען מודל תלת־ממדי... ${percent}%`;
+
+          }
+          else{
+
+            loading.textContent =
+              "טוען מודל תלת־ממדי...";
 
           }
 
-        }
-      );
+        },
 
 
-      /*
-      ====================================================
-      CENTER MODEL
-      ====================================================
-      */
-
-      const box =
-        new THREE.Box3()
-          .setFromObject(
-            model
-          );
-
-
-      const size =
-        box.getSize(
-          new THREE.Vector3()
-        );
-
-
-      const center =
-        box.getCenter(
-          new THREE.Vector3()
-        );
-
-
-      /*
-      מזיזים את המודל כך שמרכזו יהיה 0,0,0
-      */
-
-      model.position.sub(
-        center
-      );
-
-
-      scene.add(
-        model
-      );
-
-
-      /*
-      מחשבים bounding box מחדש
-      */
-
-      const centeredBox =
-        new THREE.Box3()
-          .setFromObject(
-            model
-          );
-
-
-      const centeredSize =
-        centeredBox.getSize(
-          new THREE.Vector3()
-        );
-
-
-      /*
-      ====================================================
-      CAMERA FIT
-      ====================================================
-      */
-
-      const maxDimension =
-        Math.max(
-          centeredSize.x,
-          centeredSize.y,
-          centeredSize.z
-        );
-
-
-      const fov =
-        camera.fov *
-        Math.PI /
-        180;
-
-
-      let cameraDistance =
-        Math.abs(
-          maxDimension /
-          Math.sin(
-            fov / 2
-          )
-        );
-
-
-      cameraDistance *=
-        0.85;
-
-
-      /*
-      במקרה של מודל קטן מאוד
-      */
-
-      if (
-        !Number.isFinite(
-          cameraDistance
-        ) ||
-        cameraDistance <= 0
-      ) {
-
-        cameraDistance =
-          5;
-
-      }
-
-
-      camera.position.set(
-
-        cameraDistance *
-        0.65,
-
-        cameraDistance *
-        0.35,
-
-        cameraDistance
+        error =>
+          reject(error)
 
       );
-
-
-      controls.target.set(
-        0,
-        0,
-        0
-      );
-
-
-      /*
-      Zoom limits
-      */
-
-      controls.minDistance =
-        cameraDistance *
-        0.15;
-
-
-      controls.maxDistance =
-        cameraDistance *
-        5;
-
-
-      camera.near =
-        Math.max(
-          cameraDistance /
-          1000,
-          0.001
-        );
-
-
-      camera.far =
-        cameraDistance *
-        100;
-
-
-      camera.updateProjectionMatrix();
-
-
-      controls.update();
-
-
-      /*
-      Save reset positions
-      */
-
-      originalCameraPosition.copy(
-        camera.position
-      );
-
-
-      originalTarget.copy(
-        controls.target
-      );
-
-
-      /*
-      UI
-      */
-
-      loadingElement
-        .classList
-        .add("hidden");
-
-
-      status
-        .classList
-        .add("ready");
-
-
-      statusText.textContent =
-        "מודל 3D פעיל";
-
-    },
-
-
-    /*
-    PROGRESS
-    */
-
-    function (xhr) {
-
-      if (
-        xhr.total
-      ) {
-
-        const percent =
-          Math.round(
-            (
-              xhr.loaded /
-              xhr.total
-            ) * 100
-          );
-
-
-        const subtitle =
-          loadingElement
-            .querySelector(
-              ".loading-subtitle"
-            );
-
-
-        if (subtitle) {
-
-          subtitle.textContent =
-            `טוען מודל... ${percent}%`;
-
-        }
-
-      }
-
-    },
-
-
-    /*
-    ERROR
-    */
-
-    function (error) {
-
-      console.error(
-        "FBX load error:",
-        error
-      );
-
-
-      loadingElement
-        .classList
-        .add("hidden");
-
-
-      errorElement
-        .classList
-        .add("show");
-
-
-      errorText.textContent =
-        "לא ניתן היה לטעון את Connector.fbx. בדוק שהקובץ קיים וש־CORS מאפשר גישה מהדומיין של האתר.";
-
-
-      status
-        .classList
-        .add("error");
-
-
-      statusText.textContent =
-        "שגיאה בטעינת המודל";
 
     }
+  );
 
+}
+
+
+
+/*
+=========================================================
+MODEL ROTATION
+=========================================================
+*/
+
+function setupModelRotation(){
+
+
+  const ROTATION_SPEED =
+    .008;
+
+
+  const SMOOTHING =
+    .15;
+
+
+  let targetRotationX =
+    modelPivot.rotation.x;
+
+
+  let targetRotationY =
+    modelPivot.rotation.y;
+
+
+
+  renderer.domElement
+    .addEventListener(
+      "pointerdown",
+      event => {
+
+
+        if(!loadedModel)
+          return;
+
+
+        event.preventDefault();
+
+
+        isDraggingModel =
+          true;
+
+
+        hasDragged =
+          false;
+
+
+        previousMouseX =
+          event.clientX;
+
+
+        previousMouseY =
+          event.clientY;
+
+
+        targetRotationX =
+          modelPivot.rotation.x;
+
+
+        targetRotationY =
+          modelPivot.rotation.y;
+
+
+        renderer.domElement
+          .setPointerCapture(
+            event.pointerId
+          );
+
+
+        renderer.domElement
+          .style.cursor =
+          "grabbing";
+
+      }
+    );
+
+
+
+  renderer.domElement
+    .addEventListener(
+      "pointermove",
+      event => {
+
+
+        if(
+          !isDraggingModel ||
+          !loadedModel
+        )
+          return;
+
+
+        const deltaX =
+          event.clientX -
+          previousMouseX;
+
+
+        const deltaY =
+          event.clientY -
+          previousMouseY;
+
+
+        if(
+          Math.abs(deltaX) > 1 ||
+          Math.abs(deltaY) > 1
+        ){
+
+          hasDragged =
+            true;
+
+        }
+
+
+        targetRotationY +=
+          deltaX *
+          ROTATION_SPEED;
+
+
+        targetRotationX +=
+          deltaY *
+          ROTATION_SPEED;
+
+
+        previousMouseX =
+          event.clientX;
+
+
+        previousMouseY =
+          event.clientY;
+
+      }
+    );
+
+
+
+  renderer.domElement
+    .addEventListener(
+      "pointerup",
+      event => {
+
+
+        isDraggingModel =
+          false;
+
+
+        renderer.domElement
+          .style.cursor =
+          "grab";
+
+
+        try{
+
+          renderer.domElement
+            .releasePointerCapture(
+              event.pointerId
+            );
+
+        }
+        catch{}
+
+      }
+    );
+
+
+
+  renderer.domElement
+    .addEventListener(
+      "pointercancel",
+      ()=>{
+
+        isDraggingModel =
+          false;
+
+        renderer.domElement
+          .style.cursor =
+          "grab";
+
+      }
+    );
+
+
+
+  renderer.domElement
+    .addEventListener(
+      "pointerleave",
+      ()=>{
+
+        isDraggingModel =
+          false;
+
+        renderer.domElement
+          .style.cursor =
+          "grab";
+
+      }
+    );
+
+
+
+  return function updateRotation(){
+
+
+    if(!loadedModel)
+      return;
+
+
+    modelPivot.rotation.y +=
+
+      (
+        targetRotationY -
+        modelPivot.rotation.y
+      ) *
+      SMOOTHING;
+
+
+    modelPivot.rotation.x +=
+
+      (
+        targetRotationX -
+        modelPivot.rotation.x
+      ) *
+      SMOOTHING;
+
+  };
+
+}
+
+
+
+/*
+=========================================================
+ZOOM
+=========================================================
+*/
+
+renderer.domElement
+  .addEventListener(
+    "wheel",
+    event => {
+
+
+      event.preventDefault();
+
+
+      const direction =
+        Math.sign(
+          event.deltaY
+        );
+
+
+      camera.position.z +=
+        direction *
+        .45;
+
+
+      camera.position.z =
+        THREE.MathUtils.clamp(
+          camera.position.z,
+          3.2,
+          12
+        );
+
+    },
+    {
+      passive:false
+    }
   );
 
 
-  /*
-  ========================================================
-  ROTATION
-  ========================================================
-  */
 
-  window.toggleRotation =
-    function () {
+/*
+=========================================================
+ANIMATION
+=========================================================
+*/
 
-      controls.autoRotate =
-        !controls.autoRotate;
+function stopCurrentAnimation(){
+
+  if(!activeAnimationAction)
+    return;
 
 
-      const button =
-        document.getElementById(
-          "rotationButton"
+  activeAnimationAction.paused =
+    true;
+
+
+  activeAnimationAction.stop();
+
+
+  isAnimationPlaying =
+    false;
+
+}
+
+
+
+function setAnimationButtonsState(
+  enabled
+){
+
+  playForwardButton.disabled =
+    !enabled;
+
+
+  playBackwardButton.disabled =
+    !enabled;
+
+}
+
+
+
+function updateAnimationButtonsText(
+  state = "idle"
+){
+
+
+  if(state === "forward"){
+
+    playForwardButton.textContent =
+      "מריץ אנימציה...";
+
+
+    playBackwardButton.textContent =
+      "◀ אנימציה אחורה";
+
+
+    return;
+
+  }
+
+
+
+  if(state === "backward"){
+
+    playForwardButton.textContent =
+      "▶ הפעל אנימציה";
+
+
+    playBackwardButton.textContent =
+      "מחזיר אחורה...";
+
+
+    return;
+
+  }
+
+
+  playForwardButton.textContent =
+    "▶ הפעל אנימציה";
+
+
+  playBackwardButton.textContent =
+    "◀ אנימציה אחורה";
+
+}
+
+
+
+function playAnimationOnce(
+  direction
+){
+
+  if(!activeAnimationAction)
+    return;
+
+
+  const clip =
+    activeAnimationAction
+      .getClip();
+
+
+  const duration =
+    clip.duration || 0;
+
+
+  stopCurrentAnimation();
+
+
+  activeAnimationAction.reset();
+
+
+  activeAnimationAction.enabled =
+    true;
+
+
+  activeAnimationAction.setLoop(
+    THREE.LoopOnce,
+    1
+  );
+
+
+  activeAnimationAction.clampWhenFinished =
+    true;
+
+
+  activeAnimationAction.paused =
+    false;
+
+
+
+  if(
+    direction ===
+    "backward"
+  ){
+
+    activeAnimationAction.time =
+      duration;
+
+
+    activeAnimationAction.timeScale =
+      -1;
+
+
+    updateAnimationButtonsText(
+      "backward"
+    );
+
+  }
+  else{
+
+    activeAnimationAction.time =
+      0;
+
+
+    activeAnimationAction.timeScale =
+      1;
+
+
+    updateAnimationButtonsText(
+      "forward"
+    );
+
+  }
+
+
+  isAnimationPlaying =
+    true;
+
+
+  activeAnimationAction.play();
+
+}
+
+
+
+function setupModelAnimation(
+  model
+){
+
+  const animations =
+    Array.isArray(
+      model.animations
+    )
+
+    ? model.animations
+
+    : [];
+
+
+  console.log(
+    "FBX animations:",
+    animations
+  );
+
+
+  if(!animations.length){
+
+    setAnimationButtonsState(
+      false
+    );
+
+
+    playForwardButton.textContent =
+      "אין אנימציה";
+
+
+    playBackwardButton.textContent =
+      "אין אנימציה אחורה";
+
+
+    return;
+
+  }
+
+
+
+  mixer =
+    new THREE.AnimationMixer(
+      model
+    );
+
+
+  activeAnimationAction =
+    mixer.clipAction(
+      animations[0]
+    );
+
+
+  activeAnimationAction.setLoop(
+    THREE.LoopOnce,
+    1
+  );
+
+
+  activeAnimationAction.clampWhenFinished =
+    true;
+
+
+  activeAnimationAction.enabled =
+    true;
+
+
+  activeAnimationAction.paused =
+    true;
+
+
+  setAnimationButtonsState(
+    true
+  );
+
+
+  updateAnimationButtonsText();
+
+
+
+  playForwardButton
+    .addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        playAnimationOnce(
+          "forward"
         );
 
-
-      button.style.background =
-        controls.autoRotate
-          ? "rgba(7,9,20,.74)"
-          : "rgba(0,229,255,.22)";
-
-    };
+      }
+    );
 
 
-  /*
-  ========================================================
-  RESET CAMERA
-  ========================================================
-  */
 
-  window.resetCamera =
-    function () {
+  playBackwardButton
+    .addEventListener(
+      "click",
+      event => {
 
-      if (
-        originalCameraPosition.length() === 0
-      ) {
+        event.preventDefault();
 
-        return;
+        event.stopPropagation();
+
+        playAnimationOnce(
+          "backward"
+        );
 
       }
+    );
 
 
-      camera.position.copy(
-        originalCameraPosition
+
+  mixer.addEventListener(
+    "finished",
+    ()=>{
+
+      isAnimationPlaying =
+        false;
+
+
+      updateAnimationButtonsText();
+
+    }
+  );
+
+}
+
+
+
+/*
+=========================================================
+LOAD MODEL
+=========================================================
+*/
+
+async function loadModel(){
+
+  try{
+
+
+    loading.textContent =
+      "טוען טקסטורות...";
+
+
+    let maps =
+      {};
+
+
+    try{
+
+      maps =
+        await withTimeout(
+
+          loadTextureMaps(),
+
+          8000,
+
+          "Texture loading timeout"
+
+        );
+
+    }
+    catch(textureError){
+
+      console.warn(
+        "Texture loading skipped:",
+        textureError
       );
 
 
-      controls.target.copy(
-        originalTarget
-      );
-
-
-      controls.update();
-
-    };
-
-
-  /*
-  ========================================================
-  RESIZE
-  ========================================================
-  */
-
-  function resizeRenderer() {
-
-    const width =
-      container.clientWidth;
-
-
-    const height =
-      container.clientHeight;
-
-
-    if (
-      width <= 0 ||
-      height <= 0
-    ) {
-
-      return;
+      maps = {};
 
     }
 
 
+
+    loading.textContent =
+      "טוען מודל תלת־ממדי...";
+
+
+    const loader =
+      new FBXLoader();
+
+
+    const model =
+      await withTimeout(
+
+        loadFbxWithPromise(
+          loader,
+          FBX_URL
+        ),
+
+        30000,
+
+        "FBX loading timeout"
+
+      );
+
+
+    console.log(
+      "CONNECTOR FBX LOADED:",
+      model
+    );
+
+
+    applyMaterial(
+      model,
+      maps
+    );
+
+
+    centerAndScale(
+      model
+    );
+
+
+    loadedModel =
+      model;
+
+
+    modelPivot.add(
+      model
+    );
+
+
+    setupModelAnimation(
+      model
+    );
+
+
+    loading.style.display =
+      "none";
+
+
+    viewerStatus.classList.add(
+      "ready"
+    );
+
+
+    viewerStatusText.textContent =
+      "מודל 3D פעיל";
+
+
+  }
+  catch(error){
+
+
+    console.error(
+      "FBX load error:",
+      error
+    );
+
+
+    loading.textContent =
+      "שגיאה בטעינת המודל";
+
+
+    viewerStatus.classList.add(
+      "error"
+    );
+
+
+    viewerStatusText.textContent =
+      "שגיאה בטעינת המודל";
+
+  }
+
+}
+
+
+
+/*
+=========================================================
+RENDER LOOP
+=========================================================
+*/
+
+const updateRotation =
+  setupModelRotation();
+
+
+function animate(){
+
+  requestAnimationFrame(
+    animate
+  );
+
+
+  const delta =
+    animationClock.getDelta();
+
+
+  if(mixer){
+
+    mixer.update(
+      delta
+    );
+
+  }
+
+
+  updateRotation();
+
+
+  renderer.render(
+    scene,
+    camera
+  );
+
+}
+
+
+loadModel();
+
+animate();
+
+
+
+/*
+=========================================================
+RESIZE
+=========================================================
+*/
+
+window.addEventListener(
+  "resize",
+  ()=>{
+
+
     camera.aspect =
-      width /
-      height;
+
+      container.clientWidth /
+      container.clientHeight;
 
 
     camera.updateProjectionMatrix();
 
 
     renderer.setSize(
-      width,
-      height,
-      false
+
+      container.clientWidth,
+
+      container.clientHeight
+
     );
 
   }
+);
 
-
-  window.addEventListener(
-    "resize",
-    resizeRenderer
-  );
-
-
-  /*
-  Fullscreen משנה גודל ולכן
-  מעדכנים את ה-renderer.
-  */
-
-  document.addEventListener(
-    "fullscreenchange",
-    function () {
-
-      setTimeout(
-        resizeRenderer,
-        100
-      );
-
-    }
-  );
-
-
-  /*
-  ========================================================
-  ANIMATION LOOP
-  ========================================================
-  */
-
-  function animate() {
-
-    requestAnimationFrame(
-      animate
-    );
-
-
-    controls.update();
-
-
-    renderer.render(
-      scene,
-      camera
-    );
-
-  }
-
-
-  animate();
 
 </script>
 
+
 </body>
+
 </html>
