@@ -105,7 +105,6 @@ Visitors can:
 
 | Feature | Status |
 |---------|--------|
-| Landing Page | ✅ |
 | Responsive Design | ✅ |
 | Company Presentation | ✅ |
 | Services Showcase | ✅ |
@@ -177,7 +176,6 @@ Maxis3D provides:
 - Custom Software Development
 - Modern Web Applications
 - UI / UX Design
-- Cloud Solutions
 
 ---
 
