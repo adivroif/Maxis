@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 
@@ -939,6 +940,146 @@ h1{
     grid-column:auto;
   }
 
+}
+
+
+
+/* ======================================================
+   3D HOTSPOTS
+====================================================== */
+
+.hotspot-layer{
+  position:absolute;
+  inset:0;
+  z-index:7;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.model-hotspot{
+  position:absolute;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  border:2px solid #fff;
+  background:#d79a00;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.30),
+    0 0 0 0 rgba(245,183,0,.42);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+  pointer-events:auto;
+  z-index:8;
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease,
+    opacity .18s ease;
+  animation:hotspotPulse 1.8s ease-out infinite;
+}
+
+.model-hotspot::after{
+  content:"";
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+
+.model-hotspot:hover{
+  transform:translate(-50%,-50%) scale(1.22);
+  background:#f2b600;
+}
+
+.model-hotspot.active{
+  background:#f4b400;
+  transform:translate(-50%,-50%) scale(1.12);
+  box-shadow:
+    0 8px 26px rgba(0,0,0,.30),
+    0 0 0 9px rgba(244,180,0,.24);
+}
+
+@keyframes hotspotPulse{
+  0%{
+    box-shadow:
+      0 8px 24px rgba(0,0,0,.30),
+      0 0 0 0 rgba(245,183,0,.42);
+  }
+  70%{
+    box-shadow:
+      0 8px 24px rgba(0,0,0,.30),
+      0 0 0 12px rgba(245,183,0,0);
+  }
+  100%{
+    box-shadow:
+      0 8px 24px rgba(0,0,0,.30),
+      0 0 0 0 rgba(245,183,0,0);
+  }
+}
+
+.hotspot-info{
+  position:absolute;
+  min-width:220px;
+  max-width:300px;
+  z-index:9;
+  pointer-events:auto;
+  padding:15px 17px;
+  border-radius:15px;
+  background:rgba(7,9,20,.95);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 18px 45px rgba(0,0,0,.35);
+  backdrop-filter:blur(14px);
+  transform:translate(-50%, calc(-100% - 22px));
+  display:none;
+  direction:rtl;
+  text-align:right;
+}
+
+.hotspot-info.show{
+  display:block;
+}
+
+.hotspot-info-title{
+  font-size:15px;
+  font-weight:800;
+  margin-bottom:6px;
+  color:#ffd65a;
+}
+
+.hotspot-info-description{
+  font-size:13px;
+  line-height:1.65;
+  color:#d8deec;
+}
+
+.hotspot-info-close{
+  position:absolute;
+  top:7px;
+  left:8px;
+  width:24px;
+  height:24px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.09);
+  color:#fff;
+  cursor:pointer;
+}
+
+@media(max-width:620px){
+  .model-hotspot{
+    width:27px;
+    height:27px;
+  }
+
+  .hotspot-info{
+    min-width:190px;
+    max-width:240px;
+  }
 }
 
 </style>
@@ -2000,6 +2141,11 @@ const TEXTURES_ENDPOINT =
   "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-model-textures?modelName=Connector";
 
 
+const MODEL_PARTS_ENDPOINT =
+
+  "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/ModelsParts/productName/Connector";
+
+
 
 const container =
   document.getElementById(
@@ -2309,6 +2455,99 @@ let isAnimationPlaying =
 
 const animationClock =
   new THREE.Clock();
+
+
+/*
+=========================================================
+HOTSPOTS STATE
+=========================================================
+*/
+
+const hotspotLayer =
+  document.createElement("div");
+
+hotspotLayer.className =
+  "hotspot-layer";
+
+container.appendChild(
+  hotspotLayer
+);
+
+
+const hotspotInfo =
+  document.createElement("div");
+
+hotspotInfo.className =
+  "hotspot-info";
+
+hotspotInfo.innerHTML = `
+  <button class="hotspot-info-close" type="button" aria-label="סגור">×</button>
+  <div class="hotspot-info-title"></div>
+  <div class="hotspot-info-description"></div>
+`;
+
+hotspotLayer.appendChild(
+  hotspotInfo
+);
+
+
+const hotspotInfoTitle =
+  hotspotInfo.querySelector(
+    ".hotspot-info-title"
+  );
+
+
+const hotspotInfoDescription =
+  hotspotInfo.querySelector(
+    ".hotspot-info-description"
+  );
+
+
+const hotspotInfoClose =
+  hotspotInfo.querySelector(
+    ".hotspot-info-close"
+  );
+
+
+let modelHotspots = [];
+
+let activeHotspotId =
+  null;
+
+
+hotspotInfoClose.addEventListener(
+  "click",
+  event => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    closeHotspotInfo();
+
+  }
+);
+
+
+function closeHotspotInfo(){
+
+  activeHotspotId =
+    null;
+
+  hotspotInfo.classList.remove(
+    "show"
+  );
+
+  modelHotspots.forEach(
+    hotspot => {
+
+      hotspot.element.classList.remove(
+        "active"
+      );
+
+    }
+  );
+
+}
 
 
 
@@ -3815,6 +4054,994 @@ function setupModelAnimation(
 
 
 
+
+/*
+=========================================================
+MODEL PART HOTSPOTS
+=========================================================
+
+This follows the same idea as the React viewer:
+1. Read model parts from the API.
+2. Show only parts marked as present/displayed.
+3. Match each DB part to a real FBX mesh by name/key.
+4. Anchor the hotspot to the center of that mesh.
+5. Project the 3D point to 2D every frame so it follows rotation/animation.
+=========================================================
+*/
+
+function isPartPresent(part){
+
+  if(!part)
+    return false;
+
+
+  const value =
+
+    part.presentAtSite ??
+    part.PresentAtSite ??
+    part.displayInSite ??
+    part.DisplayInSite ??
+    part.present_at_site ??
+    part.display_in_site ??
+    part.present ??
+    part.Present ??
+    part.inSite ??
+    part.InSite ??
+    part.isPresent ??
+    part.IsPresent;
+
+
+  if(
+    value === undefined ||
+    value === null
+  ){
+
+    return false;
+
+  }
+
+
+  if(typeof value === "boolean")
+    return value;
+
+
+  if(typeof value === "number")
+    return value > 0;
+
+
+  if(typeof value === "string"){
+
+    const normalized =
+      value
+        .trim()
+        .toLowerCase();
+
+
+    if(
+      normalized === "" ||
+      normalized === "false" ||
+      normalized === "0" ||
+      normalized === "no" ||
+      normalized === "none" ||
+      normalized === "null" ||
+      normalized === "undefined" ||
+      normalized === "off" ||
+      normalized === "לא" ||
+      normalized === "אין" ||
+      normalized === "לא קיים" ||
+      normalized === "חסר" ||
+      normalized === "n"
+    ){
+
+      return false;
+
+    }
+
+
+    return true;
+
+  }
+
+
+  return Boolean(value);
+
+}
+
+
+
+function normalizePartName(value){
+
+  return String(
+    value || ""
+  )
+  .toLowerCase()
+  .trim();
+
+}
+
+
+
+function compactPartName(value){
+
+  return normalizePartName(
+    value
+  )
+  .replace(
+    /[^a-z0-9]/gi,
+    ""
+  );
+
+}
+
+
+
+function getPartId(part,index){
+
+  return String(
+    part.id ??
+    part.modelPartId ??
+    part.partId ??
+    part.modelPartsId ??
+    `part-${index}`
+  );
+
+}
+
+
+
+function getPartDisplayName(part){
+
+  return (
+    part.display_name_he ||
+    part.displayName_he ||
+    part.display_name ||
+    part.displayName ||
+    part.partName_he ||
+    part.partName ||
+    part.partKey ||
+    "חלק במוצר"
+  );
+
+}
+
+
+
+function getPartDescription(part){
+
+  return (
+    part.description_he ||
+    part.descriptionHe ||
+    part.description ||
+    part.partDescription ||
+    ""
+  );
+
+}
+
+
+
+function findMeshForPart(
+  part,
+  meshes,
+  usedMeshSet
+){
+
+  const partName =
+    normalizePartName(
+      part.partName
+    );
+
+
+  const partKey =
+    normalizePartName(
+      part.partKey
+    );
+
+
+  const displayName =
+    normalizePartName(
+      part.display_name ||
+      part.displayName
+    );
+
+
+  const englishName =
+    normalizePartName(
+      part.display_name_en ||
+      part.displayName_en ||
+      part.partName_en
+    );
+
+
+  const hebrewName =
+    normalizePartName(
+      part.display_name_he ||
+      part.displayName_he ||
+      part.partName_he
+    );
+
+
+  const idName =
+    normalizePartName(
+      part.id ||
+      part.partId ||
+      part.modelPartId
+    );
+
+
+  const partNameCompact =
+    compactPartName(
+      partName
+    );
+
+
+  const partKeyCompact =
+    compactPartName(
+      partKey
+    );
+
+
+  const displayCompact =
+    compactPartName(
+      displayName
+    );
+
+
+  function matches(mesh){
+
+    const meshName =
+      normalizePartName(
+        mesh.name
+      );
+
+
+    if(!meshName)
+      return false;
+
+
+    const meshCompact =
+      compactPartName(
+        meshName
+      );
+
+
+    const keyMatch =
+      partKey !== "" &&
+      (
+        meshName.includes(partKey) ||
+        partKey.includes(meshName) ||
+        (
+          partKeyCompact !== "" &&
+          (
+            meshCompact.includes(
+              partKeyCompact
+            ) ||
+            partKeyCompact.includes(
+              meshCompact
+            )
+          )
+        )
+      );
+
+
+    const nameMatch =
+      partName !== "" &&
+      (
+        meshName.includes(partName) ||
+        partName.includes(meshName) ||
+        (
+          partNameCompact !== "" &&
+          (
+            meshCompact.includes(
+              partNameCompact
+            ) ||
+            partNameCompact.includes(
+              meshCompact
+            )
+          )
+        )
+      );
+
+
+    const displayMatch =
+      displayName !== "" &&
+      (
+        meshName.includes(displayName) ||
+        displayName.includes(meshName) ||
+        (
+          displayCompact !== "" &&
+          (
+            meshCompact.includes(
+              displayCompact
+            ) ||
+            displayCompact.includes(
+              meshCompact
+            )
+          )
+        )
+      );
+
+
+    const englishMatch =
+      englishName !== "" &&
+      (
+        meshName.includes(englishName) ||
+        englishName.includes(meshName)
+      );
+
+
+    const hebrewMatch =
+      hebrewName !== "" &&
+      (
+        meshName.includes(hebrewName) ||
+        hebrewName.includes(meshName)
+      );
+
+
+    const idMatch =
+      idName !== "" &&
+      meshName === idName;
+
+
+    return (
+      keyMatch ||
+      nameMatch ||
+      displayMatch ||
+      englishMatch ||
+      hebrewMatch ||
+      idMatch
+    );
+
+  }
+
+
+  /*
+  First pass:
+  Do not reuse a mesh already assigned to another hotspot.
+  */
+
+  let matchedMesh =
+    meshes.find(
+      mesh =>
+        !usedMeshSet.has(mesh) &&
+        matches(mesh)
+    );
+
+
+  /*
+  Second pass:
+  Same behavior as the source implementation -
+  allow a matching mesh even if it was already encountered.
+  */
+
+  if(!matchedMesh){
+
+    matchedMesh =
+      meshes.find(
+        mesh =>
+          matches(mesh)
+      );
+
+  }
+
+
+  /*
+  Third pass:
+  Fallback word matching.
+  We still never assign a random mesh.
+  */
+
+  if(!matchedMesh){
+
+    const words =
+      `${partName} ${partKey} ${displayName}`
+      .split(
+        /[^a-z0-9]+/
+      )
+      .filter(
+        word =>
+          word.length > 2
+      );
+
+
+    if(words.length){
+
+      matchedMesh =
+        meshes.find(
+          mesh => {
+
+            const meshWords =
+              normalizePartName(
+                mesh.name
+              )
+              .split(
+                /[^a-z0-9]+/
+              )
+              .filter(
+                word =>
+                  word.length > 2
+              );
+
+
+            return words.some(
+              partWord =>
+                meshWords.some(
+                  meshWord =>
+                    meshWord === partWord ||
+                    meshWord.includes(
+                      partWord
+                    ) ||
+                    partWord.includes(
+                      meshWord
+                    )
+                )
+            );
+
+          }
+        );
+
+    }
+
+  }
+
+
+  return matchedMesh ||
+    null;
+
+}
+
+
+
+async function loadModelParts(){
+
+  try{
+
+    const response =
+      await fetchWithTimeout(
+        MODEL_PARTS_ENDPOINT,
+        8000
+      );
+
+
+    if(!response.ok){
+
+      console.warn(
+        "ModelParts endpoint failed:",
+        response.status
+      );
+
+      return [];
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if(Array.isArray(result))
+      return result;
+
+
+    if(
+      result &&
+      Array.isArray(result.data)
+    ){
+
+      return result.data;
+
+    }
+
+
+    if(
+      result &&
+      Array.isArray(result.items)
+    ){
+
+      return result.items;
+
+    }
+
+
+    return [];
+
+  }
+  catch(error){
+
+    console.warn(
+      "ModelParts loading failed:",
+      error
+    );
+
+
+    return [];
+
+  }
+
+}
+
+
+
+function createHotspotElement(
+  hotspot
+){
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+
+  button.type =
+    "button";
+
+
+  button.className =
+    "model-hotspot";
+
+
+  button.title =
+    hotspot.name;
+
+
+  button.setAttribute(
+    "aria-label",
+    hotspot.name
+  );
+
+
+  button.addEventListener(
+    "pointerdown",
+    event => {
+
+      event.stopPropagation();
+
+    }
+  );
+
+
+  button.addEventListener(
+    "pointermove",
+    event => {
+
+      event.stopPropagation();
+
+    }
+  );
+
+
+  button.addEventListener(
+    "pointerup",
+    event => {
+
+      event.stopPropagation();
+
+    }
+  );
+
+
+  button.addEventListener(
+    "click",
+    event => {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+
+      const isAlreadyActive =
+        activeHotspotId ===
+        hotspot.id;
+
+
+      closeHotspotInfo();
+
+
+      if(isAlreadyActive)
+        return;
+
+
+      activeHotspotId =
+        hotspot.id;
+
+
+      button.classList.add(
+        "active"
+      );
+
+
+      hotspotInfoTitle.textContent =
+        hotspot.name;
+
+
+      hotspotInfoDescription.textContent =
+        hotspot.description ||
+        "מידע נוסף על חלק זה במוצר.";
+
+
+      hotspotInfo.classList.add(
+        "show"
+      );
+
+
+      updateHotspotScreenPositions();
+
+    }
+  );
+
+
+  hotspotLayer.appendChild(
+    button
+  );
+
+
+  return button;
+
+}
+
+
+
+async function setupModelHotspots(
+  model
+){
+
+  modelHotspots.forEach(
+    hotspot => {
+
+      hotspot.element.remove();
+
+    }
+  );
+
+
+  modelHotspots =
+    [];
+
+
+  closeHotspotInfo();
+
+
+  const modelParts =
+    await loadModelParts();
+
+
+  if(
+    !modelParts ||
+    modelParts.length === 0
+  ){
+
+    console.log(
+      "No model parts returned for hotspots."
+    );
+
+    return;
+
+  }
+
+
+  model.updateMatrixWorld(
+    true
+  );
+
+
+  const meshes =
+    [];
+
+
+  model.traverse(
+    child => {
+
+      if(child.isMesh){
+
+        meshes.push(
+          child
+        );
+
+      }
+
+    }
+  );
+
+
+  if(meshes.length === 0)
+    return;
+
+
+  const activeParts =
+    modelParts.filter(
+      part =>
+        isPartPresent(
+          part
+        )
+    );
+
+
+  const usedMeshSet =
+    new Set();
+
+
+  activeParts.forEach(
+    (part,index) => {
+
+
+      const matchedMesh =
+        findMeshForPart(
+          part,
+          meshes,
+          usedMeshSet
+        );
+
+
+      /*
+      Same important rule as the React implementation:
+      if the DB part does not match a real mesh,
+      DO NOT invent a hotspot on another random mesh.
+      */
+
+      if(!matchedMesh)
+        return;
+
+
+      usedMeshSet.add(
+        matchedMesh
+      );
+
+
+      if(
+        !matchedMesh.geometry.boundingBox
+      ){
+
+        matchedMesh.geometry.computeBoundingBox();
+
+      }
+
+
+      const localCenter =
+        new THREE.Vector3();
+
+
+      if(
+        matchedMesh.geometry.boundingBox
+      ){
+
+        matchedMesh.geometry.boundingBox.getCenter(
+          localCenter
+        );
+
+      }
+      else{
+
+        localCenter.set(
+          0,
+          0,
+          0
+        );
+
+      }
+
+
+      const hotspot = {
+
+        id:
+          getPartId(
+            part,
+            index
+          ),
+
+        mesh:
+          matchedMesh,
+
+        localCenter:
+          localCenter,
+
+        name:
+          getPartDisplayName(
+            part
+          ),
+
+        description:
+          getPartDescription(
+            part
+          ),
+
+        element:
+          null
+
+      };
+
+
+      hotspot.element =
+        createHotspotElement(
+          hotspot
+        );
+
+
+      modelHotspots.push(
+        hotspot
+      );
+
+    }
+  );
+
+
+  console.log(
+    "3D HOTSPOTS:",
+    modelHotspots.map(
+      hotspot => ({
+        id:
+          hotspot.id,
+        mesh:
+          hotspot.mesh.name,
+        name:
+          hotspot.name
+      })
+    )
+  );
+
+
+  updateHotspotScreenPositions();
+
+}
+
+
+
+function updateHotspotScreenPositions(){
+
+  if(
+    !modelHotspots.length
+  ){
+
+    return;
+
+  }
+
+
+  scene.updateMatrixWorld(
+    true
+  );
+
+
+  camera.updateMatrixWorld(
+    true
+  );
+
+
+  const width =
+    container.clientWidth;
+
+
+  const height =
+    container.clientHeight;
+
+
+  if(
+    width <= 0 ||
+    height <= 0
+  ){
+
+    return;
+
+  }
+
+
+  modelHotspots.forEach(
+    hotspot => {
+
+
+      const worldPosition =
+        hotspot.localCenter.clone();
+
+
+      hotspot.mesh.localToWorld(
+        worldPosition
+      );
+
+
+      const projected =
+        worldPosition
+          .clone()
+          .project(
+            camera
+          );
+
+
+      /*
+      Hide if the point is behind/outside the camera clip space.
+      */
+
+      const isVisible =
+        projected.z >= -1 &&
+        projected.z <= 1 &&
+        projected.x >= -1.15 &&
+        projected.x <= 1.15 &&
+        projected.y >= -1.15 &&
+        projected.y <= 1.15;
+
+
+      if(!isVisible){
+
+        hotspot.element.style.opacity =
+          "0";
+
+
+        hotspot.element.style.pointerEvents =
+          "none";
+
+
+        if(
+          activeHotspotId ===
+          hotspot.id
+        ){
+
+          hotspotInfo.style.opacity =
+            "0";
+
+        }
+
+
+        return;
+
+      }
+
+
+      hotspot.element.style.opacity =
+        "1";
+
+
+      hotspot.element.style.pointerEvents =
+        "auto";
+
+
+      const x =
+        (
+          projected.x *
+          .5 +
+          .5
+        ) *
+        width;
+
+
+      const y =
+        (
+          -projected.y *
+          .5 +
+          .5
+        ) *
+        height;
+
+
+      hotspot.element.style.left =
+        `${x}px`;
+
+
+      hotspot.element.style.top =
+        `${y}px`;
+
+
+      if(
+        activeHotspotId ===
+        hotspot.id
+      ){
+
+        hotspotInfo.style.opacity =
+          "1";
+
+
+        hotspotInfo.style.left =
+          `${x}px`;
+
+
+        hotspotInfo.style.top =
+          `${y}px`;
+
+      }
+
+    }
+  );
+
+}
+
+
+
 /*
 =========================================================
 LOAD MODEL
@@ -3911,6 +5138,15 @@ async function loadModel(){
     );
 
 
+    /*
+    Create interest points only after the model is inside
+    the scene graph, so mesh world positions are correct.
+    */
+    await setupModelHotspots(
+      model
+    );
+
+
     setupModelAnimation(
       model
     );
@@ -3988,6 +5224,13 @@ function animate(){
 
 
   updateRotation();
+
+
+  /*
+  Hotspots follow the model while the user rotates it
+  and while FBX animations are playing.
+  */
+  updateHotspotScreenPositions();
 
 
   renderer.render(
