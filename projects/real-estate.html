@@ -1,11 +1,18 @@
-```html
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>מוצר תלת־ממדי | MAXIS</title>
+  <title>טוען מוצר... | Maxis3D</title>
+
+  <!-- FAVICON -->
+  <link
+    rel="icon"
+    type="image/png"
+    href="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
+  />
 
   <style>
     * {
@@ -20,10 +27,20 @@
 
     body {
       font-family: Arial, sans-serif;
+
       background:
-        radial-gradient(circle at top right, rgba(0, 229, 255, 0.10), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(82, 89, 255, 0.10), transparent 35%),
+        radial-gradient(
+          circle at top right,
+          rgba(0, 229, 255, 0.10),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at bottom left,
+          rgba(82, 89, 255, 0.10),
+          transparent 35%
+        ),
         #070914;
+
       color: #fff;
       min-height: 100vh;
     }
@@ -43,7 +60,9 @@
       padding: 28px;
     }
 
-    /* HEADER */
+    /* =====================================================
+       HEADER
+    ===================================================== */
 
     .topbar {
       display: flex;
@@ -54,9 +73,18 @@
     }
 
     .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 24px;
       font-weight: 900;
       letter-spacing: 2px;
+    }
+
+    .logo img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
     }
 
     .logo span {
@@ -65,10 +93,18 @@
 
     .back-btn {
       padding: 11px 18px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.14);
+
+      background:
+        rgba(255, 255, 255, 0.04);
+
       border-radius: 12px;
+
       transition: 0.25s;
+
       color: #cfd5e6;
     }
 
@@ -78,40 +114,67 @@
       transform: translateY(-2px);
     }
 
-    /* HERO */
+    /* =====================================================
+       HERO
+    ===================================================== */
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(380px, 0.8fr);
+
+      grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(380px, 0.8fr);
+
       gap: 28px;
+
       align-items: stretch;
     }
 
     .viewer-card,
     .info-card {
-      background: rgba(13, 17, 35, 0.78);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      background:
+        rgba(13, 17, 35, 0.78);
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
       border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+
+      box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.28);
+
       backdrop-filter: blur(18px);
     }
 
-    /* VIEWER */
+    /* =====================================================
+       VIEWER
+    ===================================================== */
 
     .viewer-card {
       min-height: 650px;
+
       overflow: hidden;
+
       position: relative;
+
       display: flex;
       flex-direction: column;
     }
 
     .viewer-header {
       padding: 18px 22px;
+
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+      border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.07);
     }
 
     .viewer-title {
@@ -123,28 +186,76 @@
       display: flex;
       align-items: center;
       gap: 8px;
+
       font-size: 13px;
+
+      color: #ffda6a;
+    }
+
+    .viewer-status.ready {
       color: #8fffa9;
+    }
+
+    .viewer-status.error {
+      color: #ff7e7e;
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
-      background: #43ff7d;
+
+      background: #ffcc4d;
+
       border-radius: 50%;
-      box-shadow: 0 0 12px #43ff7d;
+
+      box-shadow:
+        0 0 12px
+        #ffcc4d;
+    }
+
+    .viewer-status.ready .status-dot {
+      background: #43ff7d;
+
+      box-shadow:
+        0 0 12px
+        #43ff7d;
+    }
+
+    .viewer-status.error .status-dot {
+      background: #ff4d4d;
+
+      box-shadow:
+        0 0 12px
+        #ff4d4d;
     }
 
     .viewer {
       flex: 1;
+
       position: relative;
+
       overflow: hidden;
+
       min-height: 520px;
 
       background:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
-        radial-gradient(circle at center, #17203f 0%, #0b0f22 50%, #070914 100%);
+        linear-gradient(
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
+
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
+
+        radial-gradient(
+          circle at center,
+          #17203f 0%,
+          #0b0f22 50%,
+          #070914 100%
+        );
 
       background-size:
         45px 45px,
@@ -152,256 +263,345 @@
         auto;
     }
 
-    .demo-object {
+    #threeContainer {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 320px;
-      height: 260px;
-      transform: translate(-50%, -50%);
-      perspective: 900px;
-    }
 
-    .product-box {
+      inset: 0;
+
       width: 100%;
       height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateX(-12deg) rotateY(-28deg);
-      animation: rotateProduct 14s linear infinite;
+
+      z-index: 1;
     }
 
-    @keyframes rotateProduct {
-      from {
-        transform: rotateX(-12deg) rotateY(-28deg);
-      }
+    #threeContainer canvas {
+      width: 100% !important;
+      height: 100% !important;
 
-      to {
-        transform: rotateX(-12deg) rotateY(332deg);
-      }
+      display: block;
+
+      outline: none;
+
+      cursor: grab;
     }
 
-    .product-face {
+    #threeContainer canvas:active {
+      cursor: grabbing;
+    }
+
+    .viewer-controls {
       position: absolute;
-      inset: 0;
-      border: 1px solid rgba(255,255,255,.25);
+
+      left: 20px;
+      top: 20px;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 9px;
+
+      z-index: 20;
+    }
+
+    .control-btn {
+      width: 44px;
+      height: 44px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+
       background:
-        linear-gradient(
-          135deg,
-          rgba(0,229,255,.55),
-          rgba(73,83,255,.35)
-        );
-      box-shadow:
-        inset 0 0 50px rgba(255,255,255,.08),
-        0 20px 80px rgba(0,229,255,.1);
+        rgba(7,9,20,.74);
+
+      color: #fff;
+
+      border-radius: 13px;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      transition: .2s;
+
+      backdrop-filter: blur(10px);
     }
 
-    .front {
-      transform: translateZ(80px);
-    }
+    .control-btn:hover {
+      background: #00e5ff;
 
-    .back {
-      transform: rotateY(180deg) translateZ(80px);
-    }
+      color: #07101a;
 
-    .left {
-      width: 160px;
-      left: 80px;
-      transform: rotateY(-90deg) translateZ(160px);
-    }
-
-    .right {
-      width: 160px;
-      left: 80px;
-      transform: rotateY(90deg) translateZ(160px);
+      transform: translateY(-2px);
     }
 
     .viewer-message {
       position: absolute;
-      bottom: 34px;
+
+      bottom: 26px;
+
       left: 50%;
+
       transform: translateX(-50%);
-      background: rgba(5, 8, 20, 0.75);
-      border: 1px solid rgba(255,255,255,.1);
-      padding: 12px 18px;
+
+      background:
+        rgba(5, 8, 20, 0.78);
+
+      border:
+        1px solid
+        rgba(255,255,255,.1);
+
+      padding:
+        12px 18px;
+
       border-radius: 999px;
+
       color: #cbd4eb;
+
       font-size: 14px;
+
       white-space: nowrap;
+
       backdrop-filter: blur(10px);
+
+      z-index: 20;
+
+      pointer-events: none;
     }
 
     .viewer-message strong {
       color: #fff;
     }
 
-    .viewer-controls {
+    /* =====================================================
+       MODEL LOADING
+    ===================================================== */
+
+    .model-loading {
       position: absolute;
-      left: 20px;
-      top: 20px;
+
+      inset: 0;
+
       display: flex;
+
       flex-direction: column;
-      gap: 9px;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 18px;
+
+      background:
+        rgba(7, 9, 20, .78);
+
+      backdrop-filter: blur(4px);
+
+      z-index: 15;
+
+      transition:
+        opacity .3s ease,
+        visibility .3s ease;
     }
 
-    .control-btn {
-      width: 44px;
-      height: 44px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,9,20,.74);
-      color: #fff;
-      border-radius: 13px;
-      cursor: pointer;
-      font-size: 18px;
-      transition: .2s;
+    .model-loading.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
-    .control-btn:hover {
-      background: #00e5ff;
-      color: #07101a;
-      transform: translateY(-2px);
-    }
+    .loader {
+      width: 48px;
+      height: 48px;
 
-    .hotspot {
-      position: absolute;
-      width: 26px;
-      height: 26px;
+      border:
+        4px solid
+        rgba(255,255,255,.14);
+
+      border-top-color:
+        #00e5ff;
+
       border-radius: 50%;
-      border: 3px solid white;
-      background: #00e5ff;
-      color: #07101a;
+
+      animation:
+        loaderSpin
+        .8s linear infinite;
+    }
+
+    @keyframes loaderSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-title {
       font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 0 8px rgba(0,229,255,.15);
-      animation: hotspotPulse 1.8s infinite;
-    }
-
-    .hotspot:nth-of-type(1) {
-      top: 37%;
-      left: 41%;
-    }
-
-    .hotspot:nth-of-type(2) {
-      top: 51%;
-      right: 30%;
-    }
-
-    .hotspot:nth-of-type(3) {
-      bottom: 31%;
-      left: 35%;
-    }
-
-    @keyframes hotspotPulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(0,229,255,.4);
-      }
-
-      70% {
-        box-shadow: 0 0 0 13px rgba(0,229,255,0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(0,229,255,0);
-      }
-    }
-
-    .hotspot-card {
-      display: none;
-      position: absolute;
-      width: 240px;
-      background: rgba(7,9,20,.96);
-      border: 1px solid rgba(0,229,255,.35);
-      padding: 16px;
-      border-radius: 16px;
-      right: 30px;
-      bottom: 90px;
-      z-index: 10;
-      box-shadow: 0 20px 60px rgba(0,0,0,.4);
-    }
-
-    .hotspot-card.active {
-      display: block;
-    }
-
-    .hotspot-card h4 {
-      margin-bottom: 8px;
       font-size: 16px;
     }
 
-    .hotspot-card p {
-      color: #aeb7cc;
-      line-height: 1.6;
-      font-size: 14px;
+    .loading-subtitle {
+      color: #8f99b1;
+      font-size: 13px;
     }
 
-    /* INFO */
+    .model-error {
+      display: none;
+
+      position: absolute;
+
+      inset: 0;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 30px;
+
+      background:
+        rgba(7, 9, 20, .9);
+
+      z-index: 16;
+    }
+
+    .model-error.show {
+      display: flex;
+    }
+
+    .model-error-box {
+      max-width: 450px;
+    }
+
+    .model-error-box h3 {
+      color: #ff7c7c;
+      margin-bottom: 10px;
+    }
+
+    .model-error-box p {
+      color: #aeb7cc;
+      line-height: 1.7;
+    }
+
+    /* =====================================================
+       PRODUCT INFORMATION
+    ===================================================== */
 
     .info-card {
       padding: 34px;
+
       display: flex;
       flex-direction: column;
+
+      min-height: 650px;
     }
 
     .category {
       color: #00e5ff;
+
       font-weight: bold;
+
       margin-bottom: 14px;
+
       font-size: 14px;
     }
 
     h1 {
-      font-size: clamp(34px, 4vw, 54px);
+      font-size:
+        clamp(34px, 4vw, 54px);
+
       line-height: 1.05;
+
       margin-bottom: 18px;
+
       letter-spacing: -1.5px;
+    }
+
+    .internal-product-name {
+      color: #7c8498;
+
+      font-size: 13px;
+
+      margin-top: -7px;
+
+      margin-bottom: 20px;
     }
 
     .description {
       color: #adb6cc;
+
       line-height: 1.85;
+
       font-size: 17px;
+
       margin-bottom: 25px;
     }
 
     .tags {
       display: flex;
+
       gap: 8px;
+
       flex-wrap: wrap;
+
       margin-bottom: 28px;
     }
 
     .tag {
       padding: 8px 11px;
+
       border-radius: 999px;
-      background: rgba(0,229,255,.08);
+
+      background:
+        rgba(0,229,255,.08);
+
       color: #7eedff;
-      border: 1px solid rgba(0,229,255,.16);
+
+      border:
+        1px solid
+        rgba(0,229,255,.16);
+
       font-size: 12px;
     }
 
     .divider {
       height: 1px;
-      background: rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.08);
+
       margin-bottom: 24px;
     }
 
     .specs {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+
+      grid-template-columns:
+        1fr 1fr;
+
       gap: 12px;
+
       margin-bottom: 28px;
     }
 
     .spec {
       padding: 16px;
-      background: rgba(255,255,255,.035);
-      border: 1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(255,255,255,.035);
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
       border-radius: 15px;
     }
 
     .spec-label {
       color: #79839a;
+
       font-size: 12px;
+
       margin-bottom: 7px;
     }
 
@@ -410,57 +610,123 @@
       font-weight: bold;
     }
 
+    .price {
+      color: #5fffc2;
+    }
+
+    .active-status {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+    }
+
+    .active-status::before {
+      content: "";
+
+      width: 7px;
+      height: 7px;
+
+      background: #43ff7d;
+
+      border-radius: 50%;
+
+      box-shadow:
+        0 0 8px #43ff7d;
+    }
+
     .actions {
       margin-top: auto;
+
       display: grid;
-      grid-template-columns: 1fr 1fr;
+
+      grid-template-columns:
+        1fr 1fr;
+
       gap: 12px;
     }
 
     .btn {
       border: none;
+
       border-radius: 14px;
+
       padding: 15px 18px;
+
       cursor: pointer;
+
       font-weight: bold;
+
       font-size: 15px;
+
       transition: .25s;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #00e5ff, #5365ff);
+      background:
+        linear-gradient(
+          135deg,
+          #00e5ff,
+          #5365ff
+        );
+
       color: #041019;
-      grid-column: span 2;
+
+      grid-column:
+        span 2;
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0,229,255,.2);
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 12px 30px
+        rgba(0,229,255,.2);
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,.06);
+      background:
+        rgba(255,255,255,.06);
+
       color: white;
-      border: 1px solid rgba(255,255,255,.09);
+
+      border:
+        1px solid
+        rgba(255,255,255,.09);
     }
 
     .btn-secondary:hover {
-      background: rgba(255,255,255,.1);
+      background:
+        rgba(255,255,255,.1);
     }
 
-    /* LOWER SECTION */
+    /* =====================================================
+       FEATURES
+    ===================================================== */
 
     .features {
       margin-top: 28px;
+
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 18px;
     }
 
     .feature {
-      background: rgba(13,17,35,.65);
-      border: 1px solid rgba(255,255,255,.07);
+      background:
+        rgba(13,17,35,.65);
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
       padding: 25px;
+
       border-radius: 20px;
     }
 
@@ -476,22 +742,31 @@
 
     .feature p {
       color: #929cb2;
+
       line-height: 1.65;
+
       font-size: 14px;
     }
 
     .customer-note {
       margin-top: 28px;
+
       padding: 30px;
+
       text-align: center;
+
       border-radius: 24px;
+
       background:
         linear-gradient(
           135deg,
           rgba(0,229,255,.08),
           rgba(80,86,255,.08)
         );
-      border: 1px solid rgba(0,229,255,.15);
+
+      border:
+        1px solid
+        rgba(0,229,255,.15);
     }
 
     .customer-note h2 {
@@ -501,31 +776,88 @@
 
     .customer-note p {
       color: #aeb7cc;
+
       max-width: 720px;
+
       margin: auto;
+
       line-height: 1.7;
     }
 
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
     .toast {
       position: fixed;
+
       bottom: 25px;
+
       left: 50%;
-      transform: translate(-50%, 120px);
+
+      transform:
+        translate(-50%, 120px);
+
       background: #fff;
+
       color: #07101a;
-      padding: 13px 20px;
+
+      padding:
+        13px 20px;
+
       border-radius: 12px;
+
       font-weight: bold;
+
       transition: .3s;
-      z-index: 100;
-      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+
+      z-index: 1000;
+
+      box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.35);
     }
 
     .toast.show {
-      transform: translate(-50%, 0);
+      transform:
+        translate(-50%, 0);
     }
 
+    /* =====================================================
+       API ERROR
+    ===================================================== */
+
+    .api-error {
+      display: none;
+
+      padding: 12px 15px;
+
+      margin-bottom: 20px;
+
+      border-radius: 12px;
+
+      border:
+        1px solid
+        rgba(255,90,90,.3);
+
+      background:
+        rgba(255,90,90,.08);
+
+      color: #ff9999;
+
+      font-size: 13px;
+    }
+
+    .api-error.show {
+      display: block;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
     @media (max-width: 950px) {
+
       .hero {
         grid-template-columns: 1fr;
       }
@@ -537,9 +869,14 @@
       .features {
         grid-template-columns: 1fr;
       }
+
+      .info-card {
+        min-height: auto;
+      }
     }
 
     @media (max-width: 620px) {
+
       .page {
         padding: 16px;
       }
@@ -554,11 +891,6 @@
 
       .viewer {
         min-height: 390px;
-      }
-
-      .demo-object {
-        width: 230px;
-        height: 190px;
       }
 
       .info-card {
@@ -582,382 +914,2035 @@
         white-space: normal;
         text-align: center;
       }
+
+      .logo img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .logo {
+        font-size: 19px;
+      }
     }
+
   </style>
 </head>
 
 <body>
 
-  <div class="page">
+<div class="page">
 
-    <header class="topbar">
-      <div class="logo">
+  <!-- ===================================================
+       HEADER
+  ==================================================== -->
+
+  <header class="topbar">
+
+    <div class="logo">
+
+      <img
+        src="https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/files/get-file?folder=images&fileName=wallpaper_customer_maxis_only_logo.png"
+        alt="Maxis3D"
+      />
+
+      <div>
         MAXIS<span>3D</span>
       </div>
 
-      <a href="../index.html" class="back-btn">
-        ← חזרה לאתר
-      </a>
-    </header>
+    </div>
 
-    <main class="hero">
+    <a
+      href="../index.html"
+      class="back-btn">
+      ← חזרה לאתר
+    </a>
 
-      <!-- 3D VIEWER -->
-      <section class="viewer-card">
+  </header>
 
-        <div class="viewer-header">
-          <div class="viewer-title">
-            תצוגת מוצר אינטראקטיבית
-          </div>
 
-          <div class="viewer-status">
-            <span class="status-dot"></span>
-            מודל 3D פעיל
-          </div>
+  <!-- ===================================================
+       MAIN
+  ==================================================== -->
+
+  <main class="hero">
+
+
+    <!-- =================================================
+         3D VIEWER
+    ================================================== -->
+
+    <section class="viewer-card">
+
+      <div class="viewer-header">
+
+        <div class="viewer-title">
+          תצוגת מוצר אינטראקטיבית
         </div>
 
-        <div class="viewer" id="viewer">
+        <div
+          class="viewer-status"
+          id="viewerStatus">
 
-          <div class="viewer-controls">
+          <span class="status-dot"></span>
 
-            <button class="control-btn" title="מסך מלא" onclick="fullscreenViewer()">
-              ⛶
-            </button>
-
-            <button class="control-btn" title="עצור / הפעל סיבוב" onclick="toggleRotation()">
-              ↻
-            </button>
-
-            <button class="control-btn" title="איפוס תצוגה">
-              ⌂
-            </button>
-
-          </div>
-
-          <!--
-          כאן אפשר להחליף את הדמו
-          ב-Babylon.js / Three.js ולהעלות FBX / GLB אמיתי
-          -->
-
-          <div class="demo-object">
-            <div class="product-box" id="product3d">
-
-              <div class="product-face front"></div>
-              <div class="product-face back"></div>
-              <div class="product-face left"></div>
-              <div class="product-face right"></div>
-
-            </div>
-          </div>
-
-          <button
-            class="hotspot"
-            onclick="showHotspot(
-              'חומר המוצר',
-              'גוף המוצר מיוצר מאלומיניום מחוזק בגימור תעשייתי איכותי.'
-            )">
-            +
-          </button>
-
-          <button
-            class="hotspot"
-            onclick="showHotspot(
-              'מנגנון פנימי',
-              'ניתן לסמן רכיבים בתוך המודל ולהציג ללקוח מידע טכני והסברים.'
-            )">
-            +
-          </button>
-
-          <button
-            class="hotspot"
-            onclick="showHotspot(
-              'מידות',
-              '320 × 240 × 160 מ״מ. ניתן לחבר את הנתונים אוטומטית ממערכת ניהול המוצרים.'
-            )">
-            +
-          </button>
-
-          <div class="hotspot-card" id="hotspotCard">
-            <h4 id="hotspotTitle"></h4>
-            <p id="hotspotText"></p>
-          </div>
-
-          <div class="viewer-message">
-            🖱️ <strong>גררו את המוצר</strong> לצפייה מכל זווית
-          </div>
+          <span id="viewerStatusText">
+            טוען מודל...
+          </span>
 
         </div>
 
-      </section>
-
-
-      <!-- PRODUCT INFORMATION -->
-      <section class="info-card">
-
-        <div class="category">
-          מוצר תעשייתי • קטלוג 3D
-        </div>
-
-        <h1 id="productTitle">
-          מערכת תלת־ממד אינטראקטיבית
-        </h1>
-
-        <p class="description" id="productDescription">
-          הלקוח מקבל קישור לעמוד מוצר ייעודי ויכול לבחון את המוצר
-          מכל זווית, לבצע זום, לבחור נקודות עניין ולקבל מידע טכני
-          מפורט — ללא התקנת תוכנה.
-        </p>
-
-        <div class="tags">
-          <span class="tag">3D Viewer</span>
-          <span class="tag">Hotspots</span>
-          <span class="tag">Web Based</span>
-          <span class="tag">Voice</span>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="specs">
-
-          <div class="spec">
-            <div class="spec-label">מק״ט</div>
-            <div class="spec-value">MAX-3D-001</div>
-          </div>
-
-          <div class="spec">
-            <div class="spec-label">קטגוריה</div>
-            <div class="spec-value">מערכות תעשייתיות</div>
-          </div>
-
-          <div class="spec">
-            <div class="spec-label">משקל</div>
-            <div class="spec-value">12.4 ק״ג</div>
-          </div>
-
-          <div class="spec">
-            <div class="spec-label">מידות</div>
-            <div class="spec-value">320 × 240 × 160 מ״מ</div>
-          </div>
-
-          <div class="spec">
-            <div class="spec-label">חומר</div>
-            <div class="spec-value">אלומיניום</div>
-          </div>
-
-          <div class="spec">
-            <div class="spec-label">סטטוס</div>
-            <div class="spec-value">זמין</div>
-          </div>
-
-        </div>
-
-        <div class="actions">
-
-          <button class="btn btn-primary" onclick="shareProduct()">
-            🔗 שלח את המוצר ללקוח
-          </button>
-
-          <button class="btn btn-secondary" onclick="copyLink()">
-            העתק קישור
-          </button>
-
-          <button class="btn btn-secondary" onclick="speakProduct()">
-            🔊 הקראת המוצר
-          </button>
-
-        </div>
-
-      </section>
-
-    </main>
-
-
-    <!-- FEATURES -->
-
-    <section class="features">
-
-      <div class="feature">
-        <div class="feature-icon">🔄</div>
-
-        <h3>צפייה מכל זווית</h3>
-
-        <p>
-          הלקוח יכול לסובב את המוצר, להתקרב ולבחון פרטים
-          שלא ניתן לראות בתמונה רגילה.
-        </p>
       </div>
 
 
-      <div class="feature">
-        <div class="feature-icon">📍</div>
-
-        <h3>נקודות עניין</h3>
-
-        <p>
-          הוספת נקודות אינטראקטיביות על המודל עם מידע,
-          הסברים, מפרטים וקישורים.
-        </p>
-      </div>
+      <div
+        class="viewer"
+        id="viewer">
 
 
-      <div class="feature">
-        <div class="feature-icon">🔊</div>
+        <!-- THREE.JS -->
+        <div id="threeContainer"></div>
 
-        <h3>הקראה קולית</h3>
 
-        <p>
-          אפשרות להשמעת תיאור המוצר והמידע הטכני ישירות
-          מהדפדפן.
-        </p>
+        <!-- CONTROLS -->
+        <div class="viewer-controls">
+
+          <button
+            class="control-btn"
+            title="מסך מלא"
+            onclick="fullscreenViewer()">
+            ⛶
+          </button>
+
+          <button
+            class="control-btn"
+            id="rotationButton"
+            title="עצור / הפעל סיבוב"
+            onclick="toggleRotation()">
+            ↻
+          </button>
+
+          <button
+            class="control-btn"
+            title="איפוס תצוגה"
+            onclick="resetCamera()">
+            ⌂
+          </button>
+
+        </div>
+
+
+        <!-- LOADING -->
+        <div
+          class="model-loading"
+          id="modelLoading">
+
+          <div class="loader"></div>
+
+          <div class="loading-title">
+            טוען את Connector...
+          </div>
+
+          <div class="loading-subtitle">
+            המודל נטען ישירות מהשרת
+          </div>
+
+        </div>
+
+
+        <!-- MODEL ERROR -->
+        <div
+          class="model-error"
+          id="modelError">
+
+          <div class="model-error-box">
+
+            <h3>
+              לא ניתן לטעון את המודל
+            </h3>
+
+            <p id="modelErrorText">
+              אירעה שגיאה בעת טעינת קובץ ה־FBX.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="viewer-message">
+          🖱️
+          <strong>
+            גררו את המוצר
+          </strong>
+          לצפייה מכל זווית
+        </div>
+
       </div>
 
     </section>
 
 
-    <section class="customer-note">
+    <!-- =================================================
+         PRODUCT INFORMATION
+    ================================================== -->
 
-      <h2>מוצר אחד. קישור אחד. חוויית מכירה מלאה.</h2>
+    <section class="info-card">
 
-      <p>
-        במקום לשלוח ללקוח תמונות, PDF ומפרטים בנפרד,
-        ניתן לשלוח קישור אחד לעמוד אינטראקטיבי שמרכז
-        את כל המידע על המוצר.
+
+      <div
+        class="api-error"
+        id="apiError">
+
+        לא ניתן היה לטעון את פרטי המוצר.
+
+      </div>
+
+
+      <div
+        class="category"
+        id="productCategory">
+
+        טוען פרטי מוצר...
+
+      </div>
+
+
+      <h1 id="productTitle">
+        Connector
+      </h1>
+
+
+      <div
+        class="internal-product-name"
+        id="internalProductName">
+      </div>
+
+
+      <p
+        class="description"
+        id="productDescription">
+
+        טוען מידע על המוצר...
+
       </p>
 
+
+      <div
+        class="tags"
+        id="productTags">
+      </div>
+
+
+      <div class="divider"></div>
+
+
+      <div
+        class="specs"
+        id="productSpecs">
+
+        <!-- נוצר אוטומטית מה-API -->
+
+      </div>
+
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="shareProduct()">
+
+          🔗 שלח את המוצר ללקוח
+
+        </button>
+
+
+        <button
+          class="btn btn-secondary"
+          onclick="copyLink()">
+
+          🔗 העתק קישור
+
+        </button>
+
+
+        <button
+          class="btn btn-secondary"
+          onclick="speakProduct()">
+
+          🔊 הקראת המוצר
+
+        </button>
+
+      </div>
+
     </section>
 
-  </div>
+  </main>
 
 
-  <div class="toast" id="toast">
-    הקישור הועתק
-  </div>
+  <!-- ===================================================
+       FEATURES
+  ==================================================== -->
+
+  <section class="features">
+
+    <div class="feature">
+
+      <div class="feature-icon">
+        🔄
+      </div>
+
+      <h3>
+        צפייה מכל זווית
+      </h3>
+
+      <p>
+        ניתן לסובב את המוצר,
+        להתקרב ולהתרחק ולבחון
+        אותו בצורה אינטראקטיבית.
+      </p>
+
+    </div>
 
 
-  <script>
+    <div class="feature">
 
-    let rotating = true;
+      <div class="feature-icon">
+        🌐
+      </div>
 
-    function toggleRotation() {
+      <h3>
+        ללא התקנה
+      </h3>
 
-      const model = document.getElementById("product3d");
+      <p>
+        המודל נפתח ישירות בדפדפן
+        באמצעות קישור שניתן לשלוח
+        ללקוח.
+      </p>
 
-      rotating = !rotating;
-
-      model.style.animationPlayState =
-        rotating ? "running" : "paused";
-    }
-
-
-    function showHotspot(title, text) {
-
-      const card = document.getElementById("hotspotCard");
-
-      document.getElementById("hotspotTitle").textContent = title;
-      document.getElementById("hotspotText").textContent = text;
-
-      card.classList.add("active");
-
-      clearTimeout(window.hotspotTimeout);
-
-      window.hotspotTimeout = setTimeout(() => {
-        card.classList.remove("active");
-      }, 5000);
-    }
+    </div>
 
 
-    function fullscreenViewer() {
+    <div class="feature">
 
-      const viewer = document.getElementById("viewer");
+      <div class="feature-icon">
+        🔊
+      </div>
 
-      if (viewer.requestFullscreen) {
-        viewer.requestFullscreen();
+      <h3>
+        הקראה קולית
+      </h3>
+
+      <p>
+        פרטי המוצר יכולים להיות
+        מוקראים ישירות מתוך
+        עמוד המוצר.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <section class="customer-note">
+
+    <h2>
+      מוצר אחד. קישור אחד. חוויית מכירה מלאה.
+    </h2>
+
+    <p>
+      כל המידע על המוצר יחד עם המודל
+      התלת־ממדי נמצא בעמוד אחד שניתן
+      לשלוח ישירות ללקוח.
+    </p>
+
+  </section>
+
+</div>
+
+
+<div
+  class="toast"
+  id="toast">
+  הקישור הועתק
+</div>
+
+
+<!-- =====================================================
+     THREE.JS IMPORT MAP
+===================================================== -->
+
+<script type="importmap">
+{
+  "imports": {
+    "three":
+      "https://unpkg.com/three@0.160.0/build/three.module.js",
+
+    "three/addons/":
+      "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+
+<!-- =====================================================
+     PRODUCT API
+===================================================== -->
+
+<script>
+
+  /*
+  ========================================================
+  PRODUCT CONFIGURATION
+  ========================================================
+  */
+
+  const PRODUCT_NAME =
+    "Connector";
+
+
+  const PRODUCT_API_URL =
+    "https://fbx-studio-bnecb0euepare0ew.westeurope-01.azurewebsites.net/api/Products/productTitle/Connector";
+
+
+  let currentProduct = null;
+
+
+  /*
+  ========================================================
+  LOAD PRODUCT FROM API
+  ========================================================
+  */
+
+  async function loadProduct() {
+
+    try {
+
+      const response =
+        await fetch(
+          PRODUCT_API_URL,
+          {
+            method: "GET",
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          `HTTP ${response.status}`
+        );
+
       }
+
+
+      const data =
+        await response.json();
+
+
+      /*
+      ה-endpoint מחזיר מערך.
+      לכן אנחנו לוקחים את המוצר הראשון.
+      */
+
+      const product =
+        Array.isArray(data)
+          ? data[0]
+          : data;
+
+
+      if (!product) {
+
+        throw new Error(
+          "המוצר לא נמצא"
+        );
+
+      }
+
+
+      currentProduct =
+        product;
+
+
+      renderProduct(product);
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Product API error:",
+        error
+      );
+
+
+      document
+        .getElementById("apiError")
+        .classList
+        .add("show");
+
+
+      document
+        .getElementById("productCategory")
+        .textContent =
+        "מוצר תלת־ממדי";
+
+
+      document
+        .getElementById("productTitle")
+        .textContent =
+        PRODUCT_NAME;
+
+
+      document
+        .getElementById("productDescription")
+        .textContent =
+        "לא ניתן היה לטעון כרגע את פרטי המוצר.";
+
+    }
+
+  }
+
+
+  /*
+  ========================================================
+  RENDER PRODUCT
+  ========================================================
+  */
+
+  function renderProduct(product) {
+
+    /*
+    -------------------------------------------------------
+    TITLE
+    -------------------------------------------------------
+    */
+
+    const displayTitle =
+      product.productDisplayTitle_he ||
+      product.productDisplayTitle_en ||
+      product.productTitle ||
+      PRODUCT_NAME;
+
+
+    document
+      .getElementById("productTitle")
+      .textContent =
+      displayTitle;
+
+
+    document.title =
+      `${displayTitle} | Maxis3D`;
+
+
+    /*
+    -------------------------------------------------------
+    INTERNAL NAME
+    -------------------------------------------------------
+    */
+
+    const internalNameElement =
+      document.getElementById(
+        "internalProductName"
+      );
+
+
+    if (
+      product.productTitle &&
+      product.productTitle !== displayTitle
+    ) {
+
+      internalNameElement.textContent =
+        product.productTitle;
+
+    }
+    else {
+
+      internalNameElement.style.display =
+        "none";
+
     }
 
 
-    async function copyLink() {
+    /*
+    -------------------------------------------------------
+    CATEGORY
+    -------------------------------------------------------
+    */
+
+    const categoryParts = [];
+
+
+    if (product.productCategory) {
+
+      categoryParts.push(
+        product.productCategory
+      );
+
+    }
+
+
+    if (product.subProductCategory) {
+
+      categoryParts.push(
+        product.subProductCategory
+      );
+
+    }
+
+
+    document
+      .getElementById("productCategory")
+      .textContent =
+      categoryParts.length
+        ? categoryParts.join(" • ")
+        : "מוצר תלת־ממדי";
+
+
+    /*
+    -------------------------------------------------------
+    DESCRIPTION
+    -------------------------------------------------------
+    */
+
+    const description =
+      product.productDescription_he ||
+      product.productDescription_en ||
+      product.productDescription_ar ||
+      product.productDescription_ru;
+
+
+    const descriptionElement =
+      document.getElementById(
+        "productDescription"
+      );
+
+
+    if (description) {
+
+      descriptionElement.textContent =
+        description;
+
+    }
+    else {
+
+      /*
+      אין תיאור ב-API כרגע,
+      ולכן לא ממציאים תיאור מוצר.
+      */
+
+      descriptionElement.textContent =
+        "צפו במוצר בתלת־ממד מכל זווית ישירות מהדפדפן.";
+
+    }
+
+
+    /*
+    -------------------------------------------------------
+    TAGS
+    -------------------------------------------------------
+    */
+
+    const tags =
+      document.getElementById(
+        "productTags"
+      );
+
+
+    tags.innerHTML = "";
+
+
+    addTag(
+      product.productCategory
+    );
+
+
+    addTag(
+      product.subProductCategory
+    );
+
+
+    addTag(
+      "3D Viewer"
+    );
+
+
+    /*
+    -------------------------------------------------------
+    SPECS
+    -------------------------------------------------------
+    */
+
+    const specs =
+      document.getElementById(
+        "productSpecs"
+      );
+
+
+    specs.innerHTML = "";
+
+
+    /*
+    SKU
+    */
+
+    if (
+      product.sku &&
+      product.sku.trim() &&
+      product.sku !== "string"
+    ) {
+
+      addSpec(
+        "מק״ט",
+        product.sku
+      );
+
+    }
+
+
+    /*
+    PRICE
+    */
+
+    if (
+      product.productPrice !== null &&
+      product.productPrice !== undefined
+    ) {
+
+      addSpec(
+        "מחיר",
+        formatPrice(
+          product.productPrice
+        ),
+        "price"
+      );
+
+    }
+
+
+    /*
+    CATEGORY
+    */
+
+    if (product.productCategory) {
+
+      addSpec(
+        "קטגוריה",
+        product.productCategory
+      );
+
+    }
+
+
+    /*
+    SUB CATEGORY
+    */
+
+    if (product.subProductCategory) {
+
+      addSpec(
+        "תת־קטגוריה",
+        product.subProductCategory
+      );
+
+    }
+
+
+    /*
+    LENGTH
+    */
+
+    if (hasValue(product.length)) {
+
+      addSpec(
+        "אורך",
+        `${product.length}`
+      );
+
+    }
+
+
+    /*
+    WIDTH
+    */
+
+    if (hasValue(product.width)) {
+
+      addSpec(
+        "רוחב",
+        `${product.width}`
+      );
+
+    }
+
+
+    /*
+    HEIGHT
+    */
+
+    if (hasValue(product.height)) {
+
+      addSpec(
+        "גובה",
+        `${product.height}`
+      );
+
+    }
+
+
+    /*
+    ACTIVE
+    */
+
+    if (product.productActive !== undefined) {
+
+      addSpec(
+        "סטטוס",
+        product.productActive
+          ? "פעיל"
+          : "לא פעיל",
+        product.productActive
+          ? "active-status"
+          : ""
+      );
+
+    }
+
+
+    /*
+    DISPLAY IN SITE
+    */
+
+    if (
+      product.displayInSite !== undefined
+    ) {
+
+      addSpec(
+        "מוצג באתר",
+        product.displayInSite
+          ? "כן"
+          : "לא"
+      );
+
+    }
+
+  }
+
+
+  /*
+  ========================================================
+  ADD TAG
+  ========================================================
+  */
+
+  function addTag(value) {
+
+    if (!value)
+      return;
+
+
+    const element =
+      document.createElement("span");
+
+
+    element.className =
+      "tag";
+
+
+    element.textContent =
+      value;
+
+
+    document
+      .getElementById("productTags")
+      .appendChild(element);
+
+  }
+
+
+  /*
+  ========================================================
+  ADD SPEC
+  ========================================================
+  */
+
+  function addSpec(
+    label,
+    value,
+    valueClass = ""
+  ) {
+
+    if (!hasValue(value))
+      return;
+
+
+    const spec =
+      document.createElement("div");
+
+
+    spec.className =
+      "spec";
+
+
+    const labelElement =
+      document.createElement("div");
+
+
+    labelElement.className =
+      "spec-label";
+
+
+    labelElement.textContent =
+      label;
+
+
+    const valueElement =
+      document.createElement("div");
+
+
+    valueElement.className =
+      "spec-value";
+
+
+    if (valueClass) {
+
+      valueElement.classList.add(
+        valueClass
+      );
+
+    }
+
+
+    valueElement.textContent =
+      value;
+
+
+    spec.appendChild(
+      labelElement
+    );
+
+
+    spec.appendChild(
+      valueElement
+    );
+
+
+    document
+      .getElementById("productSpecs")
+      .appendChild(spec);
+
+  }
+
+
+  /*
+  ========================================================
+  HELPERS
+  ========================================================
+  */
+
+  function hasValue(value) {
+
+    return (
+      value !== null &&
+      value !== undefined &&
+      value !== ""
+    );
+
+  }
+
+
+  function formatPrice(price) {
+
+    return new Intl.NumberFormat(
+      "he-IL",
+      {
+        style: "currency",
+        currency: "ILS",
+        maximumFractionDigits: 2
+      }
+    ).format(price);
+
+  }
+
+
+  /*
+  ========================================================
+  SHARE
+  ========================================================
+  */
+
+  async function copyLink() {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        window.location.href
+      );
+
+
+      showToast(
+        "הקישור למוצר הועתק"
+      );
+
+    }
+
+    catch {
+
+      showToast(
+        "לא ניתן היה להעתיק את הקישור"
+      );
+
+    }
+
+  }
+
+
+  async function shareProduct() {
+
+    const title =
+      currentProduct
+        ?.productDisplayTitle_he ||
+      currentProduct
+        ?.productDisplayTitle_en ||
+      currentProduct
+        ?.productTitle ||
+      PRODUCT_NAME;
+
+
+    const shareData = {
+
+      title: title,
+
+      text:
+        `צפה במוצר ${title} בתלת־ממד`,
+
+      url:
+        window.location.href
+
+    };
+
+
+    if (navigator.share) {
 
       try {
 
-        await navigator.clipboard.writeText(window.location.href);
-
-        showToast("הקישור למוצר הועתק");
-
-      } catch {
-
-        showToast("לא ניתן היה להעתיק את הקישור");
+        await navigator.share(
+          shareData
+        );
 
       }
-    }
+      catch (error) {
 
-
-    async function shareProduct() {
-
-      const shareData = {
-        title: document.getElementById("productTitle").textContent,
-        text: "צפה במוצר בתלת־ממד",
-        url: window.location.href
-      };
-
-      if (navigator.share) {
-
-        try {
-
-          await navigator.share(shareData);
-
-        } catch (error) {}
-
-      } else {
-
-        copyLink();
+        console.log(
+          "Share cancelled"
+        );
 
       }
 
     }
+    else {
+
+      copyLink();
+
+    }
+
+  }
 
 
-    function speakProduct() {
+  /*
+  ========================================================
+  SPEECH
+  ========================================================
+  */
 
-      if (!("speechSynthesis" in window)) {
+  function speakProduct() {
 
-        showToast("הדפדפן אינו תומך בהקראה");
+    if (
+      !(
+        "speechSynthesis"
+        in window
+      )
+    ) {
+
+      showToast(
+        "הדפדפן אינו תומך בהקראה"
+      );
+
+      return;
+
+    }
+
+
+    speechSynthesis.cancel();
+
+
+    const title =
+      document
+        .getElementById(
+          "productTitle"
+        )
+        .textContent;
+
+
+    const description =
+      document
+        .getElementById(
+          "productDescription"
+        )
+        .textContent;
+
+
+    const speech =
+      new SpeechSynthesisUtterance(
+        `${title}. ${description}`
+      );
+
+
+    speech.lang =
+      "he-IL";
+
+
+    speech.rate =
+      0.95;
+
+
+    window.speechSynthesis.speak(
+      speech
+    );
+
+  }
+
+
+  /*
+  ========================================================
+  FULLSCREEN
+  ========================================================
+  */
+
+  function fullscreenViewer() {
+
+    const viewer =
+      document.getElementById(
+        "viewer"
+      );
+
+
+    if (
+      !document.fullscreenElement
+    ) {
+
+      viewer
+        .requestFullscreen?.();
+
+    }
+    else {
+
+      document
+        .exitFullscreen?.();
+
+    }
+
+  }
+
+
+  /*
+  ========================================================
+  TOAST
+  ========================================================
+  */
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+
+    toast.textContent =
+      message;
+
+
+    toast.classList.add(
+      "show"
+    );
+
+
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2200
+    );
+
+  }
+
+
+  /*
+  ========================================================
+  INITIAL PRODUCT LOAD
+  ========================================================
+  */
+
+  loadProduct();
+
+</script>
+
+
+<!-- =====================================================
+     THREE.JS MODEL
+===================================================== -->
+
+<script type="module">
+
+  import * as THREE
+    from "three";
+
+
+  import {
+    FBXLoader
+  }
+  from
+    "three/addons/loaders/FBXLoader.js";
+
+
+  import {
+    OrbitControls
+  }
+  from
+    "three/addons/controls/OrbitControls.js";
+
+
+  import {
+    RoomEnvironment
+  }
+  from
+    "three/addons/environments/RoomEnvironment.js";
+
+
+  /*
+  ========================================================
+  MODEL URL
+  ========================================================
+  */
+
+  const MODEL_URL =
+    "https://files.fbxstudio.co.il/tenants/tenantA/Connector.fbx";
+
+
+  /*
+  ========================================================
+  CONTAINER
+  ========================================================
+  */
+
+  const container =
+    document.getElementById(
+      "threeContainer"
+    );
+
+
+  const viewer =
+    document.getElementById(
+      "viewer"
+    );
+
+
+  const loadingElement =
+    document.getElementById(
+      "modelLoading"
+    );
+
+
+  const errorElement =
+    document.getElementById(
+      "modelError"
+    );
+
+
+  const errorText =
+    document.getElementById(
+      "modelErrorText"
+    );
+
+
+  const status =
+    document.getElementById(
+      "viewerStatus"
+    );
+
+
+  const statusText =
+    document.getElementById(
+      "viewerStatusText"
+    );
+
+
+  /*
+  ========================================================
+  SCENE
+  ========================================================
+  */
+
+  const scene =
+    new THREE.Scene();
+
+
+  scene.background =
+    null;
+
+
+  /*
+  ========================================================
+  CAMERA
+  ========================================================
+  */
+
+  const camera =
+    new THREE.PerspectiveCamera(
+      35,
+      container.clientWidth /
+      container.clientHeight,
+      0.01,
+      100000
+    );
+
+
+  camera.position.set(
+    4,
+    3,
+    7
+  );
+
+
+  /*
+  ========================================================
+  RENDERER
+  ========================================================
+  */
+
+  const renderer =
+    new THREE.WebGLRenderer({
+
+      antialias: true,
+
+      alpha: true
+
+    });
+
+
+  renderer.setPixelRatio(
+    Math.min(
+      window.devicePixelRatio,
+      2
+    )
+  );
+
+
+  renderer.setSize(
+    container.clientWidth,
+    container.clientHeight
+  );
+
+
+  renderer.setClearColor(
+    0x000000,
+    0
+  );
+
+
+  renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+
+  renderer.toneMapping =
+    THREE.ACESFilmicToneMapping;
+
+
+  renderer.toneMappingExposure =
+    1.1;
+
+
+  container.appendChild(
+    renderer.domElement
+  );
+
+
+  /*
+  ========================================================
+  ENVIRONMENT
+  ========================================================
+  */
+
+  const pmremGenerator =
+    new THREE.PMREMGenerator(
+      renderer
+    );
+
+
+  const environment =
+    pmremGenerator.fromScene(
+      new RoomEnvironment(),
+      0.04
+    );
+
+
+  scene.environment =
+    environment.texture;
+
+
+  /*
+  ========================================================
+  LIGHTS
+  ========================================================
+  */
+
+  const ambient =
+    new THREE.AmbientLight(
+      0xffffff,
+      1.2
+    );
+
+
+  scene.add(
+    ambient
+  );
+
+
+  const keyLight =
+    new THREE.DirectionalLight(
+      0xffffff,
+      2.5
+    );
+
+
+  keyLight.position.set(
+    5,
+    8,
+    6
+  );
+
+
+  scene.add(
+    keyLight
+  );
+
+
+  const fillLight =
+    new THREE.DirectionalLight(
+      0xffffff,
+      1.2
+    );
+
+
+  fillLight.position.set(
+    -6,
+    3,
+    5
+  );
+
+
+  scene.add(
+    fillLight
+  );
+
+
+  const backLight =
+    new THREE.DirectionalLight(
+      0x8fdcff,
+      1.4
+    );
+
+
+  backLight.position.set(
+    0,
+    5,
+    -7
+  );
+
+
+  scene.add(
+    backLight
+  );
+
+
+  /*
+  ========================================================
+  CONTROLS
+  ========================================================
+  */
+
+  const controls =
+    new OrbitControls(
+      camera,
+      renderer.domElement
+    );
+
+
+  controls.enableDamping =
+    true;
+
+
+  controls.dampingFactor =
+    0.08;
+
+
+  controls.enablePan =
+    true;
+
+
+  controls.enableZoom =
+    true;
+
+
+  controls.autoRotate =
+    true;
+
+
+  controls.autoRotateSpeed =
+    1.4;
+
+
+  controls.minDistance =
+    0.1;
+
+
+  controls.maxDistance =
+    100000;
+
+
+  /*
+  ========================================================
+  GLOBAL VALUES
+  ========================================================
+  */
+
+  let loadedModel =
+    null;
+
+
+  let originalCameraPosition =
+    new THREE.Vector3();
+
+
+  let originalTarget =
+    new THREE.Vector3();
+
+
+  /*
+  ========================================================
+  LOAD FBX
+  ========================================================
+  */
+
+  const loader =
+    new FBXLoader();
+
+
+  loader.load(
+
+    MODEL_URL,
+
+
+    /*
+    SUCCESS
+    */
+
+    function (model) {
+
+      console.log(
+        "FBX loaded:",
+        model
+      );
+
+
+      loadedModel =
+        model;
+
+
+      /*
+      Materials
+      */
+
+      model.traverse(
+        function (child) {
+
+          if (
+            child.isMesh
+          ) {
+
+            child.frustumCulled =
+              false;
+
+
+            /*
+            FBX יכול להכיל חומר יחיד
+            או מערך חומרים.
+            */
+
+            const materials =
+              Array.isArray(
+                child.material
+              )
+                ? child.material
+                : [child.material];
+
+
+            materials.forEach(
+              material => {
+
+                if (!material)
+                  return;
+
+
+                material.side =
+                  THREE.DoubleSide;
+
+
+                material.needsUpdate =
+                  true;
+
+              }
+            );
+
+          }
+
+        }
+      );
+
+
+      /*
+      ====================================================
+      CENTER MODEL
+      ====================================================
+      */
+
+      const box =
+        new THREE.Box3()
+          .setFromObject(
+            model
+          );
+
+
+      const size =
+        box.getSize(
+          new THREE.Vector3()
+        );
+
+
+      const center =
+        box.getCenter(
+          new THREE.Vector3()
+        );
+
+
+      /*
+      מזיזים את המודל כך שמרכזו יהיה 0,0,0
+      */
+
+      model.position.sub(
+        center
+      );
+
+
+      scene.add(
+        model
+      );
+
+
+      /*
+      מחשבים bounding box מחדש
+      */
+
+      const centeredBox =
+        new THREE.Box3()
+          .setFromObject(
+            model
+          );
+
+
+      const centeredSize =
+        centeredBox.getSize(
+          new THREE.Vector3()
+        );
+
+
+      /*
+      ====================================================
+      CAMERA FIT
+      ====================================================
+      */
+
+      const maxDimension =
+        Math.max(
+          centeredSize.x,
+          centeredSize.y,
+          centeredSize.z
+        );
+
+
+      const fov =
+        camera.fov *
+        Math.PI /
+        180;
+
+
+      let cameraDistance =
+        Math.abs(
+          maxDimension /
+          Math.sin(
+            fov / 2
+          )
+        );
+
+
+      cameraDistance *=
+        0.85;
+
+
+      /*
+      במקרה של מודל קטן מאוד
+      */
+
+      if (
+        !Number.isFinite(
+          cameraDistance
+        ) ||
+        cameraDistance <= 0
+      ) {
+
+        cameraDistance =
+          5;
+
+      }
+
+
+      camera.position.set(
+
+        cameraDistance *
+        0.65,
+
+        cameraDistance *
+        0.35,
+
+        cameraDistance
+
+      );
+
+
+      controls.target.set(
+        0,
+        0,
+        0
+      );
+
+
+      /*
+      Zoom limits
+      */
+
+      controls.minDistance =
+        cameraDistance *
+        0.15;
+
+
+      controls.maxDistance =
+        cameraDistance *
+        5;
+
+
+      camera.near =
+        Math.max(
+          cameraDistance /
+          1000,
+          0.001
+        );
+
+
+      camera.far =
+        cameraDistance *
+        100;
+
+
+      camera.updateProjectionMatrix();
+
+
+      controls.update();
+
+
+      /*
+      Save reset positions
+      */
+
+      originalCameraPosition.copy(
+        camera.position
+      );
+
+
+      originalTarget.copy(
+        controls.target
+      );
+
+
+      /*
+      UI
+      */
+
+      loadingElement
+        .classList
+        .add("hidden");
+
+
+      status
+        .classList
+        .add("ready");
+
+
+      statusText.textContent =
+        "מודל 3D פעיל";
+
+    },
+
+
+    /*
+    PROGRESS
+    */
+
+    function (xhr) {
+
+      if (
+        xhr.total
+      ) {
+
+        const percent =
+          Math.round(
+            (
+              xhr.loaded /
+              xhr.total
+            ) * 100
+          );
+
+
+        const subtitle =
+          loadingElement
+            .querySelector(
+              ".loading-subtitle"
+            );
+
+
+        if (subtitle) {
+
+          subtitle.textContent =
+            `טוען מודל... ${percent}%`;
+
+        }
+
+      }
+
+    },
+
+
+    /*
+    ERROR
+    */
+
+    function (error) {
+
+      console.error(
+        "FBX load error:",
+        error
+      );
+
+
+      loadingElement
+        .classList
+        .add("hidden");
+
+
+      errorElement
+        .classList
+        .add("show");
+
+
+      errorText.textContent =
+        "לא ניתן היה לטעון את Connector.fbx. בדוק שהקובץ קיים וש־CORS מאפשר גישה מהדומיין של האתר.";
+
+
+      status
+        .classList
+        .add("error");
+
+
+      statusText.textContent =
+        "שגיאה בטעינת המודל";
+
+    }
+
+  );
+
+
+  /*
+  ========================================================
+  ROTATION
+  ========================================================
+  */
+
+  window.toggleRotation =
+    function () {
+
+      controls.autoRotate =
+        !controls.autoRotate;
+
+
+      const button =
+        document.getElementById(
+          "rotationButton"
+        );
+
+
+      button.style.background =
+        controls.autoRotate
+          ? "rgba(7,9,20,.74)"
+          : "rgba(0,229,255,.22)";
+
+    };
+
+
+  /*
+  ========================================================
+  RESET CAMERA
+  ========================================================
+  */
+
+  window.resetCamera =
+    function () {
+
+      if (
+        originalCameraPosition.length() === 0
+      ) {
 
         return;
+
       }
 
-      speechSynthesis.cancel();
 
-      const title =
-        document.getElementById("productTitle").textContent;
+      camera.position.copy(
+        originalCameraPosition
+      );
 
-      const description =
-        document.getElementById("productDescription").textContent;
 
-      const speech =
-        new SpeechSynthesisUtterance(title + ". " + description);
+      controls.target.copy(
+        originalTarget
+      );
 
-      speech.lang = "he-IL";
-      speech.rate = 0.95;
 
-      speechSynthesis.speak(speech);
+      controls.update();
+
+    };
+
+
+  /*
+  ========================================================
+  RESIZE
+  ========================================================
+  */
+
+  function resizeRenderer() {
+
+    const width =
+      container.clientWidth;
+
+
+    const height =
+      container.clientHeight;
+
+
+    if (
+      width <= 0 ||
+      height <= 0
+    ) {
+
+      return;
+
     }
 
 
-    function showToast(message) {
+    camera.aspect =
+      width /
+      height;
 
-      const toast = document.getElementById("toast");
 
-      toast.textContent = message;
-      toast.classList.add("show");
+    camera.updateProjectionMatrix();
 
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2200);
+
+    renderer.setSize(
+      width,
+      height,
+      false
+    );
+
+  }
+
+
+  window.addEventListener(
+    "resize",
+    resizeRenderer
+  );
+
+
+  /*
+  Fullscreen משנה גודל ולכן
+  מעדכנים את ה-renderer.
+  */
+
+  document.addEventListener(
+    "fullscreenchange",
+    function () {
+
+      setTimeout(
+        resizeRenderer,
+        100
+      );
+
     }
+  );
 
-  </script>
+
+  /*
+  ========================================================
+  ANIMATION LOOP
+  ========================================================
+  */
+
+  function animate() {
+
+    requestAnimationFrame(
+      animate
+    );
+
+
+    controls.update();
+
+
+    renderer.render(
+      scene,
+      camera
+    );
+
+  }
+
+
+  animate();
+
+</script>
 
 </body>
 </html>
-```
