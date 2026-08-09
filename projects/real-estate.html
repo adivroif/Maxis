@@ -1070,6 +1070,31 @@ h1{
   cursor:pointer;
 }
 
+.hotspot-info-speak{
+  width:100%;
+  margin-top:12px;
+  padding:9px 12px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:10px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.hotspot-info-speak:hover{
+  background:rgba(244,180,0,.18);
+  border-color:rgba(244,180,0,.40);
+}
+
+.hotspot-info-speak.speaking{
+  background:rgba(244,180,0,.22);
+  border-color:#f4b400;
+  color:#ffe89a;
+}
+
 @media(max-width:620px){
   .model-hotspot{
     width:27px;
@@ -2484,6 +2509,7 @@ hotspotInfo.innerHTML = `
   <button class="hotspot-info-close" type="button" aria-label="סגור">×</button>
   <div class="hotspot-info-title"></div>
   <div class="hotspot-info-description"></div>
+  <button class="hotspot-info-speak" type="button">🔊 הקראת נקודת העניין</button>
 `;
 
 hotspotLayer.appendChild(
@@ -2509,6 +2535,12 @@ const hotspotInfoClose =
   );
 
 
+const hotspotInfoSpeak =
+  hotspotInfo.querySelector(
+    ".hotspot-info-speak"
+  );
+
+
 let modelHotspots = [];
 
 let activeHotspotId =
@@ -2528,7 +2560,259 @@ hotspotInfoClose.addEventListener(
 );
 
 
+hotspotInfoSpeak.addEventListener(
+  "click",
+  event => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+
+    const hotspot =
+      modelHotspots.find(
+        item =>
+          item.id ===
+          activeHotspotId
+      );
+
+
+    if(hotspot){
+
+      speakHotspot(
+        hotspot
+      );
+
+    }
+
+  }
+);
+
+
+/*
+Some browsers populate the available voice list asynchronously.
+Reading it here helps Hebrew voices become available before first use.
+*/
+if(
+  "speechSynthesis"
+  in window
+){
+
+  window.speechSynthesis.getVoices();
+
+  window.speechSynthesis.addEventListener?.(
+    "voiceschanged",
+    () => {
+      window.speechSynthesis.getVoices();
+    }
+  );
+
+}
+
+
+function getHebrewVoice(){
+
+  if(
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ){
+
+    return null;
+
+  }
+
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+
+  return (
+    voices.find(
+      voice =>
+        String(
+          voice.lang || ""
+        )
+        .toLowerCase()
+        .startsWith(
+          "he"
+        )
+    ) ||
+    voices.find(
+      voice =>
+        String(
+          voice.lang || ""
+        )
+        .toLowerCase()
+        .includes(
+          "he-il"
+        )
+    ) ||
+    null
+  );
+
+}
+
+
+
+function stopHotspotSpeech(){
+
+  if(
+    "speechSynthesis"
+    in window
+  ){
+
+    window.speechSynthesis.cancel();
+
+  }
+
+
+  hotspotInfoSpeak.classList.remove(
+    "speaking"
+  );
+
+
+  hotspotInfoSpeak.textContent =
+    "🔊 הקראת נקודת העניין";
+
+}
+
+
+
+function speakHotspot(
+  hotspot
+){
+
+  if(
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ){
+
+    hotspotInfoSpeak.textContent =
+      "הדפדפן לא תומך בהקראה";
+
+    return;
+
+  }
+
+
+  /*
+  Clicking the button again while speaking stops the voice.
+  */
+
+  if(
+    window.speechSynthesis.speaking &&
+    activeHotspotId === hotspot.id
+  ){
+
+    stopHotspotSpeech();
+
+    return;
+
+  }
+
+
+  window.speechSynthesis.cancel();
+
+
+  const text = [
+    hotspot.name,
+    hotspot.description
+  ]
+  .filter(Boolean)
+  .join(". ");
+
+
+  if(!text)
+    return;
+
+
+  const utterance =
+    new SpeechSynthesisUtterance(
+      text
+    );
+
+
+  utterance.lang =
+    "he-IL";
+
+
+  utterance.rate =
+    .95;
+
+
+  utterance.pitch =
+    1;
+
+
+  const hebrewVoice =
+    getHebrewVoice();
+
+
+  if(hebrewVoice){
+
+    utterance.voice =
+      hebrewVoice;
+
+  }
+
+
+  utterance.onstart =
+    () => {
+
+      hotspotInfoSpeak.classList.add(
+        "speaking"
+      );
+
+
+      hotspotInfoSpeak.textContent =
+        "■ עצור הקראה";
+
+    };
+
+
+  utterance.onend =
+    () => {
+
+      hotspotInfoSpeak.classList.remove(
+        "speaking"
+      );
+
+
+      hotspotInfoSpeak.textContent =
+        "🔊 הקראת נקודת העניין";
+
+    };
+
+
+  utterance.onerror =
+    () => {
+
+      hotspotInfoSpeak.classList.remove(
+        "speaking"
+      );
+
+
+      hotspotInfoSpeak.textContent =
+        "🔊 הקראת נקודת העניין";
+
+    };
+
+
+  window.speechSynthesis.speak(
+    utterance
+  );
+
+}
+
+
+
 function closeHotspotInfo(){
+
+  stopHotspotSpeech();
+
 
   activeHotspotId =
     null;
@@ -4633,6 +4917,9 @@ function createHotspotElement(
         hotspot.id;
 
 
+      /*
+      Stop narration from the previously selected point.
+      */
       closeHotspotInfo();
 
 
