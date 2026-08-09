@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 
@@ -2618,7 +2619,181 @@ hotspotInfoClose.addEventListener(
 );
 
 
+function stopHotspotSpeech(){
+
+  if(
+    "speechSynthesis"
+    in window
+  ){
+
+    window.speechSynthesis.cancel();
+
+  }
+
+}
+
+
+function getPreferredHebrewVoice(){
+
+  if(
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ){
+
+    return null;
+
+  }
+
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+
+  return (
+    voices.find(
+      voice =>
+        String(
+          voice.lang || ""
+        )
+        .toLowerCase() ===
+        "he-il"
+    ) ||
+
+    voices.find(
+      voice =>
+        String(
+          voice.lang || ""
+        )
+        .toLowerCase()
+        .startsWith(
+          "he"
+        )
+    ) ||
+
+    null
+  );
+
+}
+
+
+function speakHotspotAutomatically(
+  hotspot
+){
+
+  if(
+    !hotspot ||
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ){
+
+    return;
+
+  }
+
+
+  /*
+  Stop any previous narration before reading
+  the newly selected point of interest.
+  */
+  stopHotspotSpeech();
+
+
+  const textToRead =
+    [
+      hotspot.name,
+      hotspot.description
+    ]
+    .filter(
+      value =>
+        String(
+          value || ""
+        ).trim() !== ""
+    )
+    .join(
+      ". "
+    );
+
+
+  if(!textToRead)
+    return;
+
+
+  const utterance =
+    new SpeechSynthesisUtterance(
+      textToRead
+    );
+
+
+  utterance.lang =
+    "he-IL";
+
+
+  utterance.rate =
+    .95;
+
+
+  utterance.pitch =
+    1;
+
+
+  const hebrewVoice =
+    getPreferredHebrewVoice();
+
+
+  if(hebrewVoice){
+
+    utterance.voice =
+      hebrewVoice;
+
+  }
+
+
+  window.speechSynthesis.speak(
+    utterance
+  );
+
+}
+
+
+/*
+Some browsers load the available voice list asynchronously.
+Calling getVoices here prepares the Hebrew voice when possible.
+*/
+if(
+  "speechSynthesis"
+  in window
+){
+
+  window.speechSynthesis.getVoices();
+
+
+  if(
+    typeof window.speechSynthesis.addEventListener ===
+    "function"
+  ){
+
+    window.speechSynthesis.addEventListener(
+      "voiceschanged",
+      () => {
+
+        window.speechSynthesis.getVoices();
+
+      }
+    );
+
+  }
+
+}
+
+
 function closeHotspotInfo(){
+
+  stopHotspotSpeech();
+
 
   activeHotspotId =
     null;
@@ -4753,6 +4928,16 @@ function createHotspotElement(
       );
 
 
+      /*
+      Same interaction as the product viewer:
+      clicking the point immediately starts reading its
+      title and description aloud.
+      */
+      speakHotspotAutomatically(
+        hotspot
+      );
+
+
       updateHotspotScreenPositions();
 
     }
@@ -5331,6 +5516,30 @@ animate();
 RESIZE
 =========================================================
 */
+
+window.addEventListener(
+  "pagehide",
+  ()=>{
+
+    stopHotspotSpeech();
+
+  }
+);
+
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{
+
+    if(document.hidden){
+
+      stopHotspotSpeech();
+
+    }
+
+  }
+);
+
 
 window.addEventListener(
   "resize",
