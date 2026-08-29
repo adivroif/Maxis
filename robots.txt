@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://maxis-fxmq.onrender.com/sitemap.xml
+Sitemap: https://maxis3d.com/sitemap.xml
